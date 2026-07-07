@@ -1,0 +1,10 @@
+// -----------------------------------------------------------------------------
+// Layout
+// Major structural regions shared across pages: site header, footer,
+// mobile drawer, and their Theme-Settings-driven layout variants.
+// -----------------------------------------------------------------------------
+
+@forward 'header';
+@forward 'header-layouts';
+@forward 'footer';
+@forward 'footer-layouts';

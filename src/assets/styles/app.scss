@@ -1,0 +1,21 @@
+// -----------------------------------------------------------------------------
+// RKN Premium Theme — main stylesheet entry point.
+// Architecture (ITCSS-inspired 7-1 pattern, adapted for Twilight):
+//   abstracts  -> tokens, functions, mixins (no CSS output on their own)
+//   vendors    -> third-party overrides
+//   base       -> reset, element defaults, direction, accessibility
+//   layout     -> structural regions (header, footer, grid shells)
+//   components -> one file per reusable UI component
+//   pages      -> page-specific exceptions
+//   utilities  -> single-purpose helper classes (highest specificity)
+// Layers are imported in ascending order of specificity/reach so the
+// cascade stays predictable. Only `abstracts` may be `@use`d by every other
+// layer; layers never reach "sideways" into one another.
+// -----------------------------------------------------------------------------
+
+@use 'vendors';
+@use 'base';
+@use 'layout';
+@use 'components';
+@use 'pages';
+@use 'utilities';

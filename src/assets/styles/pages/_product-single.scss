@@ -1,0 +1,261 @@
+// -----------------------------------------------------------------------------
+// Product single page
+// Markup: views/pages/product/single.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.product-page {
+  padding-block: spacer(5) spacer(8);
+}
+
+.product-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(6);
+  margin-top: spacer(5);
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 1.1fr 1fr;
+    gap: spacer(8);
+  }
+}
+
+.product-page__gallery {
+  @include breakpoint-up(lg) {
+    position: sticky;
+    top: spacer(6);
+  }
+
+  img {
+    border-radius: $radius-xl;
+    width: 100%;
+    height: auto;
+    object-fit: cover;
+    background-color: $surface-100;
+  }
+}
+
+.product-page__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(3);
+}
+
+.product-page__brand img {
+  height: 1.75rem;
+  width: auto;
+}
+
+.product-page__badge {
+  display: inline-flex;
+  padding-inline: spacer(3);
+  padding-block: 0.3rem;
+  border-radius: $radius-pill;
+  background-color: color-mix(in srgb, $color-danger 12%, transparent);
+  color: $color-danger;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+}
+
+.product-page__title {
+  font-size: $font-size-3xl;
+  letter-spacing: $letter-spacing-tighter;
+}
+
+.product-page__subtitle {
+  font-size: $font-size-md;
+  color: $text-muted;
+}
+
+.product-page__price {
+  display: flex;
+  align-items: baseline;
+  gap: spacer(3);
+  margin-block: spacer(2);
+}
+
+.product-page__price-current {
+  font-size: $font-size-2xl;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+  letter-spacing: $letter-spacing-tight;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-page__price-current--sale {
+  color: $color-danger;
+}
+
+.product-page__price-regular {
+  font-size: $font-size-md;
+  color: $text-muted;
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-page__tax-note {
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.product-form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(5);
+  width: 100%;
+  padding-block: spacer(4);
+  margin-block: spacer(2);
+  border-block: 1px solid $border-subtle;
+}
+
+.product-form__row {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.product-form__label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.product-form__submit {
+  width: 100%;
+}
+
+.product-form__extra {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(2);
+  width: 100%;
+}
+
+// `.product-form__notes` textarea styling itself lives in
+// `components/_forms.scss` (shared with `.form-field textarea`).
+.product-form__notes {
+  width: 100%;
+}
+
+.product-page__size-guide {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: color();
+  text-underline-offset: 3px;
+  text-decoration: underline;
+
+  @include focus-ring;
+}
+
+.product-page__share {
+  margin-top: spacer(2);
+}
+
+.product-page__section {
+  padding-block: spacer(7);
+  border-block-start: 1px solid $border-subtle;
+}
+
+.product-page__section-title {
+  margin-bottom: spacer(5);
+  font-size: $font-size-2xl;
+  letter-spacing: $letter-spacing-tighter;
+}
+
+.product-page__description {
+  color: $text-body;
+  font-size: $font-size-md;
+  line-height: $line-height-relaxed;
+  max-width: 60rem;
+}
+
+// -----------------------------------------------------------------------------
+// Sticky add-to-cart bar
+// Markup: views/pages/product/single.twig; behaviour: js/modules/sticky-add-to-cart.js
+// -----------------------------------------------------------------------------
+.sticky-add-to-cart {
+  position: fixed;
+  inset-inline: 0;
+  bottom: 0;
+  z-index: z('sticky');
+  transform: translateY(100%);
+  transition: transform $duration-slow $easing-emphasized;
+  padding-bottom: env(safe-area-inset-bottom, 0);
+
+  @include glass-surface($surface-0, $border-subtle);
+
+  border-block-start: 1px solid $border-subtle;
+  box-shadow: $shadow-xl;
+
+  &[hidden] {
+    display: block;
+    visibility: hidden;
+  }
+
+  &.is-visible {
+    transform: translateY(0);
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+.sticky-add-to-cart__inner {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+  padding-block: spacer(3);
+}
+
+.sticky-add-to-cart__thumb {
+  flex-shrink: 0;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: $radius-md;
+  object-fit: cover;
+  background-color: $surface-100;
+
+  @include breakpoint-up(sm) {
+    width: 3.25rem;
+    height: 3.25rem;
+  }
+}
+
+.sticky-add-to-cart__info {
+  display: none;
+  flex-direction: column;
+  min-width: 0;
+  margin-inline-end: auto;
+
+  @include breakpoint-up(sm) {
+    display: flex;
+  }
+}
+
+.sticky-add-to-cart__name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: $text-heading;
+
+  @include line-clamp(1);
+}
+
+.sticky-add-to-cart__price {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: color();
+  font-variant-numeric: tabular-nums;
+}
+
+.sticky-add-to-cart__submit {
+  flex: 1;
+  max-width: 20rem;
+  margin-inline-start: auto;
+
+  @include breakpoint-up(sm) {
+    flex: none;
+  }
+}

@@ -1,0 +1,117 @@
+// -----------------------------------------------------------------------------
+// Footer layouts (Theme Settings → "تخطيط الفوتر")
+// 8 presentation-only variants of the exact same footer markup/data
+// (`views/components/footer/footer.twig`) — real store menu, contacts,
+// social, apps, and payment methods in every one, just arranged differently.
+// Selector target: `.footer[data-footer-layout="..."]`. "classic" is the
+// default and needs no overrides below (see the base rules in `_footer.scss`).
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Centered — every column's content (and the bottom bar) centered instead of
+// start-aligned; a softer, editorial footer treatment.
+.footer[data-footer-layout='centered'] {
+  .footer__top {
+    text-align: center;
+  }
+
+  .footer__brand,
+  .footer__col {
+    align-items: center;
+  }
+
+  .footer__bottom {
+    flex-direction: column;
+    justify-content: center;
+    text-align: center;
+  }
+
+  .footer__payments-block {
+    justify-content: center;
+  }
+}
+
+// Compact — tighter vertical rhythm for stores that want a shorter footer.
+.footer[data-footer-layout='compact'] {
+  .footer__top {
+    padding-block: spacer(6);
+    gap: spacer(5);
+  }
+
+  .footer__bottom {
+    padding-block: spacer(3);
+  }
+
+  .footer__col-title {
+    margin-bottom: spacer(2);
+    font-size: 0.6875rem;
+  }
+}
+
+// Columns equal — the brand column no longer gets extra width; every column
+// shares the row evenly.
+.footer[data-footer-layout='columns_equal'] {
+  .footer__top {
+    @include breakpoint-up(lg) {
+      grid-template-columns: repeat(4, 1fr);
+    }
+  }
+}
+
+// Stacked bottom — copyright and payment badges stack centered instead of
+// sitting on the same space-between row.
+.footer[data-footer-layout='stacked_bottom'] {
+  .footer__bottom {
+    flex-direction: column;
+    align-items: center;
+    text-align: center;
+  }
+
+  .footer__payments-block {
+    justify-content: center;
+  }
+}
+
+// Boxed — the whole footer floats as a rounded card with a gap from the
+// viewport edges, matching the header's "boxed" option for a cohesive pair.
+.footer[data-footer-layout='boxed'] {
+  margin-inline: clamp(0.75rem, 2vw, 2rem);
+  margin-block-end: spacer(4);
+  overflow: hidden;
+  border-radius: $radius-xl;
+}
+
+// Minimal — brand, social, and the bottom bar only; drops the quick
+// links/contact/app columns for stores that want the leanest possible
+// footer (that navigation remains reachable from the header at all times).
+.footer[data-footer-layout='minimal'] {
+  .footer__top {
+    grid-template-columns: 1fr;
+    padding-block: spacer(7);
+  }
+
+  .footer__col {
+    display: none;
+  }
+
+  .footer__brand {
+    align-items: center;
+    text-align: center;
+  }
+}
+
+// Inline links — columns collapse into a single centered, wrapping row
+// instead of an asymmetric grid; a lightweight band rather than a tall
+// multi-column block.
+.footer[data-footer-layout='inline_links'] {
+  .footer__top {
+    grid-template-columns: repeat(auto-fit, minmax(11rem, 1fr));
+    text-align: center;
+  }
+
+  .footer__brand,
+  .footer__col {
+    align-items: center;
+  }
+}

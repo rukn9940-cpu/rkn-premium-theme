@@ -1,0 +1,224 @@
+// -----------------------------------------------------------------------------
+// Design tokens
+// -----------------------------------------------------------------------------
+
+@use 'sass:map';
+
+// -----------------------------------------------------------------------------
+// Color palette
+// The merchant-controlled brand color always wins at runtime via the
+// `--color-primary*` custom properties set in `views/layouts/master.twig`
+// (included from `partials/utility/theme-color-vars.twig`, which resolves
+// either one of the theme's 10 built-in Color Presets — Theme Settings →
+// نظام الألوان الجاهز — or Salla's native `theme.color`, the "color"
+// Twilight feature, when the preset is left on "Custom"). The values below
+// are only the *fallback* used when neither is available (e.g. theme
+// preview edge cases) — reach for `color(primary)` (see
+// abstracts/_functions.scss) rather than these SCSS variables directly.
+$color-primary-fallback: #c9974c; // warm gold — premium accent fallback
+$color-primary-dark-fallback: #a97b34;
+$color-primary-light-fallback: #e0b876;
+$color-primary-text-fallback: #1a1206;
+
+// Neutral, direction-agnostic ink scale used for dark surfaces (header,
+// footer, overlays) — independent of the merchant's brand color so the
+// "dark modern" chrome stays legible regardless of the chosen accent.
+// Full 11-step ramp (rather than sparse jumps) so shadows, borders, and
+// hover states can be tuned precisely instead of reusing whatever step
+// happens to be nearby.
+$ink-950: #05070a;
+$ink-900: #0b0e14;
+$ink-800: #12151c;
+$ink-700: #1b1f29;
+$ink-600: #2a2f3d;
+$ink-500: #4b5265;
+$ink-400: #6b7280;
+$ink-300: #9199a8;
+$ink-200: #c2c7d1;
+$ink-100: #e5e7eb;
+$ink-50: #f5f6f8;
+$ink-25: #fafbfc;
+
+// Adaptive content-surface neutrals used across storefront sections, cards,
+// and forms (product/category/cart/account/blog/static pages). Routed
+// through CSS custom properties (light defaults here) so `[data-theme="dark"]`
+// (see `base/_theme-mode.scss`) can repoint them at runtime for the theme's
+// Dark Mode setting — every consumer of these Sass variables gets dark-mode
+// support automatically, no per-component changes needed.
+// NOT used by the header/footer/hero/offers banner/carousel controls/ghost
+// buttons — those are permanently-dark "brand chrome" per the theme's design
+// brief and intentionally use fixed literal colors (`#fff`, `$ink-*`)
+// instead, so they stay legible regardless of the content color mode.
+$surface-0: var(--surface-0, #fff);
+$surface-100: var(--surface-100, #f7f8fa);
+$surface-200: var(--surface-200, #eef0f3);
+$border-subtle: var(--border-subtle, #e5e7eb);
+$border-strong: var(--border-strong, #d7dae0);
+$text-heading: var(--text-heading, #10131a);
+$text-body: var(--text-body, #4b5563);
+$text-muted: var(--text-muted, #6b7280);
+
+// Semantic colors — each with a soft "tint" background for premium status
+// pills/badges/alerts (e.g. `rgba($color-success, 0.1)` still works, these
+// pre-mixed tints exist for the common flat-fill case).
+$color-success: #17845a;
+$color-success-tint: #e7f6ef;
+$color-danger: #d92d3f;
+$color-danger-tint: #fdecee;
+$color-warning: #b7791f;
+$color-warning-tint: #fdf3e0;
+$color-info: #2563eb;
+$color-info-tint: #eaf1fe;
+
+// Elevation — layered, low-opacity shadows (ambient + key light) rather than
+// a single hard-edged shadow, matching the soft, premium depth used by
+// Apple/Noon-tier storefronts. `$shadow-glow` is reserved for primary CTA
+// hover/focus states so the brand color itself provides the elevation cue.
+// Every alpha channel is multiplied by `--shadow-scale` (Theme Settings →
+// "قوة الظلال" — flat/soft/premium, resolved in
+// `partials/utility/design-system-vars.twig`) so merchants can flatten or
+// deepen elevation storewide with zero rebuild. Browsers without support for
+// `calc()` inside a color function (very old browsers only) simply render no
+// shadow — a harmless, purely-decorative degradation.
+$shadow-xs: 0 1px 2px rgba(16, 19, 26, calc(0.05 * var(--shadow-scale, 1)));
+$shadow-sm:
+  0 1px 2px rgba(16, 19, 26, calc(0.04 * var(--shadow-scale, 1))),
+  0 2px 6px rgba(16, 19, 26, calc(0.05 * var(--shadow-scale, 1)));
+$shadow-md:
+  0 2px 4px rgba(16, 19, 26, calc(0.04 * var(--shadow-scale, 1))),
+  0 10px 28px rgba(16, 19, 26, calc(0.08 * var(--shadow-scale, 1)));
+$shadow-lg:
+  0 8px 16px rgba(16, 19, 26, calc(0.06 * var(--shadow-scale, 1))),
+  0 24px 56px rgba(16, 19, 26, calc(0.14 * var(--shadow-scale, 1)));
+$shadow-xl:
+  0 16px 32px rgba(16, 19, 26, calc(0.1 * var(--shadow-scale, 1))),
+  0 32px 80px rgba(16, 19, 26, calc(0.18 * var(--shadow-scale, 1)));
+$shadow-header:
+  0 1px 0 rgba(255, 255, 255, 0.06) inset,
+  0 8px 24px rgba(5, 7, 10, calc(0.28 * var(--shadow-scale, 1)));
+$shadow-header-scrolled:
+  0 1px 0 rgba(255, 255, 255, 0.05) inset,
+  0 12px 32px rgba(5, 7, 10, calc(0.4 * var(--shadow-scale, 1)));
+
+/// Primary-tinted glow shadow, e.g. `box-shadow: shadow-glow(35%)`.
+/// Uses `color-mix()` (not `rgba()`) so it works with the merchant's brand
+/// color regardless of its source format (hex/named/etc.) without needing a
+/// separate `--color-primary-rgb` custom property.
+/// @param {Percentage} $strength [35%]
+@function shadow-glow($strength: 35%) {
+  @return 0 12px 28px -8px
+    color-mix(in srgb, var(--color-primary, #{$color-primary-fallback}) #{$strength}, transparent);
+}
+
+// Glassmorphism — translucent, blurred surfaces for the sticky header and
+// mega menu flyout. Always paired with a `@supports (backdrop-filter)`
+// feature query at the call site so browsers without support (and users
+// with `prefers-reduced-transparency`) fall back to a solid surface.
+$glass-blur: 16px;
+$glass-bg-dark: rgba(11, 14, 20, 0.72);
+$glass-border-dark: rgba(255, 255, 255, 0.08);
+$glass-bg-light: rgba(255, 255, 255, 0.78);
+$glass-border-light: rgba(16, 19, 26, 0.06);
+
+// -----------------------------------------------------------------------------
+// Typography scale
+// Fluid (clamp-based) sizes: mobile-first minimum, viewport-scaled toward a
+// desktop maximum — avoids extra breakpoints/JS while staying readable at
+// every width (Core Web Vitals: no layout shift from responsive JS re-flow).
+$font-size-xs: 0.8125rem;
+$font-size-sm: 0.9375rem;
+$font-size-md: 1rem;
+$font-size-lg: 1.125rem;
+$font-size-xl: clamp(1.25rem, 1.1rem + 0.6vw, 1.5rem);
+$font-size-2xl: clamp(1.5rem, 1.3rem + 0.9vw, 1.875rem);
+$font-size-3xl: clamp(1.875rem, 1.55rem + 1.4vw, 2.5rem);
+$font-size-4xl: clamp(2.25rem, 1.8rem + 2vw, 3.25rem);
+$font-size-5xl: clamp(2.75rem, 2.1rem + 2.8vw, 4.25rem);
+$font-weight-regular: 400;
+$font-weight-medium: 500;
+$font-weight-semibold: 600;
+$font-weight-bold: 700;
+$font-weight-extrabold: 800;
+
+// Tight tracking on large headings reads as more premium/editorial (Apple,
+// Noon flagship banners); body copy keeps default spacing for readability.
+$letter-spacing-tight: -0.02em;
+$letter-spacing-tighter: -0.03em;
+
+// Line heights.
+$line-height-tight: 1.15;
+$line-height-snug: 1.35;
+$line-height-base: 1.55;
+$line-height-relaxed: 1.75;
+
+// Spacing scale (used by utilities & component/layout work). `9`/`10` exist
+// for generous desktop section rhythm (hero/section padding); everything
+// below stays on the original 4px/8px-friendly cadence.
+// Every step is multiplied by `--space-scale` (Theme Settings → "كثافة
+// التباعد" — compact/comfortable/spacious) so merchants can tighten or open
+// up rhythm storewide without touching a single component. `spacer(0)` stays
+// a literal `0` since scaling zero is a no-op.
+$spacers: (
+  0: 0,
+  1: calc(0.25rem * var(--space-scale, 1)),
+  2: calc(0.5rem * var(--space-scale, 1)),
+  3: calc(0.75rem * var(--space-scale, 1)),
+  4: calc(1rem * var(--space-scale, 1)),
+  5: calc(1.5rem * var(--space-scale, 1)),
+  6: calc(2rem * var(--space-scale, 1)),
+  7: calc(3rem * var(--space-scale, 1)),
+  8: calc(4rem * var(--space-scale, 1)),
+  9: calc(6rem * var(--space-scale, 1)),
+  10: calc(8rem * var(--space-scale, 1)),
+);
+
+// Base typographic scale (rem, mobile-first — scales up via fluid clamps
+// once real typography is authored).
+$font-size-base: 1rem;
+
+// Border radii — `xl`/`2xl` power the larger, softer corners used on hero
+// media, modals, and premium product cards; pill/full cover fully-rounded
+// controls (search pill, filter chips, avatar).
+// `sm`/`md`/`lg`/`xl`/`2xl` scale with `--radius-scale` (Theme Settings →
+// "استدارة الحواف" — sharp/soft/rounded/extra-rounded, resolved in
+// `partials/utility/design-system-vars.twig`); `$radius-pill` is a shape
+// token (always fully round), not a degree of rounding, so it never scales.
+$radius-sm: calc(0.25rem * var(--radius-scale, 1));
+$radius-md: calc(0.5rem * var(--radius-scale, 1));
+$radius-lg: calc(1rem * var(--radius-scale, 1));
+$radius-xl: calc(1.5rem * var(--radius-scale, 1));
+$radius-2xl: calc(2rem * var(--radius-scale, 1));
+$radius-pill: 999px;
+
+// Motion. `$easing-emphasized` adds a slight overshoot for premium
+// micro-interactions (button press, toggle, card entrance) without feeling
+// bouncy/cartoonish; `$easing-decelerate` suits content entering the screen
+// (skeleton → real content, drawer open).
+$duration-instant: 100ms;
+$duration-fast: 160ms;
+$duration-base: 240ms;
+$duration-slow: 360ms;
+$duration-slower: 520ms;
+$easing-standard: cubic-bezier(0.4, 0, 0.2, 1);
+$easing-decelerate: cubic-bezier(0, 0, 0.2, 1);
+$easing-emphasized: cubic-bezier(0.2, 0.9, 0.25, 1.1);
+
+// Z-index scale — named layers prevent ad-hoc z-index wars.
+$z-layers: (
+  'base': 0,
+  'dropdown': 100,
+  'sticky': 200,
+  'overlay': 300,
+  'modal': 400,
+  'toast': 500,
+  'tooltip': 600,
+);
+
+// Layout.
+$container-max-width: 1320px;
+$container-padding-inline: map.get($spacers, 4);
+
+// Accessibility.
+$focus-ring-width: 2px;
+$focus-ring-offset: 2px;
+$min-tap-target: 44px; // WCAG 2.5.8 (AA) target size

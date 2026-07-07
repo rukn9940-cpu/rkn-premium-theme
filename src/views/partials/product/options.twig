@@ -1,0 +1,33 @@
+{#
+    Product options + notes/upload
+    ================================
+    Extracted from the add-to-cart form so both the single product page and
+    any quick-view/quick-buy surface added later can reuse the same block.
+
+        {% include 'partials.product.options' with { product: product } %}
+#}
+{% if product.options|length %}
+    <salla-product-options options="{{ product.options }}" product-id="{{ product.id }}"></salla-product-options>
+{% endif %}
+
+{% if product.can_add_note or product.can_upload_file %}
+    <div class="product-form__extra">
+        {% if product.can_add_note %}
+            <label class="product-form__label" for="product-notes">{{ trans('pages.products.notes') }}</label>
+            <textarea
+                id="product-notes"
+                class="product-form__notes"
+                name="notes"
+                placeholder="{{ trans('pages.products.notes_placeholder') }}"
+                rows="3"
+            >{{ product.notes }}</textarea>
+        {% endif %}
+
+        {% if product.can_upload_file %}
+            <salla-file-upload
+                accept="image/png, image/jpeg, image/jpg, image/gif, application/pdf"
+                class="product-form__upload"
+            ></salla-file-upload>
+        {% endif %}
+    </div>
+{% endif %}

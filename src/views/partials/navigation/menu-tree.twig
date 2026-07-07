@@ -1,0 +1,121 @@
+{#
+    Navigation menu tree / Mega Menu Builder
+    =========================================
+    Twig macro rendering the store's main navigation from the `menus`
+    variable Twilight injects into `components/header/header.twig` — shared
+    by both the desktop nav and the mobile drawer so menu structure is
+    defined once. Everything rendered here is real, merchant-managed data;
+    the theme adds no custom per-menu fields of its own:
+
+    - `menu.image`  — per-item icon/image, set by the merchant in Salla's
+      own Menu Builder (requires the `menu-images` Twilight feature, see
+      `twilight.json`). Used both as a small inline icon next to the link
+      label and as a larger thumbnail for column headings inside the panel.
+    - `menu.children` — up to 3 supported levels (top link → column →
+      column list), matching Salla's own documented navigation depth.
+      Rendered as CSS multi-column groups rather than a single flyout list
+      once there's more than one child, which is what actually makes it a
+      *mega* menu rather than a plain dropdown.
+    - `menu.mega_menu` — real Products the merchant attached to this exact
+      menu item from Salla's Menu Builder ("Show products").
+    - The promotional banner is the only themeable (Theme Settings) piece,
+      since Salla's menu data itself has no banner field — it's one real,
+      merchant-uploaded image shown in every panel that has one configured.
+
+        {% import 'partials.navigation.menu-tree' as nav %}
+        {% for menu in menus %}
+            {{ nav.item(menu, banner_image, banner_url, banner_title) }}
+        {% endfor %}
+
+    Reference: docs.salla.dev — Header Components (`menus`, `mega_menu`,
+    `menu-images` feature).
+#}
+{% macro item(menu, banner_image, banner_url, banner_title) %}
+    {% set has_mega_products = menu.mega_menu is defined and menu.mega_menu|length > 0 %}
+    {% set has_panel = menu.has_children or has_mega_products %}
+    <li class="main-menu__item{{ menu.has_children ? ' has-children' : '' }}{{ has_mega_products ? ' has-mega' : '' }}" {{ menu.attrs }}>
+        <a href="{{ menu.url }}" class="main-menu__link" {{ menu.link_attrs }}>
+            {% if menu.image %}
+                <img class="main-menu__link-icon" src="{{ menu.image }}" alt="" width="18" height="18" loading="lazy">
+            {% endif %}
+            <span>{{ menu.title }}</span>
+            {% if has_panel %}
+                <svg class="main-menu__chevron" width="10" height="6" viewBox="0 0 10 6" fill="none" aria-hidden="true">
+                    <path d="M1 1L5 5L9 1" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            {% endif %}
+        </a>
+
+        {% if has_panel %}
+            <div class="main-menu__mega{{ menu.has_children and menu.children|length > 5 ? ' main-menu__mega--wide' : '' }}">
+                <div class="main-menu__mega-inner">
+                    {% if menu.has_children %}
+                        <div class="main-menu__mega-columns">
+                            {% for child in menu.children %}
+                                <div class="main-menu__mega-column">
+                                    <a href="{{ child.url }}" class="main-menu__mega-column-title" {{ child.link_attrs }}>
+                                        {% if child.image %}
+                                            <img src="{{ child.image }}" alt="" width="28" height="28" loading="lazy">
+                                        {% endif %}
+                                        <span>{{ child.title }}</span>
+                                    </a>
+                                    {% if child.has_children %}
+                                        <ul class="main-menu__mega-column-list">
+                                            {% for grandchild in child.children %}
+                                                <li><a href="{{ grandchild.url }}" {{ grandchild.link_attrs }}>{{ grandchild.title }}</a></li>
+                                            {% endfor %}
+                                        </ul>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+
+                    {% if has_mega_products %}
+                        <div class="main-menu__mega-products">
+                            {% if menu.has_children %}
+                                <p class="main-menu__mega-products-title">{{ trans('nav.featured_products') }}</p>
+                            {% endif %}
+                            <div class="main-menu__mega-grid">
+                                {% for product in menu.mega_menu|slice(0, 4) %}
+                                    {% set on_sale = product.is_on_sale ?? product.on_sale ?? false %}
+                                    <a href="{{ product.url }}" class="main-menu__mega-product">
+                                        <span class="main-menu__mega-thumb">
+                                            <img
+                                                src="{{ product.image.url }}"
+                                                alt="{{ product.image.alt|default(product.name) }}"
+                                                loading="lazy"
+                                                width="120"
+                                                height="120"
+                                            >
+                                            {% if product.promotion_title %}
+                                                <span class="main-menu__mega-badge">{{ product.promotion_title }}</span>
+                                            {% endif %}
+                                        </span>
+                                        <span class="main-menu__mega-name">{{ product.name }}</span>
+                                        <span class="main-menu__mega-price">
+                                            {% if on_sale %}
+                                                {{ product.sale_price|money }}
+                                            {% else %}
+                                                {{ product.price|money }}
+                                            {% endif %}
+                                        </span>
+                                    </a>
+                                {% endfor %}
+                            </div>
+                        </div>
+                    {% endif %}
+
+                    {% if banner_image %}
+                        <a href="{{ banner_url|default('#') }}" class="main-menu__mega-banner">
+                            <img src="{{ banner_image }}" alt="{{ banner_title|default('') }}" loading="lazy" width="260" height="360">
+                            {% if banner_title %}
+                                <span class="main-menu__mega-banner-title">{{ banner_title }}</span>
+                            {% endif %}
+                        </a>
+                    {% endif %}
+                </div>
+            </div>
+        {% endif %}
+    </li>
+{% endmacro %}

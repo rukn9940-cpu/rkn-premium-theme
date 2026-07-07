@@ -1,0 +1,45 @@
+{#
+    Brands Listing Page (required path: src/views/pages/brands/index.twig)
+    =========================================================================
+    | Variable | Type       | Description                                        |
+    |----------|------------|------------------------------------------------------|
+    | brands   | collection | Grouped by first letter: { "A": [{name,url,logo}] } |
+
+    Reference: docs.salla.dev — Brands Listing Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ trans('pages.brands.title') }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ trans('pages.brands.title') }} — {{ store.name }}{% endblock %}
+{% block canonical %}<link rel="canonical" href="{{ page('brands') }}">{% endblock %}
+
+{% block content %}
+    <div class="container brands-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <h1 class="brands-page__title">{{ trans('pages.brands.title') }}</h1>
+
+        {% if brands is not empty %}
+            <nav class="brands-page__index" aria-label="{{ trans('pages.brands.title') }}">
+                {% for letter, group in brands %}
+                    <a href="#brand-{{ loop.index }}">{{ letter }}</a>
+                {% endfor %}
+            </nav>
+
+            {% for letter, group in brands %}
+                <section class="brands-page__section" id="brand-{{ loop.index }}">
+                    <h2 class="brands-page__letter">{{ letter }}</h2>
+                    <div class="brands-page__grid">
+                        {% for brand in group %}
+                            <a href="{{ brand.url }}" class="brand-card" aria-label="{{ brand.name }}">
+                                <img src="{{ brand.logo }}" alt="{{ brand.name }}" loading="lazy" width="140" height="80">
+                            </a>
+                        {% endfor %}
+                    </div>
+                </section>
+            {% endfor %}
+        {% else %}
+            <p class="brands-page__empty">{{ trans('pages.brands.empty') }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

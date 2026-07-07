@@ -1,0 +1,57 @@
+// -----------------------------------------------------------------------------
+// Accessibility (WCAG 2.2 AA baseline)
+// Document-level a11y affordances that every page inherits regardless of
+// which components are built on top of this foundation.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Consistent, visible focus state for every interactive element by default.
+:focus-visible {
+  outline: $focus-ring-width solid currentcolor;
+  outline-offset: $focus-ring-offset;
+}
+
+// Skip-link: the first focusable element on every page, allowing keyboard
+// and screen-reader users to bypass repeated header/navigation content.
+// Markup lives in `views/partials/accessibility/skip-link.twig`.
+.skip-link {
+  @include visually-hidden;
+
+  &:focus {
+    @include visually-shown;
+
+    position: fixed;
+    inset-block-start: spacer(2);
+    inset-inline-start: spacer(2);
+    z-index: z('toast');
+    padding: spacer(2) spacer(4);
+    background-color: Canvas;
+    color: CanvasText;
+    border-radius: $radius-sm;
+    box-shadow: 0 0 0 $focus-ring-width currentcolor;
+  }
+}
+
+// Utility for content that should remain in the accessibility tree only.
+.sr-only {
+  @include visually-hidden;
+}
+
+// Escape hatch for the rare case an `.sr-only` element must become visible
+// on focus (e.g. a skip-link built from a shared utility instead of the
+// dedicated `.skip-link` class above).
+.sr-only-focusable {
+  &:focus,
+  &:focus-within {
+    @include visually-shown;
+  }
+}
+
+// `prefers-contrast: more` support keeps focus rings and borders legible for
+// users who have requested higher contrast at the OS level.
+@media (prefers-contrast: more) {
+  :focus-visible {
+    outline-width: $focus-ring-width * 2;
+  }
+}

@@ -1,0 +1,12 @@
+{#
+    Back to Top button
+    ===================
+    Pure client-side affordance (no Salla API) — shown once the visitor has
+    scrolled past the first viewport, gated by the `back_to_top_enabled`
+    theme setting. Behavior lives in `js/modules/back-to-top.js`.
+#}
+<button type="button" class="back-to-top" data-back-to-top aria-label="{{ trans('common.elements.back_to_top') }}" hidden>
+    <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+        <path d="M9 15V3M9 3L3.5 8.5M9 3l5.5 5.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+    </svg>
+</button>

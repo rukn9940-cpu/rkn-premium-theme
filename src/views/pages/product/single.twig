@@ -1,0 +1,381 @@
+{#
+    Single Product Page
+    ====================
+    | Variable         | Type    | Description                                   |
+    |------------------|---------|-------------------------------------------------|
+    | product          | object  | full Product entity (see Twig variables docs)   |
+    | product.images   | array   | {url, alt, video_url, type}[]                    |
+    | product.options  | array   | variant/customization options                    |
+    | product.brand    | ?object | {name, url, logo}                                |
+    | product.rating   | ?object | {stars, count}                                   |
+
+    Reference: docs.salla.dev — Themes Single Product Page.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ product.name }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ product.description|striptags|slice(0, 160)|default(store.description|striptags) }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ product.url }}">
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    {% set on_sale = product.is_on_sale ?? product.on_sale ?? false %}
+    <meta property="og:type" content="product">
+    <meta property="og:title" content="{{ product.name }}">
+    <meta property="og:description" content="{{ product.description|striptags|slice(0, 160)|default(store.description|striptags) }}">
+    <meta property="og:url" content="{{ product.url }}">
+    {% if product.images is not empty %}<meta property="og:image" content="{{ product.images[0].url }}">{% endif %}
+    <meta property="product:price:amount" content="{{ on_sale ? product.sale_price : product.price }}">
+    <meta property="product:price:currency" content="{{ store.currency }}">
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Product",
+        "name": {{ product.name|json_encode|raw }},
+        "description": {{ product.description|striptags|json_encode|raw }},
+        "sku": {{ (product.sku|default(product.id))|json_encode|raw }},
+        "image": {{ (product.images|default([])|map(i => i.url))|json_encode|raw }}
+        {%- if product.brand %}, "brand": { "@type": "Brand", "name": {{ product.brand.name|json_encode|raw }} }{% endif -%}
+        {%- if product.rating and product.rating.count %}, "aggregateRating": {
+            "@type": "AggregateRating",
+            "ratingValue": {{ product.rating.stars|json_encode|raw }},
+            "reviewCount": {{ product.rating.count|json_encode|raw }}
+        }{% endif -%}
+        , "offers": {
+            "@type": "Offer",
+            "url": {{ product.url|json_encode|raw }},
+            "priceCurrency": {{ store.currency|json_encode|raw }},
+            "price": {{ (on_sale ? product.sale_price : product.price)|json_encode|raw }},
+            "availability": "https://schema.org/{{ product.status == 'sale' or product.is_available ? 'InStock' : 'OutOfStock' }}"
+        }
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    {#
+        Gallery media triage
+        ====================
+        Real Salla product data only — no per-product theme fields exist, so
+        the interactive viewers below are activated purely from what the
+        merchant already manages in Salla's own product media manager:
+
+        - `image.three_d_image_url` → merchant uploaded a real 3D model
+          (Attach 3D Model, Salla Merchant API). Rendered with Google's
+          `<model-viewer>`, exactly like Salla's official Raed theme.
+        - Plain, ordered `product.images` (excluding video/3D entries) →
+          when there are enough of them (`product_360_min_frames`, Theme
+          Settings), treated as a 360° turntable sequence — this is just the
+          merchant's own multi-angle product photography, uploaded in order.
+        - Anything with `video_url`/`type == 'video'` → kept as a "watch
+          video" link under whichever viewer is shown.
+        - None of the above → the original `salla-slider` gallery, unchanged.
+    #}
+    {% set image_frames = [] %}
+    {% set video_slides = [] %}
+    {% set three_d_url = null %}
+    {% set three_d_poster = null %}
+    {% for image in product.images %}
+        {% if image.three_d_image_url and not three_d_url %}
+            {% set three_d_url = image.three_d_image_url %}
+            {% set three_d_poster = image.url %}
+        {% elseif image.type == 'video' or image.video_url %}
+            {% set video_slides = video_slides|merge([image]) %}
+        {% else %}
+            {% set image_frames = image_frames|merge([image]) %}
+        {% endif %}
+    {% endfor %}
+    {% set product_360_min_frames = theme.settings.get('product_360_min_frames', 12)|default(12) %}
+    {% set use_360_viewer = theme.settings.get('product_360_enabled', true) and image_frames|length >= product_360_min_frames %}
+
+    <div class="container product-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <div class="product-page__grid">
+            <div class="product-page__gallery">
+                {% if three_d_url %}
+                    <div class="product-viewer-3d" data-product-viewer-3d>
+                        <span class="product-viewer-3d__badge">{{ trans('pages.products.viewer_3d_badge') }}</span>
+                        <model-viewer
+                            class="product-viewer-3d__el"
+                            src="{{ three_d_url }}"
+                            poster="{{ three_d_poster }}"
+                            alt="{{ product.name }}"
+                            camera-controls
+                            auto-rotate
+                            touch-action="pan-y"
+                            shadow-intensity="1"
+                            loading="eager"
+                        ></model-viewer>
+                        <button type="button" class="product-viewer-3d__fullscreen" data-viewer-fullscreen aria-label="{{ trans('pages.products.viewer_fullscreen') }}">
+                            <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M7 2H2v5M13 2h5v5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                        </button>
+                    </div>
+
+                    {% if video_slides is not empty %}
+                        <div class="product-360__videos">
+                            {% for video in video_slides %}
+                                <a href="{{ video.video_url }}" target="_blank" rel="noopener" class="product-360__video-link">{{ trans('pages.products.watch_video') }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% elseif use_360_viewer %}
+                    <div
+                        class="product-360"
+                        data-product-360
+                        data-frames="{{ image_frames|map(i => i.url)|json_encode }}"
+                        role="img"
+                        aria-label="{{ product.name }}"
+                    >
+                        <img
+                            class="product-360__frame"
+                            data-product-360-frame
+                            src="{{ image_frames[0].url }}"
+                            alt="{{ product.name }}"
+                            width="640"
+                            height="640"
+                            fetchpriority="high"
+                        >
+                        <div class="product-360__progress" data-product-360-progress aria-hidden="true"></div>
+                        <div class="product-360__hint" data-product-360-hint>
+                            <svg class="product-360__hint-icon" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <path d="M2 10h16M2 10l4-4M2 10l4 4M18 10l-4-4M18 10l-4 4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                            </svg>
+                            <span>{{ trans('pages.products.viewer_360_hint') }}</span>
+                        </div>
+                        <div class="product-360__controls">
+                            <button type="button" class="product-360__btn" data-product-360-zoom-in aria-label="{{ trans('pages.products.viewer_zoom_in') }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 4v12M4 10h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+                            </button>
+                            <button type="button" class="product-360__btn" data-product-360-zoom-out aria-label="{{ trans('pages.products.viewer_zoom_out') }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M4 10h12" stroke="currentColor" stroke-width="1.8" stroke-linecap="round" /></svg>
+                            </button>
+                            <button type="button" class="product-360__btn" data-product-360-gyro hidden aria-pressed="false" aria-label="{{ trans('pages.products.viewer_gyro') }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true"><path d="M10 2a8 8 0 1 1-6.93 4M3 2v4h4" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            </button>
+                            <button type="button" class="product-360__btn" data-product-360-fullscreen aria-label="{{ trans('pages.products.viewer_fullscreen') }}">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                    <path d="M7 2H2v5M13 2h5v5M2 13v5h5M18 13v5h-5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                                </svg>
+                            </button>
+                        </div>
+                    </div>
+
+                    {% if video_slides is not empty %}
+                        <div class="product-360__videos">
+                            {% for video in video_slides %}
+                                <a href="{{ video.video_url }}" target="_blank" rel="noopener" class="product-360__video-link">{{ trans('pages.products.watch_video') }}</a>
+                            {% endfor %}
+                        </div>
+                    {% endif %}
+                {% else %}
+                    <salla-slider id="details-slider-{{ product.id }}" type="thumbs">
+                        <div slot="items">
+                            {% for image in product.images %}
+                                <a href="{{ image.url }}">
+                                    <img
+                                        src="{{ image.url }}"
+                                        alt="{{ image.alt|default(product.name) }}"
+                                        loading="{{ loop.first ? 'eager' : 'lazy' }}"
+                                        fetchpriority="{{ loop.first ? 'high' : 'auto' }}"
+                                        width="640"
+                                        height="640"
+                                    >
+                                </a>
+                            {% endfor %}
+                        </div>
+                    </salla-slider>
+                {% endif %}
+            </div>
+
+            <div class="product-page__info">
+                {% if product.brand %}
+                    <a href="{{ product.brand.url }}" class="product-page__brand">
+                        <img src="{{ product.brand.logo }}" alt="{{ product.brand.name }}" width="72" height="28">
+                    </a>
+                {% endif %}
+
+                {% set on_sale = product.is_on_sale ?? product.on_sale ?? false %}
+                {% if product.promotion_title or (on_sale and product.regular_price and product.regular_price > product.sale_price) %}
+                    <span class="product-page__badge">
+                        {% if product.promotion_title %}
+                            {{ product.promotion_title }}
+                        {% else %}
+                            {% set discount = ((product.regular_price - product.sale_price) / product.regular_price * 100)|round %}
+                            -{{ discount }}%
+                        {% endif %}
+                    </span>
+                {% endif %}
+
+                <h1 class="product-page__title">{{ product.name }}</h1>
+
+                {% if product.subtitle %}
+                    <p class="product-page__subtitle">{{ product.subtitle }}</p>
+                {% endif %}
+
+                {% if product.rating %}
+                    <salla-rating-stars class="product-page__rating" value="{{ product.rating.stars }}" reviews="{{ product.rating.count }}"></salla-rating-stars>
+                {% endif %}
+
+                <div class="product-page__price">
+                    {% if on_sale %}
+                        <span class="product-page__price-current product-page__price-current--sale">{{ product.sale_price|money }}</span>
+                        <span class="product-page__price-regular">{{ product.regular_price|money }}</span>
+                    {% else %}
+                        <span class="product-page__price-current">{{ product.price|money }}</span>
+                    {% endif %}
+                </div>
+
+                {% if product.is_taxable %}
+                    <p class="product-page__tax-note">{{ trans('pages.products.tax_included') }}</p>
+                {% endif %}
+
+                {% hook 'product:single.form.start' %}
+
+                <form class="product-form" onsubmit="return salla.form.onSubmit('cart.addItem', event)">
+                    <input type="hidden" name="id" value="{{ product.id }}">
+
+                    {% include 'partials.product.options' with { product: product } %}
+
+                    {% if not product.is_hidden_quantity %}
+                        <div class="product-form__row">
+                            <span class="product-form__label">{{ trans('pages.products.quantity') }}</span>
+                            <salla-quantity-input max="{{ product.max_quantity }}" value="1" name="quantity"></salla-quantity-input>
+                        </div>
+                    {% else %}
+                        <input type="hidden" name="quantity" value="1">
+                    {% endif %}
+
+                    <salla-add-product-button
+                        class="product-form__submit"
+                        width="wide"
+                        product-id="{{ product.id }}"
+                        product-type="{{ product.type }}"
+                        product-status="{{ product.status }}"
+                        type="submit"
+                    >
+                        {{ product.add_to_cart_label }}
+                    </salla-add-product-button>
+                    {% if theme.settings.get('sticky_atc_enabled', true) %}
+                        <span data-sticky-atc-sentinel aria-hidden="true"></span>
+                    {% endif %}
+                </form>
+
+                {% hook 'product:single.form.end' %}
+
+                {% if product.has_size_guide %}
+                    <button type="button" class="product-page__size-guide" onclick="salla.event.dispatch('size-guide::open', '{{ product.id }}')">
+                        {{ trans('pages.products.show_size_guides') }}
+                    </button>
+                    <salla-product-size-guide></salla-product-size-guide>
+                {% endif %}
+
+                <salla-social-share class="product-page__share"></salla-social-share>
+            </div>
+        </div>
+
+        {% if product.description %}
+            <section class="product-page__section">
+                <h2 class="product-page__section-title">{{ trans('pages.products.description') }}</h2>
+                <div class="product-page__description">{{ product.description|raw }}</div>
+            </section>
+        {% endif %}
+
+        <section class="product-page__section">
+            <salla-reviews-summary product-id="{{ product.id }}"></salla-reviews-summary>
+            <salla-reviews product-id="{{ product.id }}"></salla-reviews>
+        </section>
+
+        {% if theme.settings.get('smart_recommendations_enabled', true) %}
+            {#
+                Smart Recommendations (Theme Settings → "تفعيل التوصيات الذكية")
+                On a product page the "current product" signal is already
+                known server-side, so this reuses Salla's own related-products
+                system (`source="related"`) directly — no client JS needed
+                here. Elsewhere in the store (cart, home) the same feature is
+                driven by `js/modules/smart-recommendations.js` instead, using
+                the last product from `partials.utility.recently-viewed`'s
+                history since there's no "current product" to key off.
+            #}
+            <section class="product-page__section">
+                <h2 class="product-page__section-title">{{ trans('pages.products.related_products') }}</h2>
+                <salla-products-list source="related" source-value="{{ product.id }}" limit="8"></salla-products-list>
+            </section>
+        {% endif %}
+    </div>
+
+    {% if theme.settings.get('recently_viewed_enabled', true) %}
+        {% include 'partials.utility.recently-viewed' with { exclude_id: product.id } %}
+
+        {#
+            Records this page view into the visitor's local "recently viewed"
+            history (see `js/modules/recently-viewed.js`). Kept as inert JSON
+            (never executed) so it stays CSP-friendly and trivial to parse.
+        #}
+        <script type="application/json" data-recently-viewed-record>
+            {{ {
+                'id': product.id,
+                'name': product.name,
+                'url': product.url,
+                'image': product.image.url,
+                'price': (on_sale ? product.sale_price : product.price)|money,
+                'type': product.type,
+                'status': product.status
+            }|json_encode|raw }}
+        </script>
+    {% endif %}
+
+    {#
+        Sticky add-to-cart bar
+        ======================
+        Theme Settings → "تفعيل شريط الشراء الثابت في صفحة المنتج"
+        (`sticky_atc_enabled`). Progressive enhancement
+        (`js/modules/sticky-add-to-cart.js`): hidden until JS confirms
+        support, then revealed once the in-page add-to-cart button (tracked
+        via the sentinel above) scrolls out of view. A fully independent
+        `salla-add-product-button` instance for the same product — not a
+        re-parented/cloned node — so it keeps working with zero extra wiring
+        and never gets out of sync with the real form.
+    #}
+    {% if theme.settings.get('sticky_atc_enabled', true) %}
+        <div class="sticky-add-to-cart" data-sticky-atc hidden>
+            <div class="container sticky-add-to-cart__inner">
+                {% if product.images is not empty %}
+                    <img class="sticky-add-to-cart__thumb" src="{{ product.images[0].url }}" alt="" width="48" height="48" loading="lazy">
+                {% endif %}
+
+                <div class="sticky-add-to-cart__info">
+                    <span class="sticky-add-to-cart__name">{{ product.name }}</span>
+                    <span class="sticky-add-to-cart__price">
+                        {% if on_sale %}
+                            {{ product.sale_price|money }}
+                        {% else %}
+                            {{ product.price|money }}
+                        {% endif %}
+                    </span>
+                </div>
+
+                <salla-add-product-button
+                    class="sticky-add-to-cart__submit"
+                    product-id="{{ product.id }}"
+                    product-type="{{ product.type }}"
+                    product-status="{{ product.status }}"
+                ></salla-add-product-button>
+            </div>
+        </div>
+    {% endif %}
+{% endblock %}
+
+{% block scripts %}
+    {% if product.has_3d_image %}
+        {# Same CDN build Salla's own official Raed theme uses for `product.has_3d_image` — loaded only for the (rare) products that actually have a 3D model, so it never costs regular product pages anything. #}
+        <script type="module" defer src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
+    {% endif %}
+{% endblock %}

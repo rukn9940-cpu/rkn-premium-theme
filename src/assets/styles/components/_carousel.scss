@@ -1,0 +1,182 @@
+// -----------------------------------------------------------------------------
+// Carousel
+// Generic scroll-snap carousel chrome driven by `js/modules/carousel.js`.
+// The track is a native scrollable element (real momentum scrolling, no
+// slide-cloning/JS-computed transforms) — prev/next buttons and dots are
+// progressive enhancements layered on top with IntersectionObserver.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.carousel {
+  position: relative;
+}
+
+.carousel__viewport {
+  overflow: hidden;
+}
+
+.carousel__track {
+  display: flex;
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  scroll-behavior: smooth;
+  overscroll-behavior-x: contain;
+  -webkit-overflow-scrolling: touch;
+  scrollbar-width: none;
+
+  &::-webkit-scrollbar {
+    display: none;
+  }
+
+  @include reduced-motion {
+    scroll-behavior: auto;
+  }
+}
+
+.carousel__slide {
+  flex-shrink: 0;
+  scroll-snap-align: start;
+}
+
+.carousel__control {
+  // Floats over media (hero images, product/brand photos) in both light and
+  // dark mode, so it intentionally uses fixed literal colors rather than the
+  // adaptive `$surface-*`/`$text-*` tokens — a light pill with a dark icon
+  // reads well over any image.
+  position: absolute;
+  top: 50%;
+  z-index: z('dropdown');
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border: 1px solid $ink-100;
+  border-radius: $radius-pill;
+  background-color: #fff;
+  color: $ink-900;
+  box-shadow: $shadow-md;
+  transform: translateY(-50%);
+  transition:
+    opacity $duration-base $easing-standard,
+    visibility $duration-base $easing-standard,
+    background-color $duration-base $easing-standard,
+    transform $duration-fast $easing-emphasized;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  svg {
+    width: 1.125rem;
+    height: 1.125rem;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: $ink-100;
+      transform: translateY(-50%) scale(1.08);
+    }
+  }
+
+  &:active {
+    transform: translateY(-50%) scale(0.94);
+  }
+
+  &[disabled] {
+    opacity: 0;
+    visibility: hidden;
+    pointer-events: none;
+  }
+
+  @include reduced-motion {
+    transition:
+      opacity $duration-base $easing-standard,
+      visibility $duration-base $easing-standard,
+      background-color $duration-base $easing-standard;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: translateY(-50%);
+      }
+    }
+
+    &:active {
+      transform: translateY(-50%);
+    }
+  }
+}
+
+.carousel__control--prev {
+  inset-inline-start: spacer(2);
+
+  @include rtl {
+    svg {
+      transform: scaleX(-1);
+    }
+  }
+}
+
+.carousel__control--next {
+  inset-inline-end: spacer(2);
+
+  @include rtl {
+    svg {
+      transform: scaleX(-1);
+    }
+  }
+}
+
+.carousel__dots {
+  display: flex;
+  justify-content: center;
+  gap: spacer(2);
+  margin-top: spacer(4);
+}
+
+.carousel__dot {
+  width: 0.5rem;
+  height: 0.5rem;
+  padding: 0;
+  border: 0;
+  border-radius: $radius-pill;
+  background-color: $ink-100;
+  transition:
+    background-color $duration-base $easing-standard,
+    width $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  &.is-active {
+    width: 1.5rem;
+    background-color: color();
+  }
+}
+
+// Dark-surface variant (hero banner sits on imagery, not a page surface).
+.carousel--on-dark {
+  .carousel__dot {
+    background-color: rgba(255, 255, 255, 0.4);
+    box-shadow: 0 0 0 1px rgba(0, 0, 0, 0.08);
+
+    &.is-active {
+      background-color: #fff;
+    }
+  }
+
+  .carousel__control {
+    background-color: rgba(255, 255, 255, 0.14);
+    border-color: rgba(255, 255, 255, 0.28);
+    color: #fff;
+
+    @supports (backdrop-filter: blur(1px)) {
+      backdrop-filter: blur(10px);
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: rgba(255, 255, 255, 0.26);
+      }
+    }
+  }
+}

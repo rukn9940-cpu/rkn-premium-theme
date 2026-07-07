@@ -1,0 +1,110 @@
+// -----------------------------------------------------------------------------
+// Landing page (promotional offer / campaign page)
+// Markup: views/pages/landing-page.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.landing-page__header {
+  // Fixed literal white text — this banner is always rendered on the
+  // merchant's brand-color gradient, never the adaptive content surface,
+  // so it must not flip with Dark Mode (same rationale as the hero banner).
+  background: linear-gradient(
+    135deg,
+    var(--color-primary, #{$ink-900}) 0%,
+    var(--color-primary-dark, #{$ink-950}) 100%
+  );
+  color: #fff;
+  padding-block: spacer(8);
+  text-align: center;
+}
+
+.landing-page__header-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.landing-page__logo img {
+  border-radius: $radius-lg;
+  background-color: #fff;
+  padding: spacer(1);
+}
+
+.landing-page__title {
+  color: #fff;
+  font-size: $font-size-3xl;
+  letter-spacing: $letter-spacing-tighter;
+
+  @include breakpoint-up(md) {
+    font-size: $font-size-4xl;
+  }
+}
+
+.landing-page__content {
+  color: rgba(255, 255, 255, 0.85);
+  line-height: $line-height-relaxed;
+}
+
+.landing-page__countdown {
+  margin-top: spacer(5);
+  padding: spacer(4) spacer(5);
+  border-radius: $radius-lg;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(10px);
+  }
+}
+
+.landing-page__countdown-label {
+  color: rgba(255, 255, 255, 0.85);
+  font-size: $font-size-sm;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+  margin-bottom: spacer(2);
+}
+
+.landing-page__products {
+  padding-block: spacer(8);
+}
+
+.landing-page__section {
+  padding-block: spacer(6);
+}
+
+.landing-page__section--muted {
+  background-color: $surface-100;
+}
+
+// Shared 404 / expired-offer state card (also used for the "campaign not
+// found" branch of this template).
+.landing-page--state {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  min-height: 60vh;
+  padding-block: spacer(8);
+}
+
+.landing-page__state-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  text-align: center;
+  max-width: 28rem;
+}
+
+.landing-page__state-title {
+  font-size: $font-size-2xl;
+  color: $text-heading;
+}
+
+.landing-page__state-text {
+  color: $text-muted;
+}

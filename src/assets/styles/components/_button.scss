@@ -1,0 +1,245 @@
+// -----------------------------------------------------------------------------
+// Button
+// Theme-authored call-to-action buttons (hero CTAs, "view all" links, offer
+// CTAs, carousel controls). Salla's own web components (`salla-button`,
+// `salla-add-product-button`, ...) ship with their own styling and are left
+// untouched here.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacer(2);
+  padding-block: 0.75rem;
+  padding-inline: 1.75rem;
+  overflow: hidden;
+  border: 1px solid transparent;
+
+  // Default (Theme Settings → "تصميم الأزرار" left on "دائرية بالكامل") —
+  // see the `[data-btn-style]` overrides below for "rounded"/"sharp".
+  border-radius: $radius-pill;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  line-height: 1;
+  white-space: nowrap;
+  letter-spacing: -0.005em;
+  cursor: pointer;
+  user-select: none;
+  transition:
+    background-color $duration-base $easing-standard,
+    border-color $duration-base $easing-standard,
+    color $duration-base $easing-standard,
+    transform $duration-fast $easing-emphasized,
+    box-shadow $duration-base $easing-standard;
+
+  @include min-tap-target;
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+
+  &:active {
+    transform: translateY(0) scale(0.98);
+  }
+
+  &:disabled,
+  &[aria-disabled='true'] {
+    cursor: not-allowed;
+    opacity: 0.55;
+    box-shadow: none;
+    transform: none !important;
+  }
+
+  @include reduced-motion {
+    transition-property: background-color, border-color, color, box-shadow;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.btn--primary {
+  background-color: color();
+  border-color: color();
+  color: color(text);
+  box-shadow: $shadow-sm;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: color(dark);
+      border-color: color(dark);
+      box-shadow: shadow-glow(30%);
+    }
+  }
+}
+
+.btn--secondary {
+  background-color: $ink-900;
+  border-color: $ink-900;
+  color: #fff;
+  box-shadow: $shadow-sm;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: $ink-700;
+      border-color: $ink-700;
+    }
+  }
+}
+
+.btn--outline {
+  background-color: transparent;
+  border-color: currentcolor;
+  color: inherit;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: currentcolor;
+
+      // The text swaps to the surface it sits on; components using this
+      // modifier on a dark background set `--btn-outline-hover-text` locally.
+      // Fixed literal white (not the adaptive `$surface-0` token) — this
+      // variant is only ever used on the theme's permanently-dark chrome.
+      color: var(--btn-outline-hover-text, #fff);
+    }
+  }
+}
+
+.btn--ghost {
+  background-color: rgba(255, 255, 255, 0.08);
+  border-color: rgba(255, 255, 255, 0.24);
+  color: #fff;
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(6px);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.16);
+      border-color: rgba(255, 255, 255, 0.4);
+    }
+  }
+}
+
+.btn--text {
+  padding-inline: spacer(1);
+  background-color: transparent;
+  border-color: transparent;
+  color: color();
+
+  @media (hover: hover) {
+    &:hover {
+      text-decoration: underline;
+      text-underline-offset: 3px;
+    }
+  }
+}
+
+.btn--sm {
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  font-size: $font-size-xs;
+}
+
+.btn--lg {
+  padding-block: 0.9375rem;
+  padding-inline: 2.25rem;
+  font-size: $font-size-md;
+}
+
+.btn--icon {
+  padding-inline: 0.75rem;
+  aspect-ratio: 1;
+}
+
+.btn--block {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// Button style (Theme Settings → "تصميم الأزرار")
+// Set as a `data-btn-style` attribute on `<html>` (see `layouts/master.twig`)
+// so it applies to every button storewide, including ones rendered by Salla
+// web components that share this class (e.g. `salla-add-product-button`'s
+// slotted markup).
+// -----------------------------------------------------------------------------
+[data-btn-style='rounded'] .btn {
+  border-radius: $radius-lg;
+}
+
+[data-btn-style='sharp'] .btn {
+  border-radius: $radius-sm;
+}
+
+// Press feedback — a short-lived `<span class="ripple__wave">` created by
+// `js/modules/ripple.js` on `pointerdown`, removed automatically once its
+// animation ends. `.btn` is already `position: relative` + `overflow: hidden`
+// above so the wave is always clipped to the button's own (possibly
+// pill-shaped) bounds. Purely decorative — `ripple.js` never runs at all
+// under `prefers-reduced-motion`.
+.ripple__wave {
+  position: absolute;
+  background-color: currentcolor;
+  border-radius: 50%;
+  opacity: 0.25;
+  transform: scale(0);
+  pointer-events: none;
+  animation: ripple-wave 550ms $easing-decelerate;
+}
+
+// Inline loading state — pair with `aria-busy="true"` at the call site.
+// Hides the label visually (kept for assistive tech) and shows a spinner.
+.btn.is-loading {
+  color: transparent !important;
+  pointer-events: none;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    color: currentcolor;
+    content: '';
+    border: 2px solid currentcolor;
+    border-radius: 50%;
+    opacity: 0.35;
+  }
+
+  &::before {
+    position: absolute;
+    top: 50%;
+    inset-inline-start: 50%;
+    z-index: 1;
+    width: 1.1em;
+    height: 1.1em;
+    margin-top: -0.55em;
+    margin-inline-start: -0.55em;
+    content: '';
+    border: 2px solid rgba(255, 255, 255, 0.35);
+    border-inline-start-color: #fff;
+    border-radius: 50%;
+    animation: spin 0.7s linear infinite;
+  }
+
+  @include reduced-motion {
+    &::before {
+      animation-duration: 1.4s;
+    }
+  }
+}

@@ -1,0 +1,55 @@
+{#
+    Home Page
+    =========
+    Renders every enabled Theme Feature and Theme Component declared in
+    `twilight.json` (`features` + `components`), in the order configured by
+    the merchant from the Salla Partners Portal theme editor.
+
+    Section markup/styling lives with each component itself:
+      src/views/components/home/{hero-banner,categories,featured-products,
+                                  offers,brands,testimonials,store-features}.twig
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ store.name }}{% if store.tagline %} | {{ store.tagline }}{% endif %}{% endblock %}
+{% block meta_description %}{{ store.description|striptags|default(store.name) }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ store.url }}">
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ store.name }}">
+    <meta property="og:description" content="{{ store.description|striptags|default(store.name) }}">
+    <meta property="og:url" content="{{ store.url }}">
+    {% if store.logo %}<meta property="og:image" content="{{ store.logo }}">{% endif %}
+    <meta name="twitter:card" content="summary_large_image">
+
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "Organization",
+        "name": {{ store.name|json_encode|raw }},
+        "url": {{ store.url|json_encode|raw }}
+        {%- if store.logo %}, "logo": {{ store.logo|json_encode|raw }}{% endif -%}
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    {# Exactly one <h1> per page — the visual heading lives inside each
+       merchant-configured section (hero, category, ...), so this stays
+       screen-reader-only to keep the document outline correct for SEO/AT. #}
+    <h1 class="sr-only">{{ store.name }}{% if store.tagline %} — {{ store.tagline }}{% endif %}</h1>
+
+    {% component home %}
+
+    {% if theme.settings.get('recently_viewed_enabled', true) %}
+        {% include 'partials.utility.recently-viewed' %}
+    {% endif %}
+    {% if theme.settings.get('smart_recommendations_enabled', true) %}
+        {% include 'partials.utility.smart-recommendations' %}
+    {% endif %}
+{% endblock %}

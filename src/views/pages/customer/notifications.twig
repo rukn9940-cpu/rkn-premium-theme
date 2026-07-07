@@ -1,0 +1,42 @@
+{#
+    Notifications Page
+    ===================
+    | notifications[]            | array  | title, sub_title, date  |
+    | notifications.next_page   | string | fed to salla-infinite-scroll |
+
+    Reference: docs.salla.dev — Notifications Page.
+#}
+{% extends "layouts.customer" %}
+
+{% block title %}{{ trans('pages.account.notifications') }} | {{ store.name }}{% endblock %}
+
+{% block account_content %}
+    <div class="account-card">
+        <h1 class="account-card__title">{{ trans('pages.account.notifications') }}</h1>
+
+        {% hook 'customer:notifications.items.start' %}
+
+        <salla-infinite-scroll next-page="{{ notifications.next_page }}" item=".notification-row">
+            <div class="notifications-list">
+                {% for notification in notifications %}
+                    <div class="notification-row">
+                        <span class="notification-row__icon" aria-hidden="true">
+                            <i class="sicon-bell"></i>
+                        </span>
+                        <div class="notification-row__body">
+                            <h3 class="notification-row__title">{{ notification.title }}</h3>
+                            <p class="notification-row__subtitle">{{ notification.sub_title }}</p>
+                        </div>
+                        <span class="notification-row__date">{{ notification.date }}</span>
+                    </div>
+                {% else %}
+                    <div class="notifications-empty">
+                        <p>{{ trans('blocks.header.no_notifications') }}</p>
+                    </div>
+                {% endfor %}
+            </div>
+        </salla-infinite-scroll>
+
+        {% hook 'customer:notifications.items.end' %}
+    </div>
+{% endblock %}

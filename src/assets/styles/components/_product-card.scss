@@ -1,0 +1,505 @@
+// -----------------------------------------------------------------------------
+// Product card
+// Markup: views/partials/product/card.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.product-card {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  @include card-hover(-6px);
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: $shadow-lg;
+      border-color: transparent;
+    }
+  }
+}
+
+.product-card__media {
+  position: relative;
+  background-color: $surface-100;
+}
+
+.product-card__media-link {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+}
+
+.product-card__image {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+  transition:
+    transform $duration-slow $easing-emphasized,
+    opacity $duration-base $easing-standard;
+}
+
+// Crossfades in over the primary photo on hover when the merchant uploaded a
+// second real product image (see `partials/product/card.twig`) — desktop
+// pointer devices only, so touch just gets the primary photo + zoom.
+.product-card__image--alt {
+  position: absolute;
+  inset: 0;
+  opacity: 0;
+}
+
+@media (hover: hover) {
+  .product-card:hover .product-card__image {
+    transform: scale(1.06);
+  }
+
+  .product-card:hover .product-card__image:not(.product-card__image--alt) {
+    opacity: 0;
+  }
+
+  .product-card:hover .product-card__image--alt {
+    opacity: 1;
+  }
+}
+
+@include reduced-motion {
+  .product-card:hover .product-card__image {
+    transform: none;
+  }
+}
+
+.product-card__badge {
+  position: absolute;
+  top: spacer(3);
+  inset-inline-start: spacer(3);
+  padding-inline: spacer(2);
+  padding-block: 0.25rem;
+  border-radius: $radius-pill;
+  background-color: $ink-900;
+  color: #fff;
+  font-size: 0.6875rem;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.01em;
+  box-shadow: $shadow-sm;
+}
+
+.product-card__badge--sale {
+  background-color: $color-danger;
+}
+
+.product-card__wishlist {
+  position: absolute;
+  top: spacer(3);
+  inset-inline-end: spacer(3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: $radius-pill;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: $ink-700;
+  box-shadow: $shadow-sm;
+  transition:
+    color $duration-base $easing-standard,
+    background-color $duration-base $easing-standard,
+    transform $duration-fast $easing-emphasized;
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(6px);
+  }
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  svg {
+    width: 1.05rem;
+    height: 1.05rem;
+    transition: fill $duration-base $easing-standard;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: #fff;
+      transform: scale(1.1);
+    }
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  &.is-active {
+    color: $color-danger;
+
+    svg {
+      fill: currentcolor;
+    }
+  }
+
+  @include reduced-motion {
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+      }
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.product-card__compare {
+  position: absolute;
+  bottom: spacer(3);
+  inset-inline-start: spacer(3);
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(1);
+  padding: 0.3rem spacer(3) 0.3rem spacer(2);
+  border-radius: $radius-pill;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: $ink-700;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  box-shadow: $shadow-sm;
+  opacity: 0;
+  transform: translateY(4px);
+  transition:
+    opacity $duration-base $easing-standard,
+    transform $duration-base $easing-emphasized,
+    color $duration-base $easing-standard,
+    background-color $duration-base $easing-standard;
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(6px);
+  }
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  svg {
+    flex-shrink: 0;
+    width: 0.9rem;
+    height: 0.9rem;
+  }
+
+  @media (hover: hover) {
+    .product-card:hover &,
+    &:focus-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    &:hover {
+      color: color();
+    }
+  }
+
+  @media (hover: none) {
+    opacity: 1;
+    transform: none;
+  }
+
+  &.is-active {
+    color: #fff;
+    background-color: color();
+  }
+
+  @include reduced-motion {
+    transition: opacity $duration-base $easing-standard, color $duration-base $easing-standard, background-color $duration-base $easing-standard;
+  }
+}
+
+.product-card__quick-view {
+  position: absolute;
+  top: calc(#{spacer(3)} + 2.25rem + #{spacer(2)});
+  inset-inline-end: spacer(3);
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: $radius-pill;
+  background-color: rgba(255, 255, 255, 0.92);
+  color: $ink-700;
+  box-shadow: $shadow-sm;
+  opacity: 0;
+  transform: translateY(-4px);
+  transition:
+    opacity $duration-base $easing-standard,
+    transform $duration-base $easing-emphasized,
+    color $duration-base $easing-standard,
+    background-color $duration-base $easing-standard;
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(6px);
+  }
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  svg {
+    width: 1rem;
+    height: 1rem;
+  }
+
+  @media (hover: hover) {
+    .product-card:hover &,
+    &:focus-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    &:hover {
+      background-color: #fff;
+      color: color();
+    }
+  }
+
+  @media (hover: none) {
+    opacity: 1;
+    transform: none;
+  }
+
+  &:active {
+    transform: scale(0.92);
+  }
+
+  @include reduced-motion {
+    transition: opacity $duration-base $easing-standard, color $duration-base $easing-standard, background-color $duration-base $easing-standard;
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.product-card__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(2);
+  padding: spacer(4);
+  flex: 1;
+}
+
+.product-card__rating {
+  order: -1;
+}
+
+.product-card__name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  line-height: $line-height-snug;
+
+  a {
+    transition: color $duration-fast $easing-standard;
+
+    @include line-clamp(2);
+    @include focus-ring;
+  }
+}
+
+.product-card:hover .product-card__name a {
+  color: color();
+}
+
+.product-card__price {
+  display: flex;
+  align-items: baseline;
+  gap: spacer(2);
+  margin-top: auto;
+}
+
+.product-card__price-current {
+  font-size: $font-size-md;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-card__price-current--sale {
+  color: $color-danger;
+}
+
+.product-card__price-regular {
+  font-size: $font-size-xs;
+  color: $text-muted;
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.product-card__add {
+  width: 100%;
+}
+
+// -----------------------------------------------------------------------------
+// Skeleton (loading) state — `partials.product.card-skeleton` renders this
+// markup while product data streams in (e.g. `salla-infinite-scroll`,
+// wishlist/brand `salla-products-list` before hydration).
+// -----------------------------------------------------------------------------
+.product-card-skeleton {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  overflow: hidden;
+}
+
+.product-card-skeleton__media {
+  aspect-ratio: 1;
+
+  @include skeleton;
+}
+
+.product-card-skeleton__body {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(3);
+  padding: spacer(4);
+  flex: 1;
+}
+
+.product-card-skeleton__line {
+  height: 0.875rem;
+  border-radius: $radius-sm;
+
+  @include skeleton;
+
+  &--sm {
+    width: 40%;
+  }
+
+  &--lg {
+    width: 85%;
+  }
+
+  &--price {
+    margin-top: auto;
+    width: 55%;
+    height: 1.125rem;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Product card layout (Theme Settings → "تصميم بطاقة المنتج")
+// Same markup/data/functionality across every option — `data-product-card-style`
+// on `<html>` (see `layouts/master.twig`) only restyles presentation, so
+// switching is instant and risk-free from the Partners Portal.
+// -----------------------------------------------------------------------------
+
+// Minimal — no border/shadow chrome, card reads as pure content on the page
+// background; hover cues move to the text itself.
+[data-product-card-style='minimal'] {
+  .product-card {
+    border-color: transparent;
+    box-shadow: none;
+    background-color: transparent;
+
+    @media (hover: hover) {
+      &:hover {
+        box-shadow: none;
+        border-color: transparent;
+      }
+    }
+  }
+
+  .product-card__media {
+    border-radius: $radius-lg;
+    overflow: hidden;
+  }
+
+  .product-card__body {
+    padding-inline: 0;
+  }
+}
+
+// Overlay — name/price/badges sit directly on the product photo with a
+// gradient scrim, Noon/Zalando-style promo tile.
+[data-product-card-style='overlay'] {
+  .product-card {
+    position: relative;
+    aspect-ratio: 3 / 4;
+    border: none;
+  }
+
+  .product-card__media {
+    position: absolute;
+    inset: 0;
+  }
+
+  .product-card__media-link {
+    aspect-ratio: auto;
+    height: 100%;
+  }
+
+  .product-card__body {
+    position: relative;
+    z-index: 1;
+    margin-top: auto;
+    background: linear-gradient(to top, rgba(5, 7, 10, 0.82) 0%, rgba(5, 7, 10, 0.35) 65%, transparent 100%);
+  }
+
+  .product-card__name,
+  .product-card__name a,
+  .product-card__price-current {
+    color: #fff;
+  }
+
+  .product-card__price-regular {
+    color: rgba(255, 255, 255, 0.65);
+  }
+
+  .product-card__rating {
+    --s-color: #fff;
+  }
+}
+
+// Bordered — crisper, heavier frame; hover cue is the brand-colored border
+// instead of the default shadow lift.
+[data-product-card-style='bordered'] {
+  .product-card {
+    border-width: 2px;
+    border-radius: $radius-md;
+    box-shadow: none;
+
+    @media (hover: hover) {
+      &:hover {
+        border-color: color();
+        box-shadow: none;
+      }
+    }
+  }
+}
+
+// Compact — denser grids for stores with large catalogs / many columns.
+[data-product-card-style='compact'] {
+  .product-card__body {
+    padding: spacer(3);
+    gap: spacer(1);
+  }
+
+  .product-card__name {
+    font-size: $font-size-xs;
+  }
+
+  .product-card__wishlist,
+  .product-card__quick-view {
+    width: 1.875rem;
+    height: 1.875rem;
+
+    svg {
+      width: 0.875rem;
+      height: 0.875rem;
+    }
+  }
+}

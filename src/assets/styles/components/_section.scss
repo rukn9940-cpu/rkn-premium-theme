@@ -1,0 +1,110 @@
+// -----------------------------------------------------------------------------
+// Section
+// Shared header pattern (eyebrow/title/subtitle + optional "view all" link)
+// and outer spacing rhythm reused by every homepage block.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.section {
+  padding-block: spacer(7);
+
+  @include breakpoint-up(lg) {
+    padding-block: spacer(8);
+  }
+}
+
+.section--alt {
+  background-color: $surface-100;
+}
+
+.section__head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: spacer(3);
+  margin-bottom: spacer(5);
+
+  @include breakpoint-up(lg) {
+    margin-bottom: spacer(6);
+  }
+}
+
+.section__heading {
+  max-width: 40rem;
+}
+
+.section__eyebrow {
+  display: block;
+  margin-bottom: spacer(2);
+  color: color();
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+.section__title {
+  margin-bottom: spacer(2);
+}
+
+.section__subtitle {
+  font-size: $font-size-md;
+  color: $text-muted;
+}
+
+.section__link {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(1);
+  padding-block: spacer(2);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: color();
+  border-bottom: 1px solid transparent;
+  transition:
+    border-color $duration-fast $easing-standard,
+    gap $duration-fast $easing-standard;
+
+  @include focus-ring;
+
+  svg {
+    width: 1em;
+    height: 1em;
+    transition: transform $duration-fast $easing-standard;
+
+    @include rtl {
+      transform: scaleX(-1);
+    }
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: currentcolor;
+
+      svg {
+        transform: translateX(3px);
+
+        @include rtl {
+          transform: scaleX(-1) translateX(3px);
+        }
+      }
+    }
+  }
+
+  @include reduced-motion {
+    svg {
+      transition: none;
+    }
+
+    &:hover svg {
+      transform: none;
+
+      @include rtl {
+        transform: scaleX(-1);
+      }
+    }
+  }
+}

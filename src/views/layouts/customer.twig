@@ -1,0 +1,69 @@
+{#
+    Customer Dashboard Layout
+    =========================
+    Extends the master shell and wraps every `views/pages/customer/**` page
+    with a consistent account sidebar (profile summary + section nav).
+    Child templates only need to fill the `account_content` block:
+
+        {% extends "layouts.customer" %}
+        {% block account_content %}
+            ... page-specific markup ...
+        {% endblock %}
+
+    `user` (the logged-in customer) is available globally, same as `store`.
+#}
+{% extends "layouts.master" %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    {# Account pages are private to the logged-in customer and carry no
+       standalone SEO value — keep them out of search results. #}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+    <div class="container account-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <div class="account-page__grid">
+            <aside class="account-sidebar">
+                <div class="account-sidebar__user">
+                    <span class="account-sidebar__avatar" aria-hidden="true">
+                        {{ user.first_name|default('')|slice(0, 1) }}{{ user.last_name|default('')|slice(0, 1) }}
+                    </span>
+                    <div class="account-sidebar__user-info">
+                        <strong class="account-sidebar__name">{{ user.first_name }} {{ user.last_name }}</strong>
+                        <span class="account-sidebar__email">{{ user.email|default(user.mobile) }}</span>
+                    </div>
+                </div>
+
+                <nav class="account-sidebar__nav" aria-label="{{ trans('pages.account.nav_label') }}">
+                    <a href="{{ page('profile') }}" class="account-sidebar__link{{ is_page('profile') ? ' is-active' : '' }}">
+                        <i class="sicon-user" aria-hidden="true"></i>
+                        {{ trans('pages.account.profile') }}
+                    </a>
+                    <a href="{{ page('customer.orders.index') }}" class="account-sidebar__link{{ is_page('customer.orders.index') or is_page('customer.orders.single') ? ' is-active' : '' }}">
+                        <i class="sicon-shopping-bag" aria-hidden="true"></i>
+                        {{ trans('pages.account.orders') }}
+                    </a>
+                    <a href="{{ page('wishlist') }}" class="account-sidebar__link{{ is_page('wishlist') ? ' is-active' : '' }}">
+                        <i class="sicon-heart" aria-hidden="true"></i>
+                        {{ trans('pages.account.wishlist') }}
+                    </a>
+                    <a href="{{ page('notifications') }}" class="account-sidebar__link{{ is_page('notifications') ? ' is-active' : '' }}">
+                        <i class="sicon-bell" aria-hidden="true"></i>
+                        {{ trans('pages.account.notifications') }}
+                    </a>
+                    <button type="button" class="account-sidebar__link account-sidebar__logout" onclick="salla.auth.logout()">
+                        <i class="sicon-logout" aria-hidden="true"></i>
+                        {{ trans('pages.account.logout') }}
+                    </button>
+                </nav>
+            </aside>
+
+            <div class="account-page__content">
+                {% block account_content %}{% endblock %}
+            </div>
+        </div>
+    </div>
+{% endblock %}

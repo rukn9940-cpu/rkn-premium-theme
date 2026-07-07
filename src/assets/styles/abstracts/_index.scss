@@ -1,0 +1,9 @@
+// -----------------------------------------------------------------------------
+// Abstracts barrel — forwards tokens, functions, and mixins as a single
+// module. Consumers do: @use '../abstracts' as *;
+// -----------------------------------------------------------------------------
+
+@forward 'breakpoints';
+@forward 'variables';
+@forward 'functions';
+@forward 'mixins';

@@ -1,0 +1,26 @@
+// -----------------------------------------------------------------------------
+// Direction (RTL / LTR)
+// Salla stores render `<html dir="rtl">` for Arabic and `dir="ltr"` for other
+// locales (see `theme.is_rtl` in views/layouts/master.twig). This project's
+// default strategy is CSS logical properties (`margin-inline-start`,
+// `inset-inline-end`, etc.) so the *same* declarations work in both
+// directions without shipping two stylesheets or duplicating rules.
+// This file only carries the handful of concerns logical properties cannot
+// express (background-position keywords, directional iconography, letter
+// spacing tuning for Arabic). Reach for the `rtl`/`ltr` mixins in
+// `abstracts/_mixins.scss` only when a genuine exception is needed.
+// -----------------------------------------------------------------------------
+
+html {
+  direction: inherit;
+}
+
+// Icons that encode a left/right meaning (e.g. a "back" chevron) must be
+// mirrored in RTL. Apply this utility class to such icons explicitly —
+// never mirror icons implicitly, since arbitrary iconography (e.g. a play
+// button, a logo) must stay fixed regardless of direction.
+.is-direction-aware {
+  [dir='rtl'] & {
+    transform: scaleX(-1);
+  }
+}

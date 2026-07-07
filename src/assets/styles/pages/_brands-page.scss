@@ -1,0 +1,136 @@
+// -----------------------------------------------------------------------------
+// Brands pages
+// Markup: views/pages/brands/index.twig, views/pages/brands/single.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.brands-page {
+  padding-block: spacer(5) spacer(8);
+}
+
+.brands-page__title {
+  margin-bottom: spacer(5);
+}
+
+.brands-page__index {
+  position: sticky;
+  top: spacer(1);
+  z-index: z('sticky');
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacer(1);
+  padding-block: spacer(3);
+  margin-bottom: spacer(5);
+  background-color: $surface-0;
+  border-block: 1px solid $border-subtle;
+}
+
+.brands-page__index a {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border-radius: $radius-sm;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: $text-muted;
+
+  @include focus-ring;
+
+  &:hover {
+    background-color: $surface-100;
+    color: color();
+  }
+}
+
+.brands-page__section {
+  padding-block: spacer(5);
+  scroll-margin-top: spacer(7);
+}
+
+.brands-page__letter {
+  margin-bottom: spacer(4);
+  color: color();
+}
+
+.brands-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(4, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(6, 1fr);
+  }
+}
+
+.brands-page__empty {
+  padding-block: spacer(8);
+  text-align: center;
+  color: $text-muted;
+}
+
+// Single brand -----------------------------------------------------------
+
+.brand-page__banner {
+  aspect-ratio: 16 / 9;
+  overflow: hidden;
+  background-color: $surface-100;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  @include breakpoint-up(md) {
+    aspect-ratio: 16 / 4.5;
+  }
+}
+
+.brand-page__head {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: spacer(4);
+  padding-block: spacer(6);
+}
+
+// Pulls just the logo up to overlap the banner's bottom edge — a common,
+// premium "brand storefront" layering pattern. Only the logo moves (it has
+// its own solid card background, so it stays legible over any photo); the
+// name/description stay in normal flow so they're never rendered directly
+// on top of an unpredictable merchant photo.
+.brand-page__banner + .container .brand-page__logo {
+  margin-top: -3rem;
+}
+
+.brand-page__logo {
+  flex: none;
+  width: 5.5rem;
+  height: 5.5rem;
+  object-fit: contain;
+  border-radius: $radius-xl;
+  border: 1px solid $border-subtle;
+  background-color: $surface-0;
+  box-shadow: $shadow-md;
+  padding: spacer(2);
+}
+
+.brand-page__title {
+  margin-bottom: spacer(1);
+}
+
+.brand-page__description {
+  color: $text-muted;
+  max-width: 48rem;
+}
+
+.brand-page__products {
+  padding-block-end: spacer(8);
+}

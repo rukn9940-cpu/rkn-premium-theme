@@ -1,0 +1,91 @@
+{#
+    Product Listing Page (category / search / tag / offers)
+    ==========================================================
+    | Variable                   | Type        | Description                     |
+    |-----------------------------|-------------|----------------------------------|
+    | category                   | ?Category   | null on search/tag listings      |
+    | category.sub_categories    | ?Category[] |                                   |
+    | sort_options[]             | SortList[]  | id, name, is_selected             |
+    | search_query               | ?string     |                                   |
+    | products                   | Products    | iterable + `.next_page` cursor    |
+
+    Reference: docs.salla.dev — Themes Product Listing Page.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ page.title|striptags|default(store.name) }}{% endblock %}
+{% block meta_description %}{{ category.description|default(page.title)|striptags|slice(0, 160)|default(store.description|striptags) }}{% endblock %}
+
+{% block canonical %}
+    {% if category %}
+        <link rel="canonical" href="{{ category.url }}">
+    {% endif %}
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    {% if search_query %}
+        {# Search result pages are intentionally excluded from indexing to
+           avoid duplicate/low-value content in search engines. #}
+        <meta name="robots" content="noindex, follow">
+    {% endif %}
+    {% if category %}
+        <meta property="og:type" content="website">
+        <meta property="og:title" content="{{ page.title|striptags }}">
+        <meta property="og:url" content="{{ category.url }}">
+        {% if category.image %}<meta property="og:image" content="{{ category.image }}">{% endif %}
+    {% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="container listing-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <div class="listing-page__head">
+            <h1 class="listing-page__title">{{ page.title|raw }}</h1>
+            {% if search_query %}
+                <p class="listing-page__subtitle">{{ trans('pages.categories.search_results_for', {'query': search_query}) }}</p>
+            {% endif %}
+        </div>
+
+        {% if category.sub_categories is not empty %}
+            <div class="listing-page__subcategories">
+                {% for sub in category.sub_categories %}
+                    <a href="{{ sub.url }}" class="listing-page__subcategory-chip">{{ sub.name }}</a>
+                {% endfor %}
+            </div>
+        {% endif %}
+
+        <div class="listing-page__toolbar">
+            <span class="listing-page__count">
+                {% if products|length %}{{ trans('pages.categories.results_count', {'count': products|length}) }}{% endif %}
+            </span>
+
+            {% if sort_options is not empty %}
+                <label class="listing-page__sort">
+                    <span class="listing-page__sort-label">{{ trans('pages.categories.sort_by') }}</span>
+                    <select name="sort" onchange="location.href = this.value">
+                        {% for option in sort_options %}
+                            <option value="?sort={{ option.id }}" {{ option.is_selected ? 'selected' : '' }}>{{ option.name }}</option>
+                        {% endfor %}
+                    </select>
+                </label>
+            {% endif %}
+        </div>
+
+        {% if products|length %}
+            <salla-infinite-scroll next-page="{{ products.next_page }}" next-page.autoload>
+                <div class="listing-page__grid">
+                    {% for product in products %}
+                        {% include 'partials.product.card' with { product: product } %}
+                    {% endfor %}
+                </div>
+            </salla-infinite-scroll>
+        {% else %}
+            <div class="listing-page__empty">
+                <p>{{ trans('pages.categories.no_products') }}</p>
+                <a href="{{ store.url }}" class="btn btn--primary">{{ trans('common.elements.back_home') }}</a>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

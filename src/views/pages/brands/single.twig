@@ -1,0 +1,60 @@
+{#
+    Single Brand Page (required path: src/views/pages/brands/single.twig)
+    ========================================================================
+    | Variable            | Type    | Description                                     |
+    |----------------------|---------|-------------------------------------------------|
+    | brand.name          | string  |                                                   |
+    | brand.logo          | string  |                                                   |
+    | brand.banner        | ?string | null when merchant doesn't want it shown         |
+    | brand.description   | string  |                                                   |
+    | page.id             | int     | used as source-value for salla-products-list     |
+
+    Reference: docs.salla.dev — Single Brand Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ brand.name }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ brand.description|striptags|slice(0, 160)|default(brand.name) }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ brand.url }}">
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ brand.name }}">
+    <meta property="og:description" content="{{ brand.description|striptags|slice(0, 160)|default(brand.name) }}">
+    <meta property="og:url" content="{{ brand.url }}">
+    {% if brand.logo %}<meta property="og:image" content="{{ brand.logo }}">{% endif %}
+{% endblock %}
+
+{% block content %}
+    <div class="brand-page">
+        {% if brand.banner %}
+            <div class="brand-page__banner">
+                <img src="{{ brand.banner }}" alt="{{ brand.name }}" loading="eager" fetchpriority="high" width="1920" height="420">
+            </div>
+        {% endif %}
+
+        <div class="container">
+            <salla-breadcrumb></salla-breadcrumb>
+
+            <div class="brand-page__head">
+                {% if brand.logo %}
+                    <img src="{{ brand.logo }}" alt="{{ brand.name }}" class="brand-page__logo" loading="eager" width="140" height="140">
+                {% endif %}
+                <div class="brand-page__head-text">
+                    <h1 class="brand-page__title">{{ brand.name }}</h1>
+                    {% if brand.description %}
+                        <p class="brand-page__description">{{ brand.description }}</p>
+                    {% endif %}
+                </div>
+            </div>
+
+            <section class="brand-page__products">
+                <salla-products-list source="brands" source-value="{{ page.id }}"></salla-products-list>
+            </section>
+        </div>
+    </div>
+{% endblock %}

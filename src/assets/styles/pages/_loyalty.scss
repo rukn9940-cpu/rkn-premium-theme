@@ -1,0 +1,287 @@
+// -----------------------------------------------------------------------------
+// Loyalty program page
+// Markup: views/pages/loyalty.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.loyalty-page {
+  position: relative;
+  padding-block-end: spacer(8);
+}
+
+.loyalty-page__cover {
+  height: 12rem;
+  background-color: $ink-900;
+  background-size: cover;
+  background-position: center;
+
+  &::after {
+    content: '';
+    display: block;
+    height: 100%;
+    background-color: rgba(0, 0, 0, 0.45);
+  }
+}
+
+.loyalty-page__cover + .container {
+  margin-top: -6rem;
+  position: relative;
+  z-index: 1;
+}
+
+.loyalty-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  padding-block: spacer(8);
+  text-align: center;
+  color: $text-muted;
+}
+
+.loyalty-page__banner {
+  position: relative;
+  display: flex;
+  flex-direction: column;
+  gap: spacer(5);
+  align-items: flex-start;
+  overflow: hidden;
+  padding: spacer(6);
+  margin-block-end: spacer(8);
+  background-color: $surface-0;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+
+  @include breakpoint-up(md) {
+    flex-direction: row;
+    align-items: center;
+    justify-content: space-between;
+    padding: spacer(8);
+  }
+}
+
+.loyalty-page__banner-icon {
+  position: absolute;
+  inset-inline-end: -1.5rem;
+  top: -1.5rem;
+  font-size: 9rem;
+  color: $surface-100;
+  z-index: 0;
+}
+
+.loyalty-page__banner-info {
+  position: relative;
+  z-index: 1;
+  max-width: 34rem;
+}
+
+.loyalty-page__title {
+  font-size: $font-size-2xl;
+  color: $text-heading;
+  margin-bottom: spacer(2);
+}
+
+.loyalty-page__description {
+  color: $text-muted;
+  margin-bottom: spacer(3);
+}
+
+.loyalty-page__balance {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-semibold;
+  color: var(--color-primary, #{$ink-900});
+}
+
+.loyalty-page__section {
+  margin-block-end: spacer(8);
+
+  .section__title {
+    margin-bottom: spacer(4);
+  }
+}
+
+.loyalty-ways {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+}
+
+.loyalty-way {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+  padding: spacer(5);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  transition:
+    box-shadow $duration-base $easing-standard,
+    border-color $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: transparent;
+      box-shadow: $shadow-md;
+    }
+  }
+}
+
+.loyalty-way__head {
+  display: flex;
+  gap: spacer(3);
+}
+
+.loyalty-way__icon {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-color: color-mix(in srgb, var(--way-color, #{$ink-500}) 12%, transparent);
+  color: var(--way-color, $ink-500);
+}
+
+.loyalty-way__points {
+  font-size: $font-size-lg;
+  margin-bottom: spacer(1);
+}
+
+.loyalty-way__description {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.loyalty-way__action {
+  margin-top: auto;
+}
+
+.loyalty-way__share {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacer(2);
+  padding-inline: spacer(3);
+  padding-block: spacer(2);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-pill;
+}
+
+.loyalty-way__share-url {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+  font-size: $font-size-sm;
+  color: var(--color-primary, $text-heading);
+}
+
+.loyalty-way__copy {
+  flex-shrink: 0;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.75rem;
+  height: 1.75rem;
+  border: none;
+  background: none;
+  color: $text-muted;
+  cursor: pointer;
+
+  @include focus-ring;
+
+  &.is-copied {
+    color: $color-success;
+  }
+}
+
+.loyalty-way__status {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(1);
+  font-size: $font-size-sm;
+}
+
+.loyalty-way__status--done {
+  color: $color-success;
+}
+
+.loyalty-prize {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  @include card-hover(-4px);
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: $shadow-md;
+      border-color: transparent;
+    }
+  }
+}
+
+.loyalty-prize__media {
+  display: block;
+  aspect-ratio: 280 / 180;
+  overflow: hidden;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-emphasized;
+  }
+}
+
+.loyalty-prize:hover .loyalty-prize__media img {
+  transform: scale(1.06);
+}
+
+@include reduced-motion {
+  .loyalty-prize:hover .loyalty-prize__media img {
+    transform: none;
+  }
+}
+
+.loyalty-prize__body {
+  flex: 1;
+  padding: spacer(4);
+}
+
+.loyalty-prize__name {
+  font-size: $font-size-md;
+  margin-bottom: spacer(1);
+
+  a {
+    color: inherit;
+  }
+}
+
+.loyalty-prize__description {
+  font-size: $font-size-sm;
+  color: $text-muted;
+
+  @include line-clamp(2);
+}
+
+.loyalty-prize__cost {
+  padding: spacer(3);
+  text-align: center;
+  font-weight: $font-weight-semibold;
+  color: var(--color-primary, $text-heading);
+  border-block-start: 1px solid $border-subtle;
+}

@@ -1,0 +1,8 @@
+# Core Web Vitals oriented browser support matrix.
+# Targets real-world modern usage while keeping legacy polyfill weight low.
+> 0.3%
+last 3 versions
+Firefox ESR
+not dead
+not IE 11
+not op_mini all

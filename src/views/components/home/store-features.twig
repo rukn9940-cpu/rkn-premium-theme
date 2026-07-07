@@ -1,0 +1,33 @@
+{#
+    Features Section (Theme Feature: component-store-features)
+    =============================================================
+    Pre-defined Twilight feature — Salla injects the merchant-configured
+    store highlights (shipping, payment, support, ...) as `items`.
+
+    | items[].icon  | string | Salla icon font class, e.g. "sicon-delivery-fast" |
+    | items[].title | string |                                                    |
+    | items[].text  | string |                                                    |
+
+    Reference: docs.salla.dev — Store features component.
+#}
+{% if items is not empty %}
+    <section class="section store-features">
+        <div class="container">
+            <div class="store-features__grid">
+                {% for item in items %}
+                    <div class="store-feature" data-reveal>
+                        <span class="store-feature__icon" aria-hidden="true">
+                            <i class="{{ item.icon }}"></i>
+                        </span>
+                        <div class="store-feature__body">
+                            <h3 class="store-feature__title">{{ item.title }}</h3>
+                            {% if item.text %}
+                                <p class="store-feature__text">{{ item.text }}</p>
+                            {% endif %}
+                        </div>
+                    </div>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,58 @@
+{#
+    Premium Footer
+    ==============
+    Store identity + social, footer navigation menu, real contact details,
+    app download badges, accepted payment methods, and copyright.
+
+    Reference: docs.salla.dev — Twilight JS Web Components
+    (salla-menu, salla-social, salla-contacts, salla-apps-icons, salla-payments).
+#}
+{% set footer_layout = theme.settings.get('footer_layout', 'classic') %}
+<footer class="footer" data-footer-layout="{{ footer_layout }}">
+    <div class="container footer__top">
+        <div class="footer__brand">
+            <a href="{{ store.url }}" class="header__logo" aria-label="{{ store.name }}">
+                {% if store.logo %}
+                    <img src="{{ store.logo }}" alt="{{ store.name }}" width="140" height="40">
+                {% else %}
+                    <span class="header__logo-text">{{ store.name }}</span>
+                {% endif %}
+            </a>
+
+            {% if store.description %}
+                <p class="footer__description">{{ store.description|striptags }}</p>
+            {% endif %}
+
+            <h3 class="footer__col-title footer__col-title--social">{{ trans('footer.follow_us') }}</h3>
+            <salla-social class="footer__social"></salla-social>
+        </div>
+
+        <div class="footer__col">
+            <h3 class="footer__col-title">{{ trans('footer.quick_links') }}</h3>
+            <salla-menu source="footer" class="footer__menu"></salla-menu>
+        </div>
+
+        <div class="footer__col">
+            <h3 class="footer__col-title">{{ trans('footer.contact_us') }}</h3>
+            <salla-contacts class="footer__contacts"></salla-contacts>
+        </div>
+
+        <div class="footer__col">
+            <h3 class="footer__col-title">{{ trans('footer.get_the_app') }}</h3>
+            <salla-apps-icons class="footer__apps"></salla-apps-icons>
+        </div>
+    </div>
+
+    <div class="container footer__bottom">
+        <p class="footer__copyright">
+            {{ trans('footer.rights', {'year': 'now'|date('Y'), 'store': store.name}) }}
+        </p>
+
+        <div class="footer__payments-block">
+            <span class="footer__payments-label">{{ trans('footer.payment_methods') }}</span>
+            <salla-payments class="footer__payments"></salla-payments>
+        </div>
+
+        {% hook 'footer:copyright' %}
+    </div>
+</footer>

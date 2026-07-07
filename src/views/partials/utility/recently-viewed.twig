@@ -1,0 +1,25 @@
+{#
+    Recently Viewed
+    ================
+    Theme Settings → "تفعيل قسم شاهدته مؤخراً" (`recently_viewed_enabled`).
+    Salla keeps no "recently viewed" history of its own, so this is tracked
+    entirely client-side (`js/modules/recently-viewed.js`, `localStorage`) —
+    hidden by default and only revealed once there's at least one other
+    product in the visitor's history, so it never shows an empty shelf.
+
+    Include with `exclude_id: product.id` on the single product page so a
+    product never lists itself; omit it elsewhere (cart, home).
+
+        {% include 'partials.utility.recently-viewed' with { exclude_id: product.id } %}
+#}
+<section class="section recently-viewed" data-recently-viewed data-exclude-id="{{ exclude_id|default('') }}" hidden>
+    <div class="container">
+        <div class="section__head">
+            <div class="section__heading">
+                <h2 class="section__title">{{ trans('product.recently_viewed_title') }}</h2>
+            </div>
+        </div>
+
+        <div class="recently-viewed__grid" data-recently-viewed-list></div>
+    </div>
+</section>

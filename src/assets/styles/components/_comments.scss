@@ -1,0 +1,85 @@
+// -----------------------------------------------------------------------------
+// Comments (shared component: views/components/comments.twig)
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.comments-form {
+  padding: spacer(5);
+  margin-bottom: spacer(6);
+  background-color: $surface-100;
+  border-radius: $radius-lg;
+}
+
+.comments-form__title {
+  margin-bottom: spacer(3);
+}
+
+.comments-form__textarea {
+  width: 100%;
+  padding: spacer(3);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-size: $font-size-sm;
+  resize: vertical;
+  background-color: $surface-0;
+
+  @include focus-ring;
+}
+
+.comments-form__submit {
+  margin-top: spacer(3);
+  text-align: end;
+}
+
+.comments-list__title {
+  margin-bottom: spacer(4);
+}
+
+.comment-row {
+  display: flex;
+  gap: spacer(3);
+  padding-block: spacer(4);
+  border-block-end: 1px solid $border-subtle;
+
+  &:last-child {
+    border-block-end: 0;
+  }
+}
+
+.comment-row__avatar {
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+  object-fit: cover;
+  background-color: $surface-100;
+}
+
+.comment-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.comment-row__meta {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  flex-wrap: wrap;
+  margin-bottom: spacer(1);
+}
+
+.comment-row__name {
+  font-size: $font-size-sm;
+}
+
+.comment-row__date {
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.comment-row__content {
+  color: $text-body;
+  line-height: 1.7;
+}

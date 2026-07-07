@@ -1,0 +1,43 @@
+{#
+    Promo Video (Theme Component: home.video)
+    =============================================
+    Click-to-load YouTube facade — keeps the initial page weight low (no
+    YouTube iframe/JS loads until the visitor opts in) for Core Web Vitals.
+    ID parsing + iframe swap handled by `js/modules/youtube-facade.js`.
+
+    | component.title        | string|null |                                |
+    | component.subtitle     | string|null |                                |
+    | component.youtube_url  | string      | full YouTube URL               |
+    | component.poster       | string|null | falls back to the YT thumbnail |
+#}
+{% if component.youtube_url %}
+    <section class="section video-block">
+        <div class="container">
+            {% if component.title %}
+                <div class="section__head">
+                    <div class="section__heading">
+                        <h2 class="section__title">{{ component.title }}</h2>
+                        {% if component.subtitle %}
+                            <p class="section__subtitle">{{ component.subtitle }}</p>
+                        {% endif %}
+                    </div>
+                </div>
+            {% endif %}
+
+            <div
+                class="video-block__player"
+                data-youtube-facade
+                data-youtube-url="{{ component.youtube_url }}"
+            >
+                {% if component.poster %}
+                    <img src="{{ component.poster }}" alt="" loading="lazy" width="1280" height="720" class="video-block__poster">
+                {% endif %}
+                <button type="button" class="video-block__play" aria-label="{{ trans('home.video.play') }}">
+                    <svg width="28" height="28" viewBox="0 0 24 24" fill="none" aria-hidden="true">
+                        <path d="M8 5.5v13l11-6.5-11-6.5Z" fill="currentColor" />
+                    </svg>
+                </button>
+            </div>
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,195 @@
+// -----------------------------------------------------------------------------
+// Customer account dashboard shell
+// Markup: views/layouts/customer.twig (wraps every views/pages/customer/** page)
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.account-page {
+  padding-block: spacer(5) spacer(8);
+}
+
+.account-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(5);
+  align-items: start;
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 17rem 1fr;
+    gap: spacer(6);
+  }
+}
+
+.account-sidebar {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+  padding: spacer(4);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+
+  @include breakpoint-up(lg) {
+    position: sticky;
+    top: spacer(6);
+  }
+}
+
+.account-sidebar__user {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+  padding-bottom: spacer(4);
+  border-block-end: 1px solid $border-subtle;
+}
+
+.account-sidebar__avatar {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.75rem;
+  height: 2.75rem;
+  border-radius: 50%;
+  background-image: linear-gradient(135deg, color(light), color(dark));
+  color: color(text);
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+  box-shadow: $shadow-sm;
+}
+
+.account-sidebar__user-info {
+  display: flex;
+  flex-direction: column;
+  min-width: 0;
+}
+
+.account-sidebar__name {
+  font-size: $font-size-sm;
+  color: $text-heading;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-sidebar__email {
+  font-size: $font-size-xs;
+  color: $text-muted;
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.account-sidebar__nav {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(1);
+}
+
+.account-sidebar__link {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+  padding: spacer(3);
+  border-radius: $radius-md;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-body;
+  text-align: start;
+  background: none;
+  border: 0;
+  cursor: pointer;
+  width: 100%;
+  transition:
+    background-color $duration-fast $easing-standard,
+    color $duration-fast $easing-standard;
+
+  @include focus-ring;
+
+  i {
+    font-size: 1.1em;
+    color: $text-muted;
+    transition: color $duration-fast $easing-standard;
+  }
+
+  &:hover {
+    background-color: $surface-100;
+  }
+
+  &.is-active {
+    // `color-mix()`, not `rgba($color-primary-fallback, …)` — the latter
+    // ignores the merchant's actual chosen brand color entirely.
+    background-color: color-mix(in srgb, color() 12%, transparent);
+    color: color();
+    font-weight: $font-weight-semibold;
+
+    i {
+      color: color();
+    }
+  }
+}
+
+.account-sidebar__logout {
+  color: $color-danger;
+
+  i {
+    color: $color-danger;
+  }
+
+  &:hover {
+    background-color: $color-danger-tint;
+  }
+}
+
+.account-page__content {
+  min-width: 0;
+}
+
+.account-card {
+  padding: spacer(6);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-sm;
+}
+
+.account-card + .account-card {
+  margin-top: spacer(5);
+}
+
+.account-card__title {
+  margin-bottom: spacer(5);
+  font-size: $font-size-xl;
+}
+
+// Profile form ------------------------------------------------------------
+
+.profile-form__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(4);
+  margin-bottom: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+// `.form-field` (label + input/select/textarea) itself lives in
+// `components/_forms.scss` — shared with the contact form and product notes
+// textarea.
+
+.profile-form__checkbox {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  font-size: $font-size-sm;
+  color: $text-body;
+  margin-bottom: spacer(5);
+}
+
+.profile-form__submit {
+  min-width: 10rem;
+}

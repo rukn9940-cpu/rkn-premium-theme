@@ -1,0 +1,153 @@
+{#
+    Loyalty Program Page (required path: src/views/pages/loyalty.twig)
+    =====================================================================
+    | Variable                          | Type     | Description                              |
+    |-------------------------------------|----------|--------------------------------------------|
+    | loyalty.name / .description        | string   |                                            |
+    | loyalty.image                      | ?string  | banner background                          |
+    | loyalty.points[]                   | array    | .name/.description/.type/.url/.points/.icon/.color |
+    | loyalty.points[].type              | string   | share, rating, order, profile              |
+    | loyalty.prizes[]                   | array    | { title, type, items: [{ id, name, description, image, url, cost_points }] } |
+    | user.loyalty_points                | ?int     |                                            |
+    | user.type                          | string   | 'guest' when not logged in                 |
+    | user.is_profile_completed          | bool     |                                            |
+
+    Reference: docs.salla.dev — Loyalty Program Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ loyalty.name|default(trans('pages.loyalty.title')) }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ loyalty.description|striptags|slice(0, 160)|default(store.description|striptags) }}{% endblock %}
+
+{% block content %}
+    <div class="loyalty-page">
+        {% if loyalty.image %}
+            <div class="loyalty-page__cover" style="background-image: url('{{ loyalty.image }}')"></div>
+        {% endif %}
+
+        <div class="container">
+            <salla-breadcrumb></salla-breadcrumb>
+
+            {% if not loyalty %}
+                <div class="loyalty-page__empty">
+                    <p>{{ trans('pages.loyalty.no_program') }}</p>
+                    <a href="{{ store.url }}" class="btn btn--primary">{{ trans('common.elements.back_home') }}</a>
+                </div>
+            {% else %}
+                <section class="loyalty-page__banner">
+                    <i class="sicon-star2 loyalty-page__banner-icon" aria-hidden="true"></i>
+
+                    <div class="loyalty-page__banner-info">
+                        <h1 class="loyalty-page__title">{{ loyalty.name }}</h1>
+                        {% if loyalty.description %}
+                            <p class="loyalty-page__description">{{ loyalty.description }}</p>
+                        {% endif %}
+
+                        {% if user.loyalty_points is not null %}
+                            <p class="loyalty-page__balance">
+                                {{ trans('pages.loyalty.points_balance', {'count': user.loyalty_points}) }}
+                            </p>
+                        {% endif %}
+                    </div>
+
+                    <salla-loyalty customer-points="{{ user.loyalty_points }}">
+                        <salla-button slot="widget" onclick="document.querySelector('salla-loyalty').open()">
+                            {{ trans('pages.loyalty.exchange_points') }}
+                        </salla-button>
+                    </salla-loyalty>
+                </section>
+
+                {% if loyalty.points is not empty %}
+                    <section class="loyalty-page__section">
+                        <h2 class="section__title">{{ trans('pages.loyalty.ways_to_get_points') }}</h2>
+
+                        <div class="loyalty-ways">
+                            {% for point in loyalty.points %}
+                                <div class="loyalty-way">
+                                    <div class="loyalty-way__head">
+                                        <span class="loyalty-way__icon" style="--way-color: {{ point.color|default('#6b7280') }}">
+                                            <i class="{{ point.icon|default('sicon-star') }}" aria-hidden="true"></i>
+                                        </span>
+                                        <div class="loyalty-way__body">
+                                            <h3 class="loyalty-way__points" style="color: {{ point.color|default('inherit') }}">
+                                                {{ trans('pages.loyalty.points_count', {'count': point.points}) }}
+                                            </h3>
+                                            <p class="loyalty-way__description">{{ point.description }}</p>
+                                        </div>
+                                    </div>
+
+                                    {% if user.type == 'user' %}
+                                        <div class="loyalty-way__action">
+                                            {% if point.type == 'share' %}
+                                                <div class="loyalty-way__share">
+                                                    <span class="loyalty-way__share-url" dir="ltr">{{ point.url }}</span>
+                                                    <button
+                                                        type="button"
+                                                        class="loyalty-way__copy"
+                                                        data-copy="{{ point.url }}"
+                                                        aria-label="{{ trans('pages.loyalty.copy_link') }}"
+                                                    >
+                                                        <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                                            <rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                                                            <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                                                        </svg>
+                                                    </button>
+                                                </div>
+                                            {% elseif point.type == 'profile' and user.is_profile_completed %}
+                                                <span class="loyalty-way__status loyalty-way__status--done">
+                                                    <i class="sicon-check-circle" aria-hidden="true"></i>
+                                                    {{ trans('pages.loyalty.completed') }}
+                                                </span>
+                                            {% else %}
+                                                <a href="{{ point.url }}" class="btn btn--outline btn--sm">{{ point.name }}</a>
+                                            {% endif %}
+                                        </div>
+                                    {% endif %}
+                                </div>
+                            {% endfor %}
+                        </div>
+                    </section>
+                {% endif %}
+
+                {% for prize_group in loyalty.prizes %}
+                    {% if prize_group.items is not empty %}
+                        <section class="loyalty-page__section">
+                            <h2 class="section__title">{{ prize_group.title }}</h2>
+
+                            <salla-slider type="carousel" loop="{{ prize_group.items|length < 4 ? 'false' : 'true' }}" id="loyalty-slider-{{ prize_group.type }}">
+                                <div slot="items">
+                                    {% for prize in prize_group.items %}
+                                        <div class="loyalty-prize">
+                                            {% if prize.url %}
+                                                <a href="{{ prize.url }}" class="loyalty-prize__media">
+                                                    <img src="{{ prize.image }}" alt="{{ prize.name }}" loading="lazy" width="280" height="180">
+                                                </a>
+                                            {% else %}
+                                                <div class="loyalty-prize__media">
+                                                    <img src="{{ prize.image }}" alt="{{ prize.name }}" loading="lazy" width="280" height="180">
+                                                </div>
+                                            {% endif %}
+                                            <div class="loyalty-prize__body">
+                                                <h3 class="loyalty-prize__name">
+                                                    {% if prize.url %}<a href="{{ prize.url }}">{{ prize.name }}</a>{% else %}{{ prize.name }}{% endif %}
+                                                </h3>
+                                                {% if prize.description %}
+                                                    <p class="loyalty-prize__description">{{ prize.description }}</p>
+                                                {% endif %}
+                                            </div>
+                                            {% if user.type == 'user' %}
+                                                <div class="loyalty-prize__cost">
+                                                    {{ trans('pages.loyalty.points_count', {'count': prize.cost_points}) }}
+                                                </div>
+                                            {% endif %}
+                                        </div>
+                                    {% endfor %}
+                                </div>
+                            </salla-slider>
+                        </section>
+                    {% endif %}
+                {% endfor %}
+            {% endif %}
+        </div>
+    </div>
+{% endblock %}

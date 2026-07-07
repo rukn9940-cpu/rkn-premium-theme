@@ -1,0 +1,109 @@
+{#
+    Landing Page (promotional offer / campaign page)
+    ==================================================
+    | Variable                    | Type     | Description                        |
+    |------------------------------|----------|-------------------------------------|
+    | landing                     | ?object  | null when the campaign is not found |
+    | landing.title               | string   |                                      |
+    | landing.content             | string   | HTML                                |
+    | landing.products            | Product[]|                                      |
+    | landing.offer_ends_at       | ?date    |                                      |
+    | landing.testimonials_type   | ?string  |                                      |
+    | landing.show_quantity       | bool     |                                      |
+    | landing.is_slider           | bool     |                                      |
+    | landing.is_expired          | bool     |                                      |
+    | landing.show_store_features | bool     |                                      |
+
+    Reference: docs.salla.dev — Landing Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ landing.title|default(trans('common.errors.404')) }} | {{ store.name }}{% endblock %}
+
+{% block content %}
+    <script>
+        window.showQuantity = {{ landing.show_quantity ? 'true' : 'false' }};
+    </script>
+
+    {% if not landing %}
+        <div class="container landing-page landing-page--state">
+            <div class="landing-page__state-card">
+                <a href="{{ store.url }}" class="landing-page__logo" aria-label="{{ store.name }}">
+                    {% if store.logo %}
+                        <img src="{{ store.logo }}" alt="{{ store.name }}" width="72" height="72">
+                    {% endif %}
+                </a>
+                <h1 class="landing-page__state-title">{{ trans('common.errors.404') }}</h1>
+                <a href="{{ store.url }}" class="btn btn--primary">{{ trans('common.elements.back_home') }}</a>
+            </div>
+        </div>
+    {% elseif landing.is_expired %}
+        <div class="container landing-page landing-page--state">
+            <div class="landing-page__state-card">
+                <a href="{{ store.url }}" class="landing-page__logo" aria-label="{{ store.name }}">
+                    {% if store.logo %}
+                        <img src="{{ store.logo }}" alt="{{ store.name }}" width="72" height="72">
+                    {% endif %}
+                </a>
+                <h1 class="landing-page__state-title">{{ trans('pages.offer.offer_finished') }}</h1>
+                <p class="landing-page__state-text">{{ trans('pages.offer.offer_expired_message') }}</p>
+                <a href="{{ store.url }}" class="btn btn--primary">{{ trans('common.elements.back_home') }}</a>
+            </div>
+        </div>
+    {% else %}
+        <div class="landing-page">
+            <header class="landing-page__header">
+                <div class="container landing-page__header-inner">
+                    <a href="{{ store.url }}" class="landing-page__logo" aria-label="{{ store.name }}">
+                        {% if store.logo %}
+                            <img src="{{ store.logo }}" alt="{{ store.name }}" width="72" height="72">
+                        {% endif %}
+                    </a>
+                    <h1 class="landing-page__title">{{ landing.title }}</h1>
+                    {% if landing.content %}
+                        <div class="landing-page__content">{{ landing.content|raw }}</div>
+                    {% endif %}
+
+                    {% if landing.offer_ends_at %}
+                        <div class="landing-page__countdown">
+                            <h2 class="landing-page__countdown-label">{{ trans('pages.offer.offer_remaining_time') }}</h2>
+                            <salla-count-down date="{{ landing.offer_ends_at }}" labeled size="lg"></salla-count-down>
+                        </div>
+                    {% endif %}
+                </div>
+            </header>
+
+            {% if landing.products is not empty %}
+                <section class="container landing-page__products">
+                    <h2 class="section__title">{{ trans('pages.offer.included_products') }}</h2>
+
+                    {% if landing.is_slider %}
+                        <salla-products-slider source="landing-page" block-title="{{ trans('pages.offer.included_products') }}"></salla-products-slider>
+                    {% else %}
+                        <salla-infinite-scroll item=".product-card">
+                            <div class="listing-page__grid">
+                                {% for product in landing.products %}
+                                    {% include 'partials.product.card' with { product: product, hide_add_btn: true } %}
+                                {% endfor %}
+                            </div>
+                        </salla-infinite-scroll>
+                    {% endif %}
+                </section>
+            {% endif %}
+
+            {% if landing.show_store_features %}
+                <section class="container landing-page__section">
+                    {% component 'home.store-features' %}
+                </section>
+            {% endif %}
+
+            {% if landing.testimonials_type %}
+                <section class="landing-page__section landing-page__section--muted">
+                    <div class="container">
+                        {% component 'home.testimonials' with { type: landing.testimonials_type } %}
+                    </div>
+                </section>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

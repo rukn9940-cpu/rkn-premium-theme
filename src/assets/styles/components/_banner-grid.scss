@@ -1,0 +1,133 @@
+// -----------------------------------------------------------------------------
+// Banner builder (Theme Component: home.banner-grid)
+// A 6-column base grid so merchants can freely mix full/half/third width
+// banners (added/reordered from the Partners Portal) into one flexible promo
+// layout. Markup: views/components/home/banner-grid.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.banner-grid__grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: spacer(4);
+}
+
+.banner-grid__item {
+  position: relative;
+  display: block;
+  grid-column: span 6;
+  overflow: hidden;
+  background-color: $surface-100;
+  border-radius: $radius-lg;
+
+  @include card-hover(-4px);
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      box-shadow: $shadow-lg;
+    }
+  }
+}
+
+.banner-grid__item--half {
+  @include breakpoint-up(sm) {
+    grid-column: span 3;
+  }
+}
+
+.banner-grid__item--third {
+  @include breakpoint-up(sm) {
+    grid-column: span 3;
+  }
+
+  @include breakpoint-up(lg) {
+    grid-column: span 2;
+  }
+}
+
+.banner-grid__media {
+  display: block;
+  aspect-ratio: 16 / 9;
+
+  .banner-grid__item--half &,
+  .banner-grid__item--third & {
+    aspect-ratio: 4 / 3;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-standard;
+  }
+}
+
+@media (hover: hover) {
+  .banner-grid__item:hover .banner-grid__media img {
+    transform: scale(1.05);
+  }
+}
+
+@include reduced-motion {
+  .banner-grid__item:hover .banner-grid__media img {
+    transform: none;
+  }
+}
+
+.banner-grid__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(0deg, rgba(5, 7, 10, 0.72) 0%, rgba(5, 7, 10, 0) 60%);
+}
+
+.banner-grid__content {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: spacer(5);
+  color: #fff;
+}
+
+.banner-grid__title {
+  margin-bottom: spacer(1);
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  text-shadow: 0 1px 12px rgba(5, 7, 10, 0.4);
+}
+
+.banner-grid__subtitle {
+  max-width: 22rem;
+  margin-bottom: spacer(3);
+  color: rgba(255, 255, 255, 0.85);
+  font-size: $font-size-sm;
+}
+
+.banner-grid__cta {
+  display: inline-flex;
+  align-items: center;
+  padding-block: 0.5rem;
+  padding-inline: 1.25rem;
+  background-color: #fff;
+  color: $ink-900;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  border-radius: $radius-pill;
+  transition:
+    transform $duration-fast $easing-emphasized,
+    box-shadow $duration-base $easing-standard;
+}
+
+@media (hover: hover) {
+  .banner-grid__item:hover .banner-grid__cta {
+    box-shadow: $shadow-md;
+    transform: scale(1.04);
+  }
+}
+
+@include reduced-motion {
+  .banner-grid__item:hover .banner-grid__cta {
+    transform: none;
+  }
+}

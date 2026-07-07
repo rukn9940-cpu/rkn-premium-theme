@@ -1,0 +1,85 @@
+// -----------------------------------------------------------------------------
+// Recently Viewed + Smart Recommendations
+// Markup: views/partials/utility/{recently-viewed,smart-recommendations}.twig
+// Behaviour: js/modules/{recently-viewed,smart-recommendations}.js
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.recently-viewed[hidden],
+.smart-recommendations[hidden] {
+  display: none;
+}
+
+.recently-viewed__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(5, 1fr);
+    gap: spacer(5);
+  }
+}
+
+.recently-viewed__item {
+  display: flex;
+  flex-direction: column;
+  height: 100%;
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  overflow: hidden;
+
+  @include card-hover(-4px);
+}
+
+.recently-viewed__item-media {
+  display: block;
+  aspect-ratio: 1;
+  background-color: $surface-100;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.recently-viewed__item-body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(2);
+  padding: spacer(3);
+  flex: 1;
+}
+
+.recently-viewed__item-name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-heading;
+
+  @include line-clamp(2);
+  @include focus-ring;
+
+  &:hover {
+    color: color();
+  }
+}
+
+.recently-viewed__item-price {
+  margin-top: auto;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+  font-variant-numeric: tabular-nums;
+}
+
+.recently-viewed__add {
+  width: 100%;
+}

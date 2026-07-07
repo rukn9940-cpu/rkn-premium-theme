@@ -1,0 +1,22 @@
+{#
+    Wishlist Page
+    =============
+    Self-contained: `salla-products-list source="wishlist"` fetches, renders,
+    and live-updates the customer's saved products (including its own empty
+    state) via the Twilight JS SDK — no manual product loop needed here.
+
+    Reference: docs.salla.dev — Wishlist Page Guide, Salla Products List.
+#}
+{% extends "layouts.customer" %}
+
+{% block title %}{{ trans('pages.account.wishlist') }} | {{ store.name }}{% endblock %}
+
+{% block account_content %}
+    <div class="account-card">
+        <h1 class="account-card__title">{{ trans('pages.account.wishlist') }}</h1>
+
+        {% hook 'customer:wishlist.items.start' %}
+        <salla-products-list source="wishlist"></salla-products-list>
+        {% hook 'customer:wishlist.items.end' %}
+    </div>
+{% endblock %}

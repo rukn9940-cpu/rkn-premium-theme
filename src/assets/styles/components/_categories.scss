@@ -1,0 +1,98 @@
+// -----------------------------------------------------------------------------
+// Categories
+// Markup: views/components/home/categories.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.categories__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: spacer(5);
+  }
+}
+
+.category-card {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  text-align: center;
+  color: $text-heading;
+
+  @include focus-ring;
+}
+
+.category-card__media {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 100%;
+  aspect-ratio: 1;
+  border-radius: 50%;
+  overflow: hidden;
+  background-color: $surface-100;
+  border: 1px solid $border-subtle;
+
+  @include card-hover(-6px);
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    border-radius: inherit;
+    box-shadow: inset 0 0 0 2px transparent;
+    transition: box-shadow $duration-base $easing-standard;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-emphasized;
+  }
+}
+
+.category-card__placeholder {
+  color: $text-muted;
+}
+
+.category-card:hover .category-card__media {
+  box-shadow: $shadow-lg;
+  border-color: transparent;
+
+  &::after {
+    box-shadow: inset 0 0 0 2px color();
+  }
+}
+
+.category-card:hover .category-card__media img {
+  transform: scale(1.1);
+}
+
+.category-card__name {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  transition: color $duration-fast $easing-standard;
+
+  @include line-clamp(2);
+}
+
+.category-card:hover .category-card__name {
+  color: color();
+}
+
+@include reduced-motion {
+  .category-card:hover .category-card__media img {
+    transform: none;
+  }
+}

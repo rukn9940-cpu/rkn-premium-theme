@@ -1,0 +1,57 @@
+{#
+    Orders List Page
+    ================
+    | orders[]              | Collection | order.reference_id/.total/.created_at/.status.name |
+    | orders.next_page      | string     | fed to salla-infinite-scroll                        |
+
+    Reference: docs.salla.dev — Orders List Page Guide.
+#}
+{% extends "layouts.customer" %}
+
+{% block title %}{{ trans('pages.account.orders') }} | {{ store.name }}{% endblock %}
+
+{% block account_content %}
+    <div class="account-card">
+        <h1 class="account-card__title">{{ trans('pages.account.orders') }}</h1>
+
+        {% hook 'customer:orders.index.items.start' %}
+
+        {% if orders|length %}
+            <salla-infinite-scroll next-page="{{ orders.next_page }}" item=".order-row" next-page.autoload>
+                <div class="orders-table" role="table">
+                    <div class="orders-table__head" role="row">
+                        <span role="columnheader">{{ trans('pages.thank_you.order_id') }}</span>
+                        <span role="columnheader">{{ trans('pages.orders.date') }}</span>
+                        <span role="columnheader">{{ trans('pages.orders.total') }}</span>
+                        <span role="columnheader">{{ trans('pages.orders.status') }}</span>
+                        <span role="columnheader" class="sr-only">{{ trans('common.elements.details') }}</span>
+                    </div>
+
+                    {% for order in orders %}
+                        <a href="{{ order.url|default('#') }}" class="orders-table__row order-row" role="row">
+                            <span role="cell" data-label="{{ trans('pages.thank_you.order_id') }}">#{{ order.reference_id }}</span>
+                            <span role="cell" data-label="{{ trans('pages.orders.date') }}">{{ order.created_at|date }}</span>
+                            <span role="cell" data-label="{{ trans('pages.orders.total') }}">{{ order.total|money }}</span>
+                            <span role="cell" data-label="{{ trans('pages.orders.status') }}">
+                                <span class="order-status-badge" style="--status-color: {{ order.status.color|default('#6b7280') }}">
+                                    {% if order.status.icon %}<i class="{{ order.status.icon }}" aria-hidden="true"></i>{% endif %}
+                                    {{ order.status.name }}
+                                </span>
+                            </span>
+                            <span role="cell" class="orders-table__chevron" aria-hidden="true">
+                                <svg width="16" height="16" viewBox="0 0 20 20" fill="none"><path d="M7.5 5L12.5 10L7.5 15" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" /></svg>
+                            </span>
+                        </a>
+                    {% endfor %}
+                </div>
+            </salla-infinite-scroll>
+        {% else %}
+            <div class="orders-empty">
+                <p>{{ trans('pages.orders.no_orders') }}</p>
+                <a href="{{ store.url }}" class="btn btn--primary">{{ trans('common.elements.back_home') }}</a>
+            </div>
+        {% endif %}
+
+        {% hook 'customer:orders.index.items.end' %}
+    </div>
+{% endblock %}

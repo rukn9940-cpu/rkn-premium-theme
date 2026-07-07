@@ -1,0 +1,72 @@
+// -----------------------------------------------------------------------------
+// Theme mode (Dark Mode)
+// -----------------------------------------------------------------------------
+// Applies to the theme's adaptive *content* surfaces — product/category/cart/
+// account/blog/static pages, cards, and forms — via the CSS custom properties
+// that `abstracts/_variables.scss` routes `$surface-*`/`$text-*`/
+// `$border-subtle` through. The header, footer, hero banner, and other
+// permanently-dark brand chrome are unaffected by design (see the comments
+// in `_variables.scss` and `layout/_header.scss`).
+// Mode is toggled by `js/modules/theme-mode.js`, which sets
+// `<html data-theme="dark|light">` and persists the choice to `localStorage`;
+// a tiny inline snippet in `layouts/master.twig` applies it before first
+// paint to avoid a flash of the wrong theme. Merchants can disable the
+// feature entirely via the `dark_mode_enabled` Theme Setting, in which case
+// the toggle button is never rendered and the store always uses light mode.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+:root {
+  --surface-0: #fff;
+  --surface-100: #f7f8fa;
+  --surface-200: #eef0f3;
+  --border-subtle: #e5e7eb;
+  --border-strong: #d7dae0;
+  --text-heading: #10131a;
+  --text-body: #4b5563;
+  --text-muted: #6b7280;
+}
+
+[data-theme='dark'] {
+  --surface-0: #14171d;
+  --surface-100: #1b1f27;
+  --surface-200: #262b35;
+  --border-subtle: #2c313c;
+  --border-strong: #3a4049;
+  --text-heading: #f5f6f8;
+  --text-body: #c7cad1;
+  --text-muted: #8b90a0;
+
+  // `<img>`/`<svg>` product photography and merchant logos usually assume a
+  // light backdrop; a gentle brightness/contrast dip keeps busy imagery from
+  // fighting with the darker chrome without a manual per-image opt-out.
+  .product-card__image,
+  .brand-card img,
+  .blog-card__media img {
+    filter: brightness(0.94);
+  }
+}
+
+// Smooth, cheap transition between modes for the handful of properties that
+// actually change — avoids a jarring flash without transitioning everything.
+body,
+.account-card,
+.product-card,
+.blog-card,
+.orders-table__row {
+  transition:
+    background-color $duration-base $easing-standard,
+    color $duration-base $easing-standard,
+    border-color $duration-base $easing-standard;
+}
+
+@include reduced-motion {
+  body,
+  .account-card,
+  .product-card,
+  .blog-card,
+  .orders-table__row {
+    transition: none;
+  }
+}

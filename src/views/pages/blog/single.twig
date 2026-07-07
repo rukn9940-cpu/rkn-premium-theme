@@ -1,0 +1,124 @@
+{#
+    Single Blog Article (required path: src/views/pages/blog/single.twig)
+    =========================================================================
+    | article.title/.created_at/.author.name/.body/.tags/.related | see docs.salla.dev — Single Blog Article Template |
+    | article.has_image / .image.url / .image.alt                   |                                                     |
+    | article.likes_count / .comments_count                          |                                                     |
+
+    Reference: docs.salla.dev — Single Blog Article Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ article.title|striptags }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ article.summary|default(article.body|striptags)|slice(0, 160) }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ article.url }}">
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    <meta property="og:type" content="article">
+    <meta property="og:title" content="{{ article.title }}">
+    <meta property="og:description" content="{{ article.summary|default(article.body|striptags)|slice(0, 160) }}">
+    <meta property="og:url" content="{{ article.url }}">
+    {% if article.has_image %}<meta property="og:image" content="{{ article.image.url }}">{% endif %}
+    {% if article.author and article.author.name %}<meta property="article:author" content="{{ article.author.name }}">{% endif %}
+    <script type="application/ld+json">
+    {
+        "@context": "https://schema.org",
+        "@type": "BlogPosting",
+        "headline": {{ article.title|json_encode|raw }},
+        "url": {{ article.url|json_encode|raw }}
+        {%- if article.has_image %}, "image": {{ article.image.url|json_encode|raw }}{% endif -%}
+        {%- if article.author and article.author.name %}, "author": { "@type": "Person", "name": {{ article.author.name|json_encode|raw }} }{% endif -%}
+        {%- if article.created_at %}, "datePublished": {{ article.created_at|date('Y-m-d')|json_encode|raw }}{% endif -%}
+    }
+    </script>
+{% endblock %}
+
+{% block content %}
+    <div class="container article-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <article class="article-page__article">
+            <header class="article-page__head">
+                <h1 class="article-page__title">{{ article.title }}</h1>
+                <div class="article-page__meta">
+                    {% if article.author %}
+                        <span class="article-page__author">
+                            <i class="sicon-user" aria-hidden="true"></i>
+                            {{ article.author.name }}
+                        </span>
+                    {% endif %}
+                    <time class="article-page__date">{{ article.created_at|date }}</time>
+                </div>
+            </header>
+
+            {% if article.has_image %}
+                <img
+                    src="{{ article.image.url }}"
+                    alt="{{ article.image.alt|default(article.title) }}"
+                    class="article-page__cover"
+                    loading="eager"
+                    fetchpriority="high"
+                    width="1200"
+                    height="600"
+                >
+            {% endif %}
+
+            <div class="content-entry article-page__body">
+                {{ article.body|raw }}
+            </div>
+
+            {% if article.tags is not empty %}
+                <div class="article-page__tags">
+                    {% for tag in article.tags %}
+                        <a href="{{ tag.url }}" class="blog-card__tag">
+                            <i class="sicon-tag" aria-hidden="true"></i>
+                            {{ tag.name }}
+                        </a>
+                    {% endfor %}
+                </div>
+            {% endif %}
+
+            {% if store.blog.allow_likes_and_comments and (article.likes_count or article.comments_count) %}
+                <div class="article-page__stats">
+                    {% if article.likes_count %}
+                        <span><i class="sicon-thumbs-up" aria-hidden="true"></i> {{ article.likes_count }}</span>
+                    {% endif %}
+                    {% if article.comments_count %}
+                        <span><i class="sicon-chat" aria-hidden="true"></i> {{ article.comments_count }}</span>
+                    {% endif %}
+                </div>
+            {% endif %}
+        </article>
+
+        {% if article.related is not empty %}
+            <section class="article-page__related">
+                <h2 class="article-page__related-title">{{ trans('pages.blog.related_articles') }}</h2>
+                <div class="blog-page__grid">
+                    {% for related in article.related %}
+                        <article class="blog-card">
+                            <a href="{{ related.url }}" class="blog-card__media">
+                                {% if related.has_image %}
+                                    <img src="{{ related.image.url }}" alt="{{ related.image.alt|default(related.title) }}" loading="lazy" width="420" height="260">
+                                {% else %}
+                                    <img src="{{ asset('images/placeholder.svg') }}" alt="" loading="lazy" width="420" height="260">
+                                {% endif %}
+                            </a>
+                            <div class="blog-card__body">
+                                <span class="blog-card__meta">{{ related.created_at|date }}</span>
+                                <h3 class="blog-card__title">
+                                    <a href="{{ related.url }}">{{ related.title }}</a>
+                                </h3>
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </section>
+        {% endif %}
+
+        {% component 'comments' with { type: 'article', id: article.id } %}
+    </div>
+{% endblock %}

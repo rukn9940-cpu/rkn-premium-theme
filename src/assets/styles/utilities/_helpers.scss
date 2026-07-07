@@ -1,0 +1,181 @@
+// -----------------------------------------------------------------------------
+// Utilities
+// Small, single-purpose, composable helper classes. Structural/layout
+// primitives only — visual utilities (spacing scales exposed as classes,
+// color/typography utilities, etc.) are added once the design system lands.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Centered, max-width content wrapper used by every layout/page template.
+.container {
+  inline-size: 100%;
+  max-inline-size: $container-max-width;
+  margin-inline: auto;
+  padding-inline: $container-padding-inline;
+}
+
+// Truncate text to a single line with an ellipsis. Always pair with a
+// non-visual full-text alternative (e.g. the `title` attribute) for a11y.
+.u-truncate {
+  overflow: hidden;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+// Removes an element from layout flow visually and to assistive tech.
+// Prefer the `hidden` HTML attribute in markup; this class exists for cases
+// that require conditional hiding via a class toggle (e.g. from JS).
+.u-hidden {
+  display: none !important;
+}
+
+// Fade-and-rise scroll entrance — pair with `data-reveal` in markup and
+// `js/modules/scroll-reveal.js` toggles `.is-visible` once the element
+// enters the viewport. See `abstracts/_mixins.scss` → `reveal-on-scroll` for
+// why this only takes effect once JS has confirmed it's available.
+[data-reveal] {
+  @include reveal-on-scroll;
+}
+
+// Directional variants — same mechanism/JS, just a different starting
+// transform. Use `data-reveal="left"`/`"right"`/`"zoom"` in markup; anything
+// else (including a bare `data-reveal`) keeps the default fade-up.
+html.js {
+  [data-reveal='left'] {
+    transform: translateX(-24px);
+
+    &.is-visible {
+      transform: none;
+    }
+  }
+
+  [data-reveal='right'] {
+    transform: translateX(24px);
+
+    &.is-visible {
+      transform: none;
+    }
+  }
+
+  [data-reveal='zoom'] {
+    transform: scale(0.92);
+
+    &.is-visible {
+      transform: none;
+    }
+  }
+
+  @include reduced-motion {
+    [data-reveal='left'],
+    [data-reveal='right'],
+    [data-reveal='zoom'] {
+      transform: none;
+    }
+  }
+}
+
+// Reusable shimmering placeholder — apply directly for one-off cases; see
+// `abstracts/_mixins.scss` → `skeleton` for the underlying implementation
+// used by dedicated skeleton components (e.g. `.product-card-skeleton`).
+.u-skeleton {
+  @include skeleton;
+
+  border-radius: $radius-sm;
+}
+
+// -----------------------------------------------------------------------------
+// Async content loading states
+// Twilight web components upgrade asynchronously; until the browser has
+// executed their JS they exist as unstyled, height-collapsed elements which
+// causes layout shift and a jarring "pop-in". Give every not-yet-upgraded
+// Salla list/loader component a fixed-height shimmering placeholder instead
+// (removed automatically the instant the element upgrades, since `:defined`
+// then matches). Excludes non-visual/portal components (`salla-localization-modal`,
+// `salla-modal`, `salla-scopes`) which render nothing inline.
+// -----------------------------------------------------------------------------
+salla-products-list:not(:defined),
+salla-reviews:not(:defined),
+salla-slider:not(:defined) {
+  display: block;
+  min-height: 12rem;
+  border-radius: $radius-lg;
+
+  @include skeleton;
+}
+
+salla-reviews-summary:not(:defined) {
+  display: block;
+  min-height: 4rem;
+  border-radius: $radius-lg;
+
+  @include skeleton;
+}
+
+// Documented customization hooks (docs.salla.dev — Loading, Infinite Scroll)
+// restyled to match the theme's brand color + motion language instead of
+// Salla's generic defaults.
+.s-loading {
+  fill: color();
+  animation: spin 1s linear infinite;
+}
+
+.s-loading-container {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: spacer(6);
+}
+
+.s-infinite-scroll-status {
+  padding-block: spacer(5);
+  color: $text-muted;
+  font-size: $font-size-sm;
+  text-align: center;
+}
+
+.s-infinite-scroll-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  gap: spacer(2);
+  margin-inline: auto;
+  padding-block: 0.75rem;
+  padding-inline: 1.75rem;
+  overflow: hidden;
+  border: 1px solid $border-strong;
+  border-radius: $radius-pill;
+  color: $text-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  transition:
+    border-color $duration-base $easing-standard,
+    color $duration-base $easing-standard;
+
+  @include min-tap-target;
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: color();
+      color: color();
+    }
+  }
+}
+
+.s-infinite-scroll-btn-loader {
+  width: 1em;
+  height: 1em;
+  border: 2px solid rgba(0, 0, 0, 0.15);
+  border-inline-start-color: currentcolor;
+  border-radius: 50%;
+  animation: spin 0.7s linear infinite;
+}
+
+@include reduced-motion {
+  .s-loading,
+  .s-infinite-scroll-btn-loader {
+    animation-duration: 1.6s;
+  }
+}

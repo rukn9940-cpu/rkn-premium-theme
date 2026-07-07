@@ -1,0 +1,35 @@
+{#
+    Compare modal
+    =============
+    Empty shell; `js/modules/compare.js` fills `[data-compare-modal-body]`
+    with a side-by-side table built from `salla.product.getDetails()` for
+    every product currently selected in the compare bar.
+#}
+<div class="compare-modal" id="compare-modal" data-compare-modal hidden>
+    <div class="compare-modal__backdrop" data-compare-close></div>
+    <div class="compare-modal__panel" role="dialog" aria-modal="true" aria-label="{{ trans('compare.bar_title') }}">
+        <div class="compare-modal__header">
+            <h2 class="compare-modal__title">{{ trans('compare.bar_title') }}</h2>
+            <button type="button" class="compare-modal__close" data-compare-close aria-label="{{ trans('nav.close_menu') }}">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+        <div
+            class="compare-modal__body"
+            data-compare-modal-body
+            data-label-loading="{{ trans('compare.loading') }}"
+            data-label-empty="{{ trans('compare.empty') }}"
+            data-label-price="{{ trans('compare.price') }}"
+            data-label-rating="{{ trans('compare.rating') }}"
+            data-label-brand="{{ trans('compare.brand') }}"
+            data-label-category="{{ trans('compare.category') }}"
+            data-label-availability="{{ trans('compare.availability') }}"
+            data-label-in-stock="{{ trans('compare.in_stock') }}"
+            data-label-out-of-stock="{{ trans('compare.out_of_stock') }}"
+            data-label-no-reviews="{{ trans('compare.no_reviews') }}"
+            data-label-remove="{{ trans('compare.remove') }}"
+        ></div>
+    </div>
+</div>

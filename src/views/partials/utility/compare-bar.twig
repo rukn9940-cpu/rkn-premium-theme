@@ -1,0 +1,35 @@
+{#
+    Compare bar
+    ===========
+    Floating bar that tracks the products a visitor has flagged for
+    comparison (via the `[data-compare-toggle]` button on every product
+    card). Selections live client-side only (localStorage) — see
+    `js/modules/compare.js` — since Salla has no server-side "compare list"
+    endpoint; the bar/modal are simply hidden until at least one product is
+    selected.
+#}
+<div
+    class="compare-bar"
+    id="compare-bar"
+    data-compare-bar
+    data-compare-max="{{ theme.settings.get('compare_max_items', 4) }}"
+    data-label-open="{{ trans('compare.open') }}"
+    data-label-max-reached="{{ trans('compare.max_reached') }}"
+    data-label-remove="{{ trans('compare.remove') }}"
+    hidden
+>
+    <div class="compare-bar__inner">
+        <p class="compare-bar__title">{{ trans('compare.bar_title') }}</p>
+
+        <div class="compare-bar__items" data-compare-bar-items></div>
+
+        <div class="compare-bar__actions">
+            <button type="button" class="compare-bar__clear" data-compare-clear>
+                {{ trans('compare.clear_all') }}
+            </button>
+            <button type="button" class="btn btn--primary compare-bar__open" data-compare-open-modal disabled>
+                {{ trans('compare.open', {'count': 0}) }}
+            </button>
+        </div>
+    </div>
+</div>

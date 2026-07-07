@@ -1,0 +1,55 @@
+// -----------------------------------------------------------------------------
+// Functions
+// -----------------------------------------------------------------------------
+
+@use 'sass:math';
+@use 'sass:map';
+@use 'variables' as vars;
+
+/// Convert a px value to rem, assuming a 16px root font-size.
+/// @param {Number} $px
+/// @return {Number} value in rem
+@function rem($px) {
+  @if math.unit($px) == 'rem' {
+    @return $px;
+  }
+
+  @return math.div(math.div($px, 1px), 16) * 1rem;
+}
+
+/// Retrieve a spacer from the `$spacers` scale by key.
+/// @param {Number} $key
+@function spacer($key) {
+  @if not map.has-key(vars.$spacers, $key) {
+    @error 'Unknown spacer key `#{$key}`. Available: #{map.keys(vars.$spacers)}';
+  }
+
+  @return map.get(vars.$spacers, $key);
+}
+
+/// Retrieve a z-index value from the named layer scale.
+/// @param {String} $layer
+@function z($layer) {
+  @if not map.has-key(vars.$z-layers, $layer) {
+    @error 'Unknown z-layer `#{$layer}`. Available: #{map.keys(vars.$z-layers)}';
+  }
+
+  @return map.get(vars.$z-layers, $layer);
+}
+
+/// Merchant-controlled brand color, read from the `--color-primary*` custom
+/// properties (set in `views/layouts/master.twig` from the Twilight "color"
+/// feature), falling back to the theme's static gold accent when the
+/// property is unset.
+/// @param {String} $tone [base] - one of base | dark | light | text
+@function color($tone: base) {
+  @if $tone == dark {
+    @return var(--color-primary-dark, #{vars.$color-primary-dark-fallback});
+  } @else if $tone == light {
+    @return var(--color-primary-light, #{vars.$color-primary-light-fallback});
+  } @else if $tone == text {
+    @return var(--color-primary-text, #{vars.$color-primary-text-fallback});
+  }
+
+  @return var(--color-primary, #{vars.$color-primary-fallback});
+}

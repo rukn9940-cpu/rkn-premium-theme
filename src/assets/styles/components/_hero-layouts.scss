@@ -1,0 +1,294 @@
+// -----------------------------------------------------------------------------
+// Hero banner layouts (component field: home.hero-banner → "تصميم البانر
+// الرئيسي")
+// 10 presentation variants of the exact same real slide data (merchant image/
+// mobile image/title/subtitle/CTA pair) — see `components/home/hero-banner.twig`
+// and its base styles in `_hero-banner.scss`. "fullwidth" is the default and
+// needs no overrides here.
+// Selector target: `.hero-banner[data-hero-layout="..."]`.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Fullscreen — an immersive, near-viewport-height slide with content
+// centered both axes.
+.hero-banner[data-hero-layout='fullscreen'] {
+  .hero-banner__media {
+    aspect-ratio: auto;
+    min-height: 100svh;
+
+    @include breakpoint-up(md) {
+      aspect-ratio: auto;
+    }
+  }
+
+  .hero-banner__content {
+    align-items: center;
+    justify-content: center;
+    padding-block-end: 0;
+    text-align: center;
+  }
+
+  .hero-banner__text {
+    max-width: 42rem;
+  }
+
+  .hero-banner__actions {
+    justify-content: center;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Split (+ reverse) — image confined to one half, text on a plain surface
+// panel on the other half. Overrides the overlay-on-image composition
+// entirely, so text switches from fixed white to the theme's adaptive
+// heading/body tokens.
+// -----------------------------------------------------------------------------
+@mixin hero-split-base {
+  .hero-banner__slide {
+    display: grid;
+
+    @include breakpoint-up(md) {
+      grid-template-columns: 1fr 1fr;
+    }
+  }
+
+  .hero-banner__media {
+    position: relative;
+    aspect-ratio: 4 / 3;
+
+    @include breakpoint-up(md) {
+      aspect-ratio: auto;
+      height: 100%;
+    }
+  }
+
+  .hero-banner__overlay {
+    background: linear-gradient(to top, rgba($ink-950, 0.45) 0%, transparent 55%);
+
+    @include breakpoint-up(md) {
+      display: none;
+    }
+  }
+
+  .hero-banner__content {
+    position: static;
+    max-width: none;
+    padding: spacer(6) $container-padding-inline;
+    background-color: $surface-0;
+
+    @include breakpoint-up(md) {
+      padding: spacer(9);
+    }
+  }
+
+  .hero-banner__text {
+    max-width: 32rem;
+    color: $text-body;
+  }
+
+  .hero-banner__title {
+    color: $text-heading;
+    font-size: $font-size-4xl;
+    text-shadow: none;
+  }
+
+  .hero-banner__subtitle {
+    color: $text-body;
+  }
+}
+
+.hero-banner[data-hero-layout='split'] {
+  @include hero-split-base;
+
+  @include breakpoint-up(md) {
+    .hero-banner__slide {
+      grid-template-areas: 'content media';
+    }
+
+    .hero-banner__media {
+      grid-area: media;
+    }
+
+    .hero-banner__content {
+      grid-area: content;
+    }
+  }
+}
+
+.hero-banner[data-hero-layout='split_reverse'] {
+  @include hero-split-base;
+
+  @include breakpoint-up(md) {
+    .hero-banner__slide {
+      grid-template-areas: 'media content';
+    }
+
+    .hero-banner__media {
+      grid-area: media;
+    }
+
+    .hero-banner__content {
+      grid-area: content;
+    }
+  }
+}
+
+// Boxed — the slide art + content sit inside a rounded, shadowed card with a
+// gap from the viewport edges instead of full-bleed.
+.hero-banner[data-hero-layout='boxed'] {
+  padding-inline: clamp(0.75rem, 3vw, 2.5rem);
+  padding-block-start: spacer(4);
+
+  .hero-banner__slide,
+  .hero-banner__media {
+    overflow: hidden;
+    border-radius: $radius-2xl;
+  }
+
+  .hero-banner__media {
+    aspect-ratio: 16 / 9;
+  }
+}
+
+// Centered overlay — a fuller, even scrim (not just a corner gradient) with
+// content centered both axes; best for high-contrast, text-forward slides.
+.hero-banner[data-hero-layout='centered_overlay'] {
+  .hero-banner__overlay {
+    background: rgba($ink-950, 0.5);
+  }
+
+  .hero-banner__content {
+    align-items: center;
+    justify-content: center;
+    padding-block-end: 0;
+    text-align: center;
+  }
+
+  .hero-banner__text {
+    max-width: 40rem;
+  }
+
+  .hero-banner__actions {
+    justify-content: center;
+  }
+}
+
+// Minimal text — a much lighter scrim (art does most of the talking) with a
+// small, understated text block anchored to the start edge.
+.hero-banner[data-hero-layout='minimal_text'] {
+  .hero-banner__overlay {
+    background: linear-gradient(to top, rgba($ink-950, 0.55) 0%, transparent 35%);
+
+    @include ltr {
+      background: linear-gradient(90deg, rgba($ink-950, 0.4) 0%, transparent 40%);
+    }
+
+    @include rtl {
+      background: linear-gradient(270deg, rgba($ink-950, 0.4) 0%, transparent 40%);
+    }
+  }
+
+  .hero-banner__title {
+    font-size: $font-size-3xl;
+    text-shadow: 0 1px 12px rgba(5, 7, 10, 0.5);
+  }
+
+  .hero-banner__subtitle {
+    display: none;
+  }
+}
+
+// Card stack — the text/CTA block becomes an opaque, elevated card floating
+// over the image instead of sitting directly on a gradient.
+.hero-banner[data-hero-layout='card_stack'] {
+  .hero-banner__content {
+    align-items: flex-end;
+    padding-block-end: spacer(6);
+
+    @include breakpoint-up(md) {
+      align-items: flex-end;
+      padding-block-end: spacer(8);
+    }
+  }
+
+  .hero-banner__text {
+    padding: spacer(6);
+    color: $text-heading;
+    background-color: $surface-0;
+    border-radius: $radius-xl;
+    box-shadow: $shadow-xl;
+  }
+
+  .hero-banner__title,
+  .hero-banner__subtitle {
+    color: $text-heading;
+    text-shadow: none;
+  }
+
+  .hero-banner__subtitle {
+    color: $text-body;
+  }
+}
+
+// Side stripe — a brand-colored accent block anchors the text panel to the
+// start edge, image overlay simplified to a single-direction fade.
+.hero-banner[data-hero-layout='side_stripe'] {
+  .hero-banner__content {
+    align-items: center;
+    padding-block-end: 0;
+  }
+
+  .hero-banner__text {
+    position: relative;
+    padding-inline-start: spacer(5);
+
+    &::before {
+      position: absolute;
+      inset-block: 0.25rem;
+      inset-inline-start: 0;
+      width: 4px;
+      content: '';
+      background-color: color();
+      border-radius: $radius-pill;
+    }
+  }
+}
+
+// Bottom banner — a short, wide promotional strip rather than a tall hero;
+// content runs inline with the art instead of stacking.
+.hero-banner[data-hero-layout='bottom_banner'] {
+  .hero-banner__media {
+    aspect-ratio: 21 / 6;
+
+    @include breakpoint-up(md) {
+      aspect-ratio: 32 / 7;
+    }
+  }
+
+  .hero-banner__content {
+    align-items: center;
+    padding-block-end: 0;
+  }
+
+  .hero-banner__text {
+    display: flex;
+    flex-wrap: wrap;
+    align-items: center;
+    gap: spacer(5);
+    max-width: none;
+  }
+
+  .hero-banner__title {
+    margin-bottom: 0;
+    font-size: $font-size-2xl;
+  }
+
+  .hero-banner__subtitle {
+    display: none;
+  }
+
+  .hero-banner__actions {
+    margin-inline-start: auto;
+  }
+}

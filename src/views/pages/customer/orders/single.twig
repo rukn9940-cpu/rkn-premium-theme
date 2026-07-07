@@ -1,0 +1,123 @@
+{#
+    Single Order Page
+    ==================
+    | order.id/.reference_id/.created_at/.sub_total/.total/.cod_cost      |
+    | order.can_reorder/.can_cancel/.is_pending_payment/.pending_payment_ends_in |
+    | order.cancel_url/.payment_url                                        |
+    | order.status.{name,icon,color}                                       |
+    | order.shipping.{logo,name,number}                                    |
+    | order.items[].{product,image,name,price,quantity,total,codes,files}  |
+
+    Reference: docs.salla.dev — Single Order Page Guide.
+#}
+{% extends "layouts.customer" %}
+
+{% block title %}#{{ order.reference_id }} — {{ trans('pages.account.orders') }} | {{ store.name }}{% endblock %}
+
+{% block account_content %}
+    <div class="account-card order-single__header">
+        <div class="order-single__ref">
+            <span class="order-single__label">{{ trans('pages.thank_you.order_id') }}</span>
+            <h1 class="order-single__id">#{{ order.reference_id }}</h1>
+            <span class="order-single__date">{{ order.created_at|date }}</span>
+        </div>
+        <span class="order-status-badge order-status-badge--lg" style="--status-color: {{ order.status.color|default('#6b7280') }}">
+            {% if order.status.icon %}<i class="{{ order.status.icon }}" aria-hidden="true"></i>{% endif %}
+            {{ order.status.name }}
+        </span>
+    </div>
+
+    {% if order.is_pending_payment %}
+        <div class="account-card order-single__payment-notice">
+            <p>{{ trans('pages.orders.payment_pending') }}</p>
+            <a href="{{ order.payment_url }}" class="btn btn--primary">{{ trans('pages.orders.pay_now') }}</a>
+        </div>
+    {% endif %}
+
+    {% hook 'customer:orders.single.details.start' %}
+
+    <div class="account-card">
+        <h2 class="account-card__title">{{ trans('pages.orders.items') }}</h2>
+        <div class="order-items">
+            {% for item in order.items %}
+                <div class="order-item">
+                    {% if item.product %}
+                        <a href="{{ item.product.url }}" class="order-item__media">
+                            <img src="{{ item.image|default(item.product.image.url) }}" alt="{{ item.name }}" loading="lazy" width="64" height="64">
+                        </a>
+                    {% else %}
+                        <span class="order-item__media">
+                            <img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy" width="64" height="64">
+                        </span>
+                    {% endif %}
+
+                    <div class="order-item__body">
+                        {% if item.product %}
+                            <a href="{{ item.product.url }}" class="order-item__name">{{ item.name }}</a>
+                        {% else %}
+                            <span class="order-item__name">{{ item.name }}</span>
+                        {% endif %}
+                        <span class="order-item__meta">{{ trans('pages.products.quantity') }}: {{ item.quantity }}</span>
+                    </div>
+
+                    <strong class="order-item__total">{{ item.total|money }}</strong>
+                </div>
+            {% endfor %}
+        </div>
+    </div>
+
+    {% if order.shipping %}
+        <div class="account-card">
+            <h2 class="account-card__title">{{ trans('pages.orders.shipment_details') }}</h2>
+            <div class="order-shipping">
+                {% if order.shipping.logo %}
+                    <img src="{{ order.shipping.logo }}" alt="{{ order.shipping.name }}" class="order-shipping__logo" width="48" height="48">
+                {% endif %}
+                <div>
+                    <strong>{{ order.shipping.name }}</strong>
+                    {% if order.shipping.number %}
+                        <span class="order-shipping__number">{{ trans('pages.orders.tracking_number') }}: {{ order.shipping.number }}</span>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <salla-order-totals-card order="{{ order }}"></salla-order-totals-card>
+
+    {% hook 'customer:orders.single.details.end' %}
+
+    {% if order.can_reorder or order.can_cancel %}
+        <div class="account-card order-single__actions">
+            {% if order.can_reorder %}
+                <salla-button shape="link" onclick="document.querySelector('#reorder-modal').open()">
+                    <i class="sicon-rotate" aria-hidden="true"></i>
+                    {{ trans('pages.orders.reorder') }}
+                </salla-button>
+
+                <salla-modal id="reorder-modal" modal-title="{{ trans('pages.orders.reorder') }}" sub-title="{{ trans('pages.orders.reorder_confirmation') }}">
+                    <div slot="footer">
+                        <salla-button id="btn-reorder" data-order-id="{{ order.id }}">
+                            {{ trans('common.elements.ok') }}
+                        </salla-button>
+                    </div>
+                </salla-modal>
+            {% endif %}
+
+            {% if order.can_cancel %}
+                <salla-button shape="link" color="danger" onclick="document.querySelector('#cancel-modal').open()">
+                    <i class="sicon-cancel-circle" aria-hidden="true"></i>
+                    {{ trans('pages.orders.cancel') }}
+                </salla-button>
+
+                <salla-modal id="cancel-modal" icon="sicon-cancel" icon-style="error" modal-title="{{ trans('common.elements.warning') }}" sub-title="{{ trans('pages.orders.cancel_confirmation') }}">
+                    <div slot="footer">
+                        <a href="{{ order.cancel_url }}" class="btn btn--primary">
+                            {{ trans('common.elements.ok') }}
+                        </a>
+                    </div>
+                </salla-modal>
+            {% endif %}
+        </div>
+    {% endif %}
+{% endblock %}

@@ -1,0 +1,48 @@
+{#
+    Offers (Theme Component: home.offers)
+    =======================================
+    Promotional banner with an optional live countdown (`salla-count-down`)
+    and an optional grid of real, merchant-selected sale products.
+
+    | component.title        | string | optional heading                    |
+    | component.subtitle     | string | optional sub heading                |
+    | component.image        | string | required, banner background         |
+    | component.end_date     | string | optional, feeds salla-count-down    |
+    | component.cta_label    | string | optional                            |
+    | component.cta_url      | string | optional                            |
+    | component.products     | array  | optional, full Product entities     |
+#}
+{% if component.image %}
+    <section class="section offers" aria-label="{{ component.title|default(trans('home.offers.default_title')) }}">
+        <div class="container">
+            <div class="offers__banner" style="background-image: url('{{ component.image }}');">
+                <div class="offers__banner-overlay" aria-hidden="true"></div>
+                <div class="offers__banner-content">
+                    <h2 class="offers__title">{{ component.title|default(trans('home.offers.default_title')) }}</h2>
+                    {% if component.subtitle %}
+                        <p class="offers__subtitle">{{ component.subtitle }}</p>
+                    {% endif %}
+
+                    {% if component.end_date %}
+                        <div class="offers__countdown">
+                            <span class="offers__countdown-label">{{ trans('home.offers.countdown_ends_in') }}</span>
+                            <salla-count-down date="{{ component.end_date }}" color="light" size="sm" boxed="true"></salla-count-down>
+                        </div>
+                    {% endif %}
+
+                    {% if component.cta_label %}
+                        <a href="{{ component.cta_url|default('#') }}" class="btn btn--primary btn--lg">{{ component.cta_label }}</a>
+                    {% endif %}
+                </div>
+            </div>
+
+            {% if component.products is not empty %}
+                <div class="offers__products">
+                    {% for product in component.products %}
+                        {% include 'partials.product.card' with { product: product, reveal: true } %}
+                    {% endfor %}
+                </div>
+            {% endif %}
+        </div>
+    </section>
+{% endif %}

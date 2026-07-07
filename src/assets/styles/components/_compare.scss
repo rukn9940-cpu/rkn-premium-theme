@@ -1,0 +1,318 @@
+// -----------------------------------------------------------------------------
+// Compare Products: floating bar + comparison modal
+// Markup: views/partials/utility/{compare-bar,compare-modal}.twig
+// Behaviour: js/modules/compare.js
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Bar -------------------------------------------------------------------
+
+.compare-bar {
+  position: fixed;
+  inset-inline: 0;
+  inset-block-end: 0;
+  z-index: z('sticky');
+  transform: translateY(100%);
+  transition: transform $duration-base $easing-emphasized;
+
+  &[hidden] {
+    display: none;
+  }
+
+  &.is-open {
+    transform: none;
+  }
+}
+
+@include reduced-motion {
+  .compare-bar {
+    transition: none;
+  }
+}
+
+.compare-bar__inner {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacer(4);
+  padding: spacer(3) spacer(5);
+  background-color: $surface-0;
+  border-block-start: 1px solid $border-subtle;
+  box-shadow: $shadow-xl;
+}
+
+.compare-bar__title {
+  flex-shrink: 0;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  display: none;
+
+  @include breakpoint-up(md) {
+    display: block;
+  }
+}
+
+.compare-bar__items {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  flex: 1;
+  min-width: 0;
+  overflow-x: auto;
+}
+
+.compare-bar__item {
+  position: relative;
+  flex-shrink: 0;
+}
+
+.compare-bar__item-image {
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: $radius-md;
+  object-fit: cover;
+  background-color: $surface-100;
+  border: 1px solid $border-subtle;
+}
+
+.compare-bar__item-remove {
+  position: absolute;
+  top: -0.4rem;
+  inset-inline-end: -0.4rem;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.1rem;
+  height: 1.1rem;
+  border-radius: 50%;
+  background-color: $ink-900;
+  color: #fff;
+
+  @include focus-ring;
+}
+
+.compare-bar__actions {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+  flex-shrink: 0;
+}
+
+.compare-bar__clear {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+  white-space: nowrap;
+
+  @include focus-ring;
+
+  &:hover {
+    color: $color-danger;
+  }
+}
+
+.compare-bar__open {
+  white-space: nowrap;
+}
+
+// Modal -------------------------------------------------------------------
+
+.compare-modal {
+  position: fixed;
+  inset: 0;
+  z-index: z('modal');
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.compare-modal__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba($ink-950, 0.6);
+  opacity: 0;
+  transition: opacity $duration-base $easing-standard;
+
+  @supports (backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      backdrop-filter: blur(3px);
+    }
+  }
+}
+
+.compare-modal__panel {
+  position: relative;
+  width: min(72rem, 94vw);
+  max-height: 86vh;
+  margin: 5vh auto 0;
+  display: flex;
+  flex-direction: column;
+  overflow: hidden;
+  background-color: $surface-0;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  transition:
+    opacity $duration-base $easing-emphasized,
+    transform $duration-base $easing-emphasized;
+}
+
+.compare-modal.is-open {
+  .compare-modal__backdrop {
+    opacity: 1;
+  }
+
+  .compare-modal__panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include reduced-motion {
+  .compare-modal__backdrop,
+  .compare-modal__panel {
+    transition: none;
+  }
+}
+
+.compare-modal__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-shrink: 0;
+  padding: spacer(5) spacer(6);
+  border-block-end: 1px solid $border-subtle;
+}
+
+.compare-modal__title {
+  font-size: $font-size-lg;
+}
+
+.compare-modal__close {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2rem;
+  height: 2rem;
+  border-radius: 50%;
+  color: $text-muted;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  &:hover {
+    color: $text-heading;
+    background-color: $surface-100;
+  }
+}
+
+.compare-modal__body {
+  overflow: auto;
+  padding: spacer(6);
+}
+
+.compare-modal__empty {
+  margin-block: spacer(6);
+  color: $text-muted;
+  text-align: center;
+}
+
+// Comparison table ----------------------------------------------------------
+
+.compare-table {
+  width: 100%;
+  border-collapse: collapse;
+  table-layout: fixed;
+}
+
+.compare-table__col {
+  width: 14rem;
+  padding: spacer(4);
+  vertical-align: top;
+  text-align: center;
+  border-inline-start: 1px solid $border-subtle;
+}
+
+.compare-table__remove {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 1.5rem;
+  height: 1.5rem;
+  margin-block-end: spacer(2);
+  border-radius: 50%;
+  color: $text-muted;
+  font-size: $font-size-md;
+  line-height: 1;
+
+  @include focus-ring;
+
+  &:hover {
+    color: $color-danger;
+  }
+}
+
+.compare-table__product {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(2);
+  color: $text-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+
+  @include line-clamp(2);
+  @include focus-ring;
+
+  img {
+    width: 5.5rem;
+    height: 5.5rem;
+    border-radius: $radius-md;
+    object-fit: cover;
+    background-color: $surface-100;
+  }
+}
+
+.compare-table__add {
+  display: block;
+  margin-top: spacer(3);
+}
+
+.compare-table tbody tr:nth-child(odd) {
+  background-color: $surface-100;
+}
+
+.compare-table tbody td,
+.compare-table__row-label {
+  padding: spacer(3) spacer(4);
+  font-size: $font-size-sm;
+  text-align: center;
+  border-inline-start: 1px solid $border-subtle;
+}
+
+.compare-table__row-label {
+  text-align: start;
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+  white-space: nowrap;
+  border-inline-start: 0;
+}
+
+.compare-table__price-regular {
+  margin-inline-start: spacer(1);
+  color: $text-muted;
+  font-size: $font-size-xs;
+}
+
+.compare-table__stock {
+  font-weight: $font-weight-semibold;
+  color: $color-success;
+
+  &.is-out {
+    color: $color-danger;
+  }
+}
+

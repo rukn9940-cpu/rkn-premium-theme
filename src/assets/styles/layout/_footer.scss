@@ -1,0 +1,165 @@
+// -----------------------------------------------------------------------------
+// Footer
+// Markup: views/components/footer/footer.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.footer {
+  position: relative;
+  background-color: $ink-950;
+  color: rgba(255, 255, 255, 0.7);
+
+  // Faint brand-colored glow along the top seam — a small, premium
+  // "enterprise store" signature rather than a flat hard edge.
+  &::before {
+    position: absolute;
+    top: 0;
+    inset-inline: 0;
+    height: 1px;
+    content: '';
+    background: linear-gradient(
+      90deg,
+      transparent 0%,
+      color-mix(in srgb, color() 55%, transparent) 50%,
+      transparent 100%
+    );
+  }
+}
+
+.footer__top {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(7);
+  padding-block: spacer(9);
+  border-block-end: 1px solid rgba(255, 255, 255, 0.08);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 2fr repeat(3, 1fr);
+    gap: spacer(5);
+  }
+}
+
+.footer__brand {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(4);
+
+  .header__logo-text {
+    color: #fff;
+  }
+}
+
+.footer__description {
+  max-width: 26rem;
+  color: rgba(255, 255, 255, 0.6);
+  font-size: $font-size-sm;
+  line-height: 1.7;
+}
+
+.footer__col-title {
+  margin-bottom: spacer(4);
+  color: #fff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.08em;
+  text-transform: uppercase;
+}
+
+// Sits inside `.footer__brand`'s flex flow (already spaced via `gap`)
+// rather than a standalone column, so it needs a lighter, more compact
+// treatment than the other `.footer__col-title` instances.
+.footer__col-title--social {
+  margin-bottom: 0;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.footer__bottom {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacer(3);
+  padding-block: spacer(5);
+  font-size: $font-size-xs;
+}
+
+.footer__copyright {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+.footer__payments-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.footer__payments-label {
+  color: rgba(255, 255, 255, 0.55);
+}
+
+// Light-on-dark overrides for Salla's own web components rendered in the
+// footer — they ship with sensible defaults, this only nudges link color to
+// match the surrounding dark surface.
+.footer__menu,
+.footer__contacts {
+  --s-color: #{rgba(255, 255, 255, 0.7)};
+
+  display: block;
+  color: rgba(255, 255, 255, 0.7);
+  font-size: $font-size-sm;
+  line-height: $line-height-relaxed;
+}
+
+.footer__menu a,
+.footer__contacts a {
+  transition: color $duration-fast $easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.footer__social,
+.footer__apps {
+  --s-color: #{rgba(255, 255, 255, 0.85)};
+}
+
+.footer__social a {
+  transition:
+    transform $duration-fast $easing-emphasized,
+    color $duration-fast $easing-standard;
+  display: inline-flex;
+
+  @media (hover: hover) {
+    &:hover {
+      color: color();
+      transform: translateY(-2px);
+    }
+  }
+}
+
+@include reduced-motion {
+  .footer__social a:hover {
+    transform: none;
+  }
+}
+
+.footer__payments {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacer(2);
+}
+
+.footer__payments img {
+  border-radius: $radius-sm;
+  background-color: #fff;
+}

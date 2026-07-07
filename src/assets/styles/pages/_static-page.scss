@@ -1,0 +1,106 @@
+// -----------------------------------------------------------------------------
+// Static / CMS page (About, FAQ, Terms, Contact, ...)
+// Markup: views/pages/page-single.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.static-page {
+  padding-block: spacer(5) spacer(8);
+}
+
+.static-page__title {
+  margin-block: spacer(4) spacer(5);
+}
+
+// Rich, merchant-authored HTML from `page.content|raw` — give every element
+// sane, on-brand defaults since we don't control the markup shape.
+.content-entry {
+  color: $text-body;
+  line-height: 1.8;
+  max-width: 60rem;
+
+  > * + * {
+    margin-top: spacer(4);
+  }
+
+  h2,
+  h3,
+  h4 {
+    color: $text-heading;
+    margin-top: spacer(6);
+  }
+
+  ul,
+  ol {
+    padding-inline-start: spacer(5);
+  }
+
+  li + li {
+    margin-top: spacer(2);
+  }
+
+  a {
+    color: color();
+    text-decoration: underline;
+  }
+
+  img {
+    max-width: 100%;
+    height: auto;
+    border-radius: $radius-md;
+  }
+
+  table {
+    width: 100%;
+    border-collapse: collapse;
+  }
+
+  th,
+  td {
+    padding: spacer(2) spacer(3);
+    border: 1px solid $border-subtle;
+    text-align: start;
+  }
+
+  blockquote {
+    padding-inline-start: spacer(4);
+    border-inline-start: 3px solid color();
+    color: $text-muted;
+    font-style: italic;
+  }
+}
+
+// Contact page ---------------------------------------------------------------
+
+.static-page__contact-grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(6);
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 1fr 1.2fr;
+  }
+}
+
+.static-page__contact-info {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+}
+
+.static-page__contact-social {
+  padding-top: spacer(3);
+  border-top: 1px solid $border-subtle;
+}
+
+.contact-form {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+  padding: spacer(6);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+}

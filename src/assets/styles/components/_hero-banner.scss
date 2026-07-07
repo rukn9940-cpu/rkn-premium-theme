@@ -1,0 +1,132 @@
+// -----------------------------------------------------------------------------
+// Hero banner
+// Markup: views/components/home/hero-banner.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.hero-banner {
+  position: relative;
+}
+
+.hero-banner__carousel {
+  position: relative;
+}
+
+.hero-banner__track {
+  scroll-snap-type: x mandatory;
+}
+
+.hero-banner__slide {
+  position: relative;
+  width: 100%;
+}
+
+.hero-banner__media {
+  display: block;
+  width: 100%;
+  aspect-ratio: 16 / 10;
+
+  @include breakpoint-up(md) {
+    aspect-ratio: 21 / 9;
+  }
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.hero-banner__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to top,
+    rgba($ink-950, 0.75) 0%,
+    rgba($ink-950, 0.25) 45%,
+    rgba($ink-950, 0.05) 100%
+  );
+
+  @include ltr {
+    background: linear-gradient(
+      75deg,
+      rgba($ink-950, 0.78) 0%,
+      rgba($ink-950, 0.35) 45%,
+      rgba($ink-950, 0.05) 80%
+    );
+  }
+
+  @include rtl {
+    background: linear-gradient(
+      285deg,
+      rgba($ink-950, 0.78) 0%,
+      rgba($ink-950, 0.35) 45%,
+      rgba($ink-950, 0.05) 80%
+    );
+  }
+}
+
+.hero-banner__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  align-items: flex-end;
+  padding-block-end: spacer(6);
+
+  @include breakpoint-up(md) {
+    align-items: center;
+    padding-block-end: 0;
+  }
+}
+
+.hero-banner__text {
+  max-width: 38rem;
+
+  // Fixed literal white — this text sits directly on merchant photography,
+  // not the theme's adaptive surface, so it must not flip with dark mode.
+  color: #fff;
+}
+
+.hero-banner__title {
+  color: #fff;
+  font-size: $font-size-5xl;
+  letter-spacing: $letter-spacing-tighter;
+  line-height: $line-height-tight;
+  text-shadow: 0 2px 24px rgba(5, 7, 10, 0.35);
+  margin-bottom: spacer(4);
+  animation: fade-in-up $duration-slower $easing-decelerate both;
+  animation-delay: 80ms;
+}
+
+.hero-banner__subtitle {
+  color: rgba(255, 255, 255, 0.88);
+  font-size: $font-size-lg;
+  max-width: 32rem;
+  margin-bottom: spacer(6);
+  animation: fade-in-up $duration-slower $easing-decelerate both;
+  animation-delay: 160ms;
+}
+
+.hero-banner__actions {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacer(3);
+  animation: fade-in-up $duration-slower $easing-decelerate both;
+  animation-delay: 240ms;
+}
+
+@include reduced-motion {
+  .hero-banner__title,
+  .hero-banner__subtitle,
+  .hero-banner__actions {
+    animation: none;
+  }
+}
+
+.hero-banner__dots {
+  position: absolute;
+  bottom: spacer(4);
+  inset-inline: 0;
+  margin-top: 0;
+}

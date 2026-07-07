@@ -1,0 +1,223 @@
+// -----------------------------------------------------------------------------
+// Mixins
+// -----------------------------------------------------------------------------
+
+@use 'sass:map';
+@use 'breakpoints' as bp;
+@use 'variables' as vars;
+
+/// Mobile-first media query — applies styles from `$name` upward.
+/// @param {String} $name — key from `$breakpoints`
+@mixin breakpoint-up($name) {
+  @if not map.has-key(bp.$breakpoints, $name) {
+    @error 'Unknown breakpoint `#{$name}`. Available: #{map.keys(bp.$breakpoints)}';
+  }
+
+  @media (min-width: map.get(bp.$breakpoints, $name)) {
+    @content;
+  }
+}
+
+/// Constrain styles to a viewport range (inclusive lower, exclusive upper).
+/// Use sparingly — prefer `breakpoint-up` for mobile-first cascades.
+@mixin breakpoint-between($lower, $upper) {
+  @media (min-width: map.get(bp.$breakpoints, $lower)) and (max-width: map.get(bp.$breakpoints, $upper) - 1px) {
+    @content;
+  }
+}
+
+/// Scope a block of styles to right-to-left reading direction.
+/// Prefer CSS logical properties over this mixin whenever possible; reserve
+/// it for the rare cases logical properties cannot express (e.g. background
+/// image positioning, transforms).
+@mixin rtl {
+  [dir='rtl'] & {
+    @content;
+  }
+}
+
+/// Scope a block of styles to left-to-right reading direction.
+@mixin ltr {
+  [dir='ltr'] & {
+    @content;
+  }
+}
+
+/// Visually hide content while keeping it available to assistive tech.
+/// @see https://www.w3.org/WAI/tutorials/forms/labels/#note-on-hiding-elements
+@mixin visually-hidden {
+  position: absolute;
+  width: 1px;
+  height: 1px;
+  padding: 0;
+  margin: -1px;
+  overflow: hidden;
+  clip: rect(0, 0, 0, 0);
+  white-space: nowrap;
+  border: 0;
+}
+
+/// Reverse `visually-hidden`, e.g. for a skip-link that appears on focus.
+@mixin visually-shown {
+  position: static;
+  width: auto;
+  height: auto;
+  padding: inherit;
+  margin: inherit;
+  overflow: visible;
+  clip: auto;
+  white-space: normal;
+}
+
+/// Consistent, WCAG-AA-compliant focus indicator.
+/// Uses `:focus-visible` so mouse users aren't shown a ring on click.
+@mixin focus-ring {
+  &:focus {
+    outline: none;
+  }
+
+  &:focus-visible {
+    outline: vars.$focus-ring-width solid currentcolor;
+    outline-offset: vars.$focus-ring-offset;
+  }
+}
+
+/// Enforce the WCAG 2.5.8 (AA) minimum interactive target size.
+@mixin min-tap-target {
+  min-width: vars.$min-tap-target;
+  min-height: vars.$min-tap-target;
+}
+
+/// Respect the user's reduced-motion preference.
+@mixin reduced-motion {
+  @media (prefers-reduced-motion: reduce) {
+    @content;
+  }
+}
+
+/// Truncate text to a fixed number of lines with an ellipsis.
+/// @param {Number} $lines [2]
+@mixin line-clamp($lines: 2) {
+  display: -webkit-box;
+  overflow: hidden;
+  -webkit-box-orient: vertical;
+  -webkit-line-clamp: $lines;
+}
+
+/// Shared lift-and-shadow hover treatment for card-style components
+/// (category cards, product cards, ...). No-ops under reduced motion.
+/// @param {Length} $lift [-4px]
+@mixin card-hover($lift: -4px) {
+  transition:
+    transform vars.$duration-base vars.$easing-emphasized,
+    box-shadow vars.$duration-base vars.$easing-standard,
+    border-color vars.$duration-base vars.$easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY($lift);
+    }
+  }
+
+  @include reduced-motion {
+    transition: box-shadow vars.$duration-base vars.$easing-standard;
+
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}
+
+/// Translucent, blurred "glass" surface for chrome overlays (sticky header,
+/// mega menu, drawers). Always ships a solid fallback background first so
+/// browsers without `backdrop-filter` support — and users who have disabled
+/// transparency effects — still get a fully opaque, legible surface.
+/// @param {Color} $bg — solid fallback + tinted glass background
+/// @param {Color} $border
+@mixin glass-surface($bg: vars.$glass-bg-dark, $border: vars.$glass-border-dark) {
+  background-color: $bg;
+  border-color: $border;
+
+  @supports (backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      backdrop-filter: blur(vars.$glass-blur) saturate(1.4);
+    }
+  }
+}
+
+/// Shimmering skeleton placeholder for async/loading content. Apply to an
+/// element in place of its real content (matching dimensions) while data is
+/// in flight, e.g. product cards/images before they hydrate.
+@mixin skeleton {
+  position: relative;
+  overflow: hidden;
+  background-color: vars.$surface-200;
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background-image: linear-gradient(90deg, transparent, rgba(255, 255, 255, 0.55), transparent);
+    animation: skeleton-shimmer 1.6s ease-in-out infinite;
+  }
+
+  @include reduced-motion {
+    &::after {
+      animation: none;
+    }
+  }
+}
+
+/// Tactile "press" feedback for buttons/interactive controls.
+@mixin button-press {
+  transition:
+    transform vars.$duration-fast vars.$easing-standard,
+    box-shadow vars.$duration-base vars.$easing-standard,
+    background-color vars.$duration-fast vars.$easing-standard,
+    border-color vars.$duration-fast vars.$easing-standard,
+    color vars.$duration-fast vars.$easing-standard;
+
+  &:active {
+    transform: scale(0.97);
+  }
+
+  @include reduced-motion {
+    transition:
+      box-shadow vars.$duration-base vars.$easing-standard,
+      background-color vars.$duration-fast vars.$easing-standard,
+      border-color vars.$duration-fast vars.$easing-standard,
+      color vars.$duration-fast vars.$easing-standard;
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+/// Fade-and-rise entrance for `[data-reveal]` elements toggled by
+/// `modules/scroll-reveal.js`. Scoped to `html.js` so visitors without
+/// JavaScript (or if the bundle fails to load) always see fully visible,
+/// unanimated content — this is a decorative enhancement, never a
+/// content-hiding mechanism. Also no-ops under reduced motion.
+@mixin reveal-on-scroll {
+  html.js & {
+    opacity: 0;
+    transform: translateY(16px);
+    transition:
+      opacity vars.$duration-slower vars.$easing-decelerate,
+      transform vars.$duration-slower vars.$easing-decelerate;
+
+    &.is-visible {
+      opacity: 1;
+      transform: none;
+    }
+
+    @include reduced-motion {
+      opacity: 1;
+      transform: none;
+      transition: none;
+    }
+  }
+}

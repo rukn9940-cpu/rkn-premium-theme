@@ -1,0 +1,99 @@
+{#
+    Blog Listing Page (required path: src/views/pages/blog/index.twig)
+    =====================================================================
+    | slides             | array | optional featured articles for a slider |
+    | articles[]          | array | title, url, summary, image, created_at, |
+    |                     |       | author, tags, likes_count, comments_count |
+    | articles.next_page | string | fed to salla-infinite-scroll             |
+    | categories[]        | array | name, url                                |
+
+    Reference: docs.salla.dev — Blog Listing Page.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ page.title|default(trans('pages.blog.title'))|striptags }} | {{ store.name }}{% endblock %}
+
+{% block canonical %}<link rel="canonical" href="{{ page('blog') }}">{% endblock %}
+
+{% block content %}
+    <div class="container blog-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <div class="blog-page__head">
+            <h1 class="blog-page__title">{{ page.title|default(trans('pages.blog.title')) }}</h1>
+
+            {% if categories is not empty %}
+                <nav class="blog-page__categories" aria-label="{{ trans('pages.blog.categories') }}">
+                    {% for category in categories %}
+                        <a href="{{ category.url }}" class="blog-page__category-chip">{{ category.name }}</a>
+                    {% endfor %}
+                </nav>
+            {% endif %}
+        </div>
+
+        {% if slides is not empty %}
+            <div class="carousel blog-page__slider" data-carousel data-autoplay="7000">
+                <div class="carousel__viewport">
+                    <ul class="carousel__track">
+                        {% for slide in slides %}
+                            <li class="carousel__slide blog-slide">
+                                <a href="{{ slide.url }}" class="blog-slide__link">
+                                    {% if slide.has_image %}
+                                        <img src="{{ slide.image.url }}" alt="{{ slide.image.alt|default(slide.title) }}" loading="lazy" width="960" height="420">
+                                    {% endif %}
+                                    <div class="blog-slide__content">
+                                        {% if slide.author %}<span class="blog-slide__author">{{ slide.author.name }}</span>{% endif %}
+                                        <h2 class="blog-slide__title">{{ slide.title }}</h2>
+                                        {% if slide.summary %}<p class="blog-slide__summary">{{ slide.summary }}</p>{% endif %}
+                                    </div>
+                                </a>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+                {% if slides|length > 1 %}
+                    <div class="carousel__dots" data-carousel-dots></div>
+                {% endif %}
+            </div>
+        {% endif %}
+
+        {% if articles|length %}
+            <salla-infinite-scroll next-page="{{ articles.next_page }}" item=".blog-card" next-page.autoload>
+                <div class="blog-page__grid">
+                    {% for article in articles %}
+                        <article class="blog-card">
+                            <a href="{{ article.url }}" class="blog-card__media">
+                                {% if article.has_image %}
+                                    <img src="{{ article.image.url }}" alt="{{ article.image.alt|default(article.title) }}" loading="lazy" width="420" height="260">
+                                {% else %}
+                                    <img src="{{ asset('images/placeholder.svg') }}" alt="" loading="lazy" width="420" height="260">
+                                {% endif %}
+                            </a>
+                            <div class="blog-card__body">
+                                <div class="blog-card__meta">
+                                    <span>{{ article.created_at|date }}</span>
+                                    {% if article.author %}<span>{{ article.author.name }}</span>{% endif %}
+                                </div>
+                                <h2 class="blog-card__title">
+                                    <a href="{{ article.url }}">{{ article.title }}</a>
+                                </h2>
+                                {% if article.summary %}
+                                    <p class="blog-card__summary">{{ article.summary }}</p>
+                                {% endif %}
+                                {% if article.tags is not empty %}
+                                    <div class="blog-card__tags">
+                                        {% for tag in article.tags %}
+                                            <a href="{{ tag.url }}" class="blog-card__tag">{{ tag.name }}</a>
+                                        {% endfor %}
+                                    </div>
+                                {% endif %}
+                            </div>
+                        </article>
+                    {% endfor %}
+                </div>
+            </salla-infinite-scroll>
+        {% else %}
+            <p class="blog-page__empty">{{ trans('pages.blog_categories.no_articles') }}</p>
+        {% endif %}
+    </div>
+{% endblock %}

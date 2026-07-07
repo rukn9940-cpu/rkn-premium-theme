@@ -1,0 +1,45 @@
+{#
+    Photo Gallery (Theme Component: home.gallery)
+    =================================================
+    Lightweight image grid — lookbooks, in-store photography, seasonal
+    campaigns. Each tile is optionally clickable.
+
+    | component.title            | string|null |                          |
+    | component.images[].image   | string      |                          |
+    | component.images[].caption | string|null |                          |
+    | component.images[].url     | string|null |                          |
+#}
+{% if component.images is not empty %}
+    <section class="section gallery-block" aria-label="{{ component.title|default(trans('home.gallery.default_title')) }}">
+        <div class="container">
+            {% if component.title %}
+                <div class="section__head">
+                    <div class="section__heading">
+                        <h2 class="section__title">{{ component.title }}</h2>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="gallery-block__grid">
+                {% for item in component.images %}
+                    {% set tag = item.url ? 'a' : 'div' %}
+                    <{{ tag }}
+                        class="gallery-block__item"
+                        {% if item.url %}href="{{ item.url }}"{% endif %}
+                    >
+                        <img
+                            src="{{ item.image }}"
+                            alt="{{ item.caption|default('') }}"
+                            loading="lazy"
+                            width="400"
+                            height="400"
+                        >
+                        {% if item.caption %}
+                            <span class="gallery-block__caption">{{ item.caption }}</span>
+                        {% endif %}
+                    </{{ tag }}>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

@@ -1,0 +1,96 @@
+// -----------------------------------------------------------------------------
+// Floating actions: Back to top, WhatsApp
+// Markup: views/partials/utility/{back-to-top,whatsapp-button}.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.back-to-top,
+.whatsapp-button {
+  position: fixed;
+  inset-block-end: spacer(5);
+  z-index: z('sticky');
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 3rem;
+  height: 3rem;
+  border-radius: 50%;
+  box-shadow: $shadow-lg;
+
+  @include focus-ring;
+  @include min-tap-target;
+}
+
+.back-to-top {
+  inset-inline-end: spacer(4);
+  background-color: $ink-900;
+  color: #fff;
+  border: 0;
+  opacity: 0;
+  transform: translateY(0.5rem);
+  transition:
+    opacity $duration-base $easing-standard,
+    transform $duration-base $easing-standard,
+    background-color $duration-base $easing-standard,
+    inset-block-end $duration-base $easing-standard;
+
+  &:not([hidden]) {
+    opacity: 1;
+    transform: translateY(0);
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: color();
+    }
+  }
+
+  @include reduced-motion {
+    transition:
+      opacity $duration-base $easing-standard,
+      background-color $duration-base $easing-standard;
+  }
+}
+
+.whatsapp-button {
+  inset-inline-start: spacer(4);
+  background-color: #25d366;
+  color: #fff;
+  transition: inset-block-end $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: #1fb855;
+    }
+  }
+
+  @include reduced-motion {
+    transition: none;
+  }
+}
+
+// Keep the WhatsApp button from overlapping Back to Top when both render on
+// the same (narrow) viewport — they already sit on opposite inline edges,
+// this only nudges them clear of a potential mobile app install banner.
+@include breakpoint-up(sm) {
+  .back-to-top,
+  .whatsapp-button {
+    inset-block-end: spacer(6);
+  }
+}
+
+// Lift clear of the product page's sticky add-to-cart bar, or the Compare
+// bar (see `js/modules/compare.js`), while either is visible, so none of
+// these fixed-position elements ever overlap.
+html.has-sticky-atc,
+html.has-compare-bar {
+  .back-to-top,
+  .whatsapp-button {
+    inset-block-end: calc(#{spacer(5)} + 4.5rem);
+
+    @include breakpoint-up(sm) {
+      inset-block-end: calc(#{spacer(6)} + 4.75rem);
+    }
+  }
+}

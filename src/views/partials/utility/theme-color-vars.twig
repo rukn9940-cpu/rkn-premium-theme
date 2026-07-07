@@ -1,0 +1,101 @@
+{#
+    Theme color resolution
+    ======================
+    Resolves the merchant's brand color into the `--color-primary*` CSS
+    custom properties every component reads via the `color()` Sass function
+    (see `assets/styles/abstracts/_functions.scss`), plus the
+    `<meta name="theme-color">` mobile browser-chrome tint.
+
+    Two sources, in priority order:
+      1. The theme's own "نظام الألوان الجاهز" (Color Preset) Theme Setting
+         (`color_preset`) — one of 10 curated, WCAG AA-checked palettes.
+         Switching presets is instant from the Partners Portal, no code
+         changes or rebuild required.
+      2. Salla's native "Theme Features → Color" picker (`theme.color`),
+         used whenever the preset is left on its default "Custom" value —
+         preserves the original single-color-picker behavior for merchants
+         who don't want a full preset.
+
+    Included once from `layouts/master.twig`.
+#}
+{% set color_preset = theme.settings.get('color_preset', 'custom') %}
+
+{% if color_preset == 'professional_blue' %}
+    {% set preset_primary = '#2563EB' %}
+    {% set preset_dark = '#1D4ED8' %}
+    {% set preset_light = '#DBEAFE' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'midnight_black' %}
+    {% set preset_primary = '#15171C' %}
+    {% set preset_dark = '#000000' %}
+    {% set preset_light = '#E7E8EA' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'emerald' %}
+    {% set preset_primary = '#0F7A54' %}
+    {% set preset_dark = '#0B5F41' %}
+    {% set preset_light = '#D7F0E4' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'royal_purple' %}
+    {% set preset_primary = '#6D28D9' %}
+    {% set preset_dark = '#5B21B6' %}
+    {% set preset_light = '#EDE4FD' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'orange' %}
+    {% set preset_primary = '#C2410C' %}
+    {% set preset_dark = '#9A3412' %}
+    {% set preset_light = '#FDE3D2' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'red' %}
+    {% set preset_primary = '#D92D3F' %}
+    {% set preset_dark = '#AC2432' %}
+    {% set preset_light = '#FBE0E2' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'minimal_white' %}
+    {# A true white/near-white primary would fail contrast for the many
+       components that assume white text-on-primary (badges, spinners,
+       overlays). "Minimal" here means the Apple-style pairing of a soft
+       graphite accent against the theme's already-white content canvas. #}
+    {% set preset_primary = '#1F2024' %}
+    {% set preset_dark = '#000000' %}
+    {% set preset_light = '#F1F1F2' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'luxury_gold' %}
+    {% set preset_primary = '#C9974C' %}
+    {% set preset_dark = '#8A6427' %}
+    {% set preset_light = '#F3E4C7' %}
+    {% set preset_text = '#1A1206' %}
+{% elseif color_preset == 'navy' %}
+    {% set preset_primary = '#1E3A5F' %}
+    {% set preset_dark = '#16293F' %}
+    {% set preset_light = '#DEE6EF' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'dark_mode' %}
+    {% set preset_primary = '#333846' %}
+    {% set preset_dark = '#21242C' %}
+    {% set preset_light = '#E2E4E9' %}
+    {% set preset_text = '#FFFFFF' %}
+{% endif %}
+
+{% if preset_primary %}
+    <meta name="theme-color" content="{{ preset_primary }}">
+    <style>
+        :root {
+            --color-primary: {{ preset_primary }};
+            --color-primary-dark: {{ preset_dark }};
+            --color-primary-light: {{ preset_light }};
+            --color-primary-text: {{ preset_text }};
+            --color-primary-reverse: {{ preset_dark }};
+        }
+    </style>
+{% elseif theme.color %}
+    <meta name="theme-color" content="{{ theme.color.primary }}">
+    <style>
+        :root {
+            --color-primary: {{ theme.color.primary }};
+            --color-primary-dark: {{ theme.color.darker(0.15) }};
+            --color-primary-light: {{ theme.color.lighter(0.15) }};
+            --color-primary-text: {{ theme.color.text }};
+            --color-primary-reverse: {{ theme.color.reverse_text }};
+        }
+    </style>
+{% endif %}

@@ -1,0 +1,118 @@
+// -----------------------------------------------------------------------------
+// Typography (base)
+// Document-level defaults plus the heading scale shared by every section.
+// Custom @font-face declarations are added here only if a self-hosted brand
+// font is introduced later — merchants can already assign a font family via
+// the Twilight "fonts" feature (`--font-main`, set in master.twig).
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+html {
+  // Respect the visitor's OS/browser font-size preference; never disable
+  // zoom or hardcode a pixel root size — `--font-scale` (Theme Settings →
+  // "حجم الخط العام", resolved in `partials/utility/design-system-vars.twig`)
+  // only applies a merchant-chosen multiplier on top of whatever the
+  // visitor's own browser/OS setting already resolves `100%` to, since every
+  // component size is authored in `rem`.
+  font-size: calc(100% * var(--font-scale, 1));
+}
+
+body {
+  font-size: $font-size-base;
+  line-height: $line-height-base;
+  font-family:
+    var(--font-main, system-ui),
+    -apple-system,
+    BlinkMacSystemFont,
+    'Segoe UI',
+    Tahoma,
+    Arial,
+    sans-serif;
+  font-feature-settings: 'kern' 1;
+  text-rendering: optimizespeed;
+  -webkit-font-smoothing: antialiased;
+  -moz-osx-font-smoothing: grayscale;
+}
+
+// `theme.font.url` (see master.twig) is injected server-side when the
+// `fonts` feature is enabled; `--font-main` above already defers to it.
+// A project-specific self-hosted family can be declared here later, e.g.:
+// @font-face {
+//   font-family: 'Brand Sans';
+//   src: url('../fonts/brand-sans-400.woff2') format('woff2');
+//   font-weight: 400;
+//   font-style: normal;
+//   font-display: swap;
+// }
+
+h1,
+h2,
+h3,
+h4,
+h5,
+h6 {
+  margin: 0;
+  font-weight: $font-weight-bold;
+  line-height: $line-height-tight;
+  letter-spacing: $letter-spacing-tight;
+  color: $text-heading;
+}
+
+h1 {
+  font-size: $font-size-4xl;
+  letter-spacing: $letter-spacing-tighter;
+}
+
+h2 {
+  font-size: $font-size-3xl;
+  letter-spacing: $letter-spacing-tighter;
+}
+
+h3 {
+  font-size: $font-size-2xl;
+}
+
+h4 {
+  font-size: $font-size-xl;
+}
+
+h5 {
+  font-size: $font-size-lg;
+  letter-spacing: normal;
+}
+
+h6 {
+  font-size: $font-size-md;
+  letter-spacing: normal;
+}
+
+p {
+  margin: 0;
+  color: $text-body;
+  line-height: $line-height-base;
+}
+
+a {
+  color: inherit;
+  text-decoration: none;
+}
+
+// Tabular figures keep prices/countdowns from jittering horizontally as
+// digits change — small but noticeable premium-feel detail.
+.price,
+.js-countdown,
+[data-price] {
+  font-variant-numeric: tabular-nums;
+}
+
+ul,
+ol {
+  margin: 0;
+  padding: 0;
+  list-style: none;
+}
+
+button {
+  font-family: inherit;
+}

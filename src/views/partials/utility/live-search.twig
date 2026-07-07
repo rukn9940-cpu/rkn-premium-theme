@@ -1,0 +1,62 @@
+{#
+    Live Search
+    ===========
+    Theme Settings → "تفعيل البحث الفوري" (`live_search_enabled`); only
+    included when enabled — see `components/header/header.twig`, which falls
+    back to Salla's native `<salla-search>` otherwise.
+
+    Custom instant-search overlay. Product suggestions come straight from
+    the real, documented Twilight SDK endpoint (`salla.product.search()`);
+    the Categories/Brands groups shown alongside them are simply the unique
+    `product.category`/`product.brand` already present on those same
+    matched products — Salla has no separate category/brand search
+    endpoint, so this is the only honest way to surface them live without
+    inventing data. Full keyboard navigation (Arrow Up/Down, Enter, Escape).
+    See `js/modules/live-search.js`.
+#}
+<div
+    class="live-search"
+    id="live-search"
+    data-live-search
+    data-label-products="{{ trans('search.products') }}"
+    data-label-categories="{{ trans('search.categories') }}"
+    data-label-brands="{{ trans('search.brands') }}"
+    data-label-hint="{{ trans('search.hint') }}"
+    data-label-empty="{{ trans('search.no_results') }}"
+    data-label-error="{{ trans('search.error') }}"
+    hidden
+>
+    <div class="live-search__backdrop" data-live-search-close></div>
+    <div class="live-search__panel" role="dialog" aria-modal="true" aria-label="{{ trans('nav.search') }}">
+        <form class="live-search__form" role="search" data-live-search-form>
+            <svg class="live-search__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+                <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+            <input
+                type="search"
+                name="q"
+                class="live-search__input"
+                data-live-search-input
+                placeholder="{{ trans('search.placeholder') }}"
+                autocomplete="off"
+                spellcheck="false"
+                aria-label="{{ trans('nav.search') }}"
+                aria-expanded="false"
+                aria-controls="live-search-results"
+                aria-autocomplete="list"
+                role="combobox"
+            >
+            <span class="live-search__spinner" data-live-search-spinner aria-hidden="true"></span>
+            <button type="button" class="live-search__close" data-live-search-close aria-label="{{ trans('nav.close_menu') }}">
+                <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+            </button>
+        </form>
+
+        <div class="live-search__body" id="live-search-results" data-live-search-results>
+            <p class="live-search__hint">{{ trans('search.hint') }}</p>
+        </div>
+    </div>
+</div>

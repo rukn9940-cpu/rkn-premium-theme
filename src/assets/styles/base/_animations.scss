@@ -1,0 +1,78 @@
+// -----------------------------------------------------------------------------
+// Shared keyframe animations
+// Centralised so components reuse the same motion vocabulary instead of
+// redefining near-duplicate keyframes. Respect `prefers-reduced-motion` at
+// the call site (see `abstracts/_mixins.scss` → `reduced-motion`).
+// -----------------------------------------------------------------------------
+
+@keyframes skeleton-shimmer {
+  0% {
+    transform: translateX(-100%);
+  }
+
+  100% {
+    transform: translateX(100%);
+  }
+}
+
+@keyframes fade-in {
+  from {
+    opacity: 0;
+  }
+
+  to {
+    opacity: 1;
+  }
+}
+
+@keyframes fade-in-up {
+  from {
+    opacity: 0;
+    transform: translateY(16px);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes scale-in {
+  from {
+    opacity: 0;
+    transform: scale(0.94);
+  }
+
+  to {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@keyframes spin {
+  to {
+    transform: rotate(360deg);
+  }
+}
+
+// Uses `currentColor` (not the brand color) so it adapts to whatever
+// semantic color the element already has — e.g. `$color-success` on the
+// thank-you page's confirmation icon.
+@keyframes pulse-ring {
+  0% {
+    box-shadow: 0 0 0 0 color-mix(in srgb, currentcolor 45%, transparent);
+  }
+
+  100% {
+    box-shadow: 0 0 0 12px color-mix(in srgb, currentcolor 0%, transparent);
+  }
+}
+
+// Button ripple — see `js/modules/ripple.js` and the `.ripple__wave` element
+// it creates (styled in `components/_button.scss`).
+@keyframes ripple-wave {
+  to {
+    opacity: 0;
+    transform: scale(1);
+  }
+}

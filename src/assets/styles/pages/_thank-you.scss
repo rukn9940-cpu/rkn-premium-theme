@@ -1,0 +1,133 @@
+// -----------------------------------------------------------------------------
+// Thank you (order confirmation) page
+// Markup: views/pages/thank-you.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.thank-you-page {
+  padding-block: spacer(7) spacer(9);
+}
+
+.thank-you-message {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  max-width: 32rem;
+  margin-inline: auto;
+  text-align: center;
+  padding-block-end: spacer(6);
+}
+
+.thank-you-message__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 5rem;
+  height: 5rem;
+  margin-bottom: spacer(2);
+  border-radius: 50%;
+  background-color: $color-success-tint;
+  color: $color-success;
+  animation:
+    scale-in $duration-slower $easing-emphasized both,
+    pulse-ring 1.8s ease-out 1;
+
+  svg {
+    width: 2.25rem;
+    height: 2.25rem;
+  }
+
+  @include reduced-motion {
+    animation: scale-in $duration-slower $easing-decelerate both;
+  }
+}
+
+.thank-you-message__subtitle {
+  color: $text-muted;
+}
+
+.thank-you-message__ref {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.thank-you-message__ref-value {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(2);
+  padding-inline: spacer(3);
+  padding-block: spacer(1);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-pill;
+  font-weight: $font-weight-semibold;
+  color: $text-heading;
+  background: none;
+  cursor: pointer;
+  transition:
+    border-color $duration-fast $easing-standard,
+    color $duration-fast $easing-standard,
+    background-color $duration-fast $easing-standard;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: color();
+      color: color();
+    }
+  }
+
+  &.is-copied {
+    background-color: $color-success-tint;
+    border-color: $color-success;
+    color: $color-success;
+  }
+}
+
+.thank-you-message__actions {
+  display: flex;
+  flex-wrap: wrap;
+  justify-content: center;
+  gap: spacer(3);
+  margin-top: spacer(2);
+}
+
+.thank-you-message__email-note {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.thank-you-instructions {
+  max-width: 40rem;
+  margin-inline: auto;
+  margin-bottom: spacer(6);
+  padding: spacer(5);
+  background-color: $surface-100;
+  border-radius: $radius-lg;
+  color: $text-body;
+  line-height: $line-height-relaxed;
+}
+
+// Combined with `.account-card` in markup for the card chrome (background,
+// border, radius, shadow, padding) — this only adds page-specific centering.
+.thank-you-summary {
+  max-width: 40rem;
+  margin-inline: auto;
+}
+
+.thank-you-summary__total {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  margin-top: spacer(4);
+  padding-top: spacer(4);
+  border-top: 1px solid $border-subtle;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}

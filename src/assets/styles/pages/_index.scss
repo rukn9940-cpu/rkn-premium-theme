@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// Pages
+// Page-specific overrides that don't belong in a reusable component. Kept
+// to an absolute minimum by design — reach for `components/` first.
+// -----------------------------------------------------------------------------
+
+@forward 'product-single';
+@forward 'product-listing';
+@forward 'cart';
+@forward 'brands-page';
+@forward 'account';
+@forward 'orders';
+@forward 'notifications';
+@forward 'thank-you';
+@forward 'static-page';
+@forward 'blog';
+@forward 'landing-page';
+@forward 'loyalty';

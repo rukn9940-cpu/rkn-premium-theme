@@ -1,0 +1,24 @@
+// -----------------------------------------------------------------------------
+// Page transitions
+// Opts every same-origin navigation into the browser's native cross-document
+// View Transition (Chrome/Edge 126+, progressively enhanced — browsers
+// without support simply ignore the unknown at-rule and navigate normally,
+// exactly as before). Zero JavaScript, zero risk to navigation/back-forward
+// cache, and no content is ever hidden while unsupported.
+// -----------------------------------------------------------------------------
+
+@view-transition {
+  navigation: auto;
+}
+
+@media (prefers-reduced-motion: reduce) {
+  // The spec-recommended way to disable the *animation* of a view transition
+  // without disabling the transition itself (which browsers already skip
+  // when this preference is set on most platforms — this is an explicit
+  // belt-and-braces override).
+  ::view-transition-group(*),
+  ::view-transition-old(*),
+  ::view-transition-new(*) {
+    animation: none !important;
+  }
+}

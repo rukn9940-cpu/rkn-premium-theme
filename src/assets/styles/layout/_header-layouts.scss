@@ -1,0 +1,181 @@
+// -----------------------------------------------------------------------------
+// Header layouts (Theme Settings → "تخطيط الهيدر")
+// 8 presentation-only variants of the exact same header markup/data/behaviour
+// (`views/components/header/header.twig`, `js/modules/header.js`) — switching
+// layouts never changes what's in the header, only how it's arranged, so
+// every variant stays fully compatible with the mega menu, live search,
+// cart/wishlist/account, dark-mode toggle, and mobile drawer.
+// Selector target: `.header[data-header-layout="..."]`, the attribute is set
+// server-side in `header.twig` from the Theme Setting. "classic" is the
+// default and needs no overrides below (see the base rules in `_header.scss`).
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Centered nav — main navigation centered across the full bar width,
+// independent of the logo/actions widths either side of it.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='centered_nav'] {
+  .header__bar-inner {
+    position: relative;
+  }
+
+  .main-menu {
+    position: absolute;
+    inset-inline: 0;
+    top: 50%;
+    flex: none;
+    text-align: center;
+    pointer-events: none;
+    transform: translateY(-50%);
+  }
+
+  .main-menu__list {
+    display: inline-flex;
+    pointer-events: auto;
+  }
+
+  .header__logo,
+  .header__actions {
+    position: relative;
+    z-index: 1;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Nav end — navigation tucked next to the action icons instead of the logo.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='nav_end'] {
+  .main-menu {
+    flex: 0 1 auto;
+    margin-inline-start: auto;
+  }
+
+  .main-menu__list {
+    justify-content: flex-end;
+  }
+
+  .header__actions {
+    margin-inline-start: 0;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Logo center — logo on its own centered row, navigation on a second row
+// below it in a bordered strip.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='logo_center'] {
+  .header__bar-inner {
+    flex-wrap: wrap;
+  }
+
+  .header__menu-toggle {
+    order: 1;
+  }
+
+  .header__logo {
+    order: 2;
+    margin-inline: auto;
+  }
+
+  .header__actions {
+    order: 3;
+    margin-inline-start: 0;
+  }
+
+  .main-menu {
+    order: 4;
+    flex: 1 1 100%;
+    padding-block-start: spacer(3);
+    margin-block-start: spacer(3);
+    border-block-start: 1px solid rgba(255, 255, 255, 0.08);
+  }
+
+  .main-menu__list {
+    justify-content: center;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Split actions — theme toggle + search open on the leading edge (next to
+// the logo), wishlist/account/cart stay on the trailing edge. Achieved with
+// `display: contents` so `.header__actions`' children become direct flex
+// items of the bar without any markup changes.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='split_actions'] {
+  .header__actions {
+    display: contents;
+  }
+
+  .header__icon-btn--theme {
+    order: -3;
+  }
+
+  .header__icon-btn--search {
+    order: -2;
+  }
+
+  .header__icon-btn--wishlist {
+    margin-inline-start: auto;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Minimal — chrome stripped back to logo + icons; navigation is always
+// reached through the off-canvas drawer, even on desktop.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='minimal'] {
+  .main-menu {
+    display: none;
+  }
+
+  // Overrides `_header.scss`'s `@include breakpoint-up(lg) { display: none }`
+  // — an intentional, merchant-chosen exception to the usual mobile-only
+  // hamburger so desktop visitors get the same minimal chrome.
+  .header__menu-toggle {
+    display: inline-flex !important;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Compact — denser paddings/sizes for stores that want more content above
+// the fold or have many header icons.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='compact'] {
+  .header__bar-inner {
+    padding-block: spacer(2);
+
+    @include breakpoint-up(lg) {
+      gap: spacer(4);
+    }
+  }
+
+  .header__logo img {
+    height: 1.75rem;
+  }
+
+  .header__icon-btn {
+    width: 2.125rem;
+    height: 2.125rem;
+  }
+
+  .main-menu__link {
+    padding-inline: spacer(2);
+    font-size: $font-size-xs;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Boxed — the bar floats as a rounded, shadowed card with a gap from the
+// viewport edges instead of the usual full-bleed strip. No `overflow` is
+// ever set here so the mega menu/submenu panels can still spill outside the
+// rounded box exactly as they do in every other layout.
+// -----------------------------------------------------------------------------
+.header[data-header-layout='boxed'] {
+  margin-block-start: spacer(3);
+  margin-inline: clamp(0.75rem, 2vw, 2rem);
+  border-radius: $radius-xl;
+  border-block-end: none;
+  box-shadow: $shadow-lg;
+}

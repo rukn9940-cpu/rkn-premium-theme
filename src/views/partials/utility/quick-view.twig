@@ -1,0 +1,19 @@
+{#
+    Quick View — shared modal shell
+    ================================
+    Empty by default; `js/modules/quick-view.js` fills `[data-quick-view-body]`
+    by cloning the matching `<template data-quick-view-template="ID">` that
+    `partials/product/card.twig` renders next to every product card (real
+    data, same add-to-cart form as the single product page — no fetch).
+#}
+<div class="quick-view" id="quick-view" data-quick-view hidden>
+    <div class="quick-view__backdrop" data-quick-view-close></div>
+    <div class="quick-view__panel" role="dialog" aria-modal="true" aria-label="{{ trans('product.quick_view') }}">
+        <button type="button" class="quick-view__close" data-quick-view-close aria-label="{{ trans('nav.close_menu') }}">
+            <svg width="16" height="16" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+            </svg>
+        </button>
+        <div class="quick-view__body" data-quick-view-body></div>
+    </div>
+</div>

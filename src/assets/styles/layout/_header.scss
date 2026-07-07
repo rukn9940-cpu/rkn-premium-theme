@@ -1,0 +1,807 @@
+// -----------------------------------------------------------------------------
+// Header
+// Sticky, dark, mega-menu-aware storefront header + mobile off-canvas drawer.
+// Markup: views/components/header/header.twig
+// Behaviour: js/modules/header.js
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// -----------------------------------------------------------------------------
+// Announcement bar
+// -----------------------------------------------------------------------------
+.announcement-bar {
+  background-color: color();
+  color: color(text);
+}
+
+.announcement-bar__inner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  padding-block: spacer(2);
+  padding-inline-end: spacer(7);
+  min-height: 2.25rem;
+}
+
+.announcement-bar__text {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-align: center;
+}
+
+.announcement-bar__dismiss {
+  position: absolute;
+  inset-inline-end: spacer(3);
+  top: 50%;
+  transform: translateY(-50%);
+  display: inline-flex;
+  color: inherit;
+  opacity: 0.75;
+
+  @include focus-ring;
+
+  &:hover {
+    opacity: 1;
+  }
+}
+
+// -----------------------------------------------------------------------------
+// Header shell
+// -----------------------------------------------------------------------------
+.header {
+  // The header is intentionally always-dark chrome (brief: "dark modern
+  // design") regardless of the site-wide light/dark content mode, so its
+  // text/icon colors are fixed literal white rather than adaptive tokens.
+  position: relative;
+  z-index: z('sticky');
+  background-color: $ink-900;
+  color: #fff;
+  border-block-end: 1px solid rgba(255, 255, 255, 0.06);
+  transition:
+    background-color $duration-slow $easing-standard,
+    box-shadow $duration-slow $easing-standard,
+    border-color $duration-slow $easing-standard;
+}
+
+.header--sticky {
+  position: sticky;
+  top: 0;
+}
+
+.header--scrolled {
+  @include glass-surface($glass-bg-dark, transparent);
+
+  box-shadow: $shadow-header-scrolled;
+
+  .header__bar-inner {
+    padding-block: spacer(2);
+  }
+
+  .header__logo img {
+    height: 1.875rem;
+  }
+}
+
+@include reduced-motion {
+  .header {
+    transition: none;
+  }
+}
+
+.header__utility {
+  border-block-end: 1px solid rgba(255, 255, 255, 0.08);
+}
+
+.header__utility-inner {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacer(3);
+  padding-block: spacer(2);
+  font-size: $font-size-xs;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+.header__utility-start,
+.header__utility-end {
+  display: flex;
+  align-items: center;
+  gap: spacer(4);
+}
+
+.header__utility-link {
+  color: inherit;
+  font-weight: $font-weight-medium;
+
+  @include focus-ring;
+
+  &:hover {
+    color: #fff;
+  }
+}
+
+.header__bar-inner {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+  padding-block: spacer(3);
+  transition: padding-block $duration-base $easing-standard;
+
+  @include breakpoint-up(lg) {
+    gap: spacer(6);
+  }
+}
+
+.header__logo {
+  display: flex;
+  align-items: center;
+  flex-shrink: 0;
+
+  img {
+    display: block;
+    height: 2.25rem;
+    width: auto;
+    transition: height $duration-base $easing-standard;
+  }
+}
+
+.header__logo-text {
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: #fff;
+}
+
+.header__icon-btn {
+  position: relative;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: $radius-pill;
+  color: #fff;
+  transition:
+    background-color $duration-base $easing-standard,
+    transform $duration-fast $easing-emphasized;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  svg {
+    transition: transform $duration-base $easing-emphasized;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      background-color: rgba(255, 255, 255, 0.1);
+      transform: translateY(-1px);
+
+      svg {
+        transform: scale(1.08);
+      }
+    }
+  }
+
+  &:active {
+    transform: scale(0.94);
+  }
+
+  @include reduced-motion {
+    transition: background-color $duration-base $easing-standard;
+
+    svg {
+      transition: none;
+    }
+
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+
+        svg {
+          transform: none;
+        }
+      }
+    }
+
+    &:active {
+      transform: none;
+    }
+  }
+}
+
+.header__menu-toggle {
+  @include breakpoint-up(lg) {
+    display: none;
+  }
+}
+
+// Theme mode (dark mode) toggle — shows the icon for the mode the user would
+// *switch to*, matching the common sun/moon convention.
+.header__icon-btn-icon--moon {
+  display: none;
+}
+
+[data-theme='dark'] .header__icon-btn--theme {
+  .header__icon-btn-icon--sun {
+    display: none;
+  }
+
+  .header__icon-btn-icon--moon {
+    display: block;
+  }
+}
+
+.header__actions {
+  display: flex;
+  align-items: center;
+  gap: spacer(1);
+  margin-inline-start: auto;
+}
+
+// -----------------------------------------------------------------------------
+// Desktop main menu + mega menu
+// -----------------------------------------------------------------------------
+.main-menu {
+  display: none;
+
+  @include breakpoint-up(lg) {
+    display: block;
+    flex: 1;
+  }
+}
+
+.main-menu__list {
+  display: flex;
+  align-items: stretch;
+  gap: spacer(1);
+}
+
+.main-menu__item {
+  position: relative;
+  display: flex;
+  align-items: stretch;
+}
+
+.main-menu__link {
+  position: relative;
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  padding-inline: spacer(3);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: rgba(255, 255, 255, 0.85);
+  transition: color $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  &:not(.main-menu__link--sub)::after {
+    position: absolute;
+    inset-inline: spacer(3);
+    bottom: 0;
+    height: 2px;
+    content: '';
+    background-color: color();
+    border-radius: $radius-pill;
+    transform: scaleX(0);
+    transition: transform $duration-base $easing-emphasized;
+    transform-origin: center;
+  }
+
+  &:hover {
+    color: #fff;
+
+    &:not(.main-menu__link--sub)::after {
+      transform: scaleX(1);
+    }
+  }
+}
+
+@include reduced-motion {
+  .main-menu__link::after {
+    transition: none;
+  }
+}
+
+.main-menu__link-icon {
+  flex-shrink: 0;
+  width: 1.125rem;
+  height: 1.125rem;
+  border-radius: 3px;
+  object-fit: contain;
+}
+
+.main-menu__chevron {
+  flex-shrink: 0;
+  transition: transform $duration-base $easing-standard;
+}
+
+.main-menu__submenu,
+.main-menu__mega {
+  position: absolute;
+  inset-inline-start: 0;
+  top: 100%;
+  z-index: z('dropdown');
+  visibility: hidden;
+  opacity: 0;
+  transform: translateY(6px) scale(0.98);
+  transition:
+    opacity $duration-base $easing-emphasized,
+    transform $duration-base $easing-emphasized,
+    visibility $duration-base $easing-emphasized;
+  transform-origin: top center;
+}
+
+.main-menu__item:hover,
+.main-menu__item:focus-within {
+  > .main-menu__submenu,
+  > .main-menu__mega {
+    visibility: visible;
+    opacity: 1;
+    transform: translateY(6px) scale(1);
+  }
+
+  > .main-menu__link .main-menu__chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.main-menu__submenu {
+  min-width: 15rem;
+  padding: spacer(2);
+  margin-top: spacer(2);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  box-shadow: $shadow-xl;
+
+  .main-menu__submenu {
+    inset-inline-start: 100%;
+    top: 0;
+    margin-top: 0;
+    margin-inline-start: spacer(2);
+
+    @include rtl {
+      inset-inline: auto 100%;
+    }
+  }
+
+  .main-menu__link {
+    color: $text-heading;
+    padding-block: spacer(2);
+    padding-inline: spacer(3);
+    border-radius: $radius-md;
+
+    &::after {
+      display: none;
+    }
+
+    &:hover {
+      color: color();
+      background-color: $surface-100;
+    }
+  }
+}
+
+.main-menu__mega {
+  inset-inline-start: 50%;
+  transform: translate(-50%, 6px) scale(0.98);
+  width: min(46rem, 90vw);
+  margin-top: spacer(2);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+
+  @include rtl {
+    transform: translate(50%, 6px) scale(0.98);
+  }
+}
+
+.main-menu__mega--wide {
+  width: min(68rem, 92vw);
+}
+
+.main-menu__item:hover > .main-menu__mega,
+.main-menu__item:focus-within > .main-menu__mega {
+  transform: translate(-50%, 0) scale(1);
+
+  @include rtl {
+    transform: translate(50%, 0) scale(1);
+  }
+}
+
+// ---------------------------------------------------------------------------
+// Mega menu panel contents — multi-column category tree, real "attached
+// products" grid, and the optional (Theme Settings) promotional banner.
+// ---------------------------------------------------------------------------
+.main-menu__mega-inner {
+  display: flex;
+  align-items: flex-start;
+  gap: spacer(6);
+  padding: spacer(6);
+}
+
+.main-menu__mega-columns {
+  flex: 1 1 auto;
+  min-width: 0;
+  column-count: 2;
+  column-gap: spacer(6);
+
+  .main-menu__mega--wide & {
+    column-count: 3;
+  }
+}
+
+.main-menu__mega-column {
+  margin-bottom: spacer(5);
+  break-inside: avoid;
+}
+
+.main-menu__mega-column-title {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  margin-bottom: spacer(2);
+  color: $text-heading;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  @include focus-ring;
+
+  img {
+    flex-shrink: 0;
+    width: 1.75rem;
+    height: 1.75rem;
+    border-radius: $radius-sm;
+    object-fit: cover;
+    background-color: $surface-100;
+  }
+
+  &:hover {
+    color: color();
+  }
+}
+
+.main-menu__mega-column-list {
+  display: flex;
+  flex-direction: column;
+
+  li a {
+    display: block;
+    padding-block: spacer(1);
+    color: $text-body;
+    font-size: $font-size-sm;
+    transition: color $duration-fast $easing-standard;
+
+    @include focus-ring;
+
+    &:hover {
+      color: color();
+    }
+  }
+}
+
+.main-menu__mega-products {
+  flex: 0 0 auto;
+  width: 15rem;
+
+  .main-menu__mega-columns + & {
+    padding-inline-start: spacer(6);
+    border-inline-start: 1px solid $border-subtle;
+  }
+
+  .main-menu__mega--wide & {
+    width: 20rem;
+  }
+}
+
+.main-menu__mega-products-title {
+  margin-bottom: spacer(3);
+  color: $text-muted;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+}
+
+.main-menu__mega-grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  .main-menu__mega-products & {
+    grid-template-columns: 1fr;
+  }
+}
+
+.main-menu__mega-banner {
+  position: relative;
+  flex: 0 0 auto;
+  display: block;
+  align-self: stretch;
+  width: 11rem;
+  border-radius: $radius-lg;
+  overflow: hidden;
+  color: #fff;
+
+  @include focus-ring;
+  @include card-hover(-2px);
+
+  img {
+    position: absolute;
+    inset: 0;
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &::after {
+    position: absolute;
+    inset: 0;
+    content: '';
+    background: linear-gradient(180deg, transparent 40%, rgba(0, 0, 0, 0.7));
+  }
+}
+
+.main-menu__mega-banner-title {
+  position: absolute;
+  bottom: spacer(3);
+  inset-inline: spacer(3);
+  z-index: 1;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+
+  @include line-clamp(2);
+}
+
+.main-menu__mega-product {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(2);
+  color: $text-heading;
+
+  @include focus-ring;
+}
+
+.main-menu__mega-thumb {
+  position: relative;
+  display: block;
+  aspect-ratio: 1;
+  border-radius: $radius-md;
+  overflow: hidden;
+  background-color: $surface-100;
+  box-shadow: $shadow-xs;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-standard;
+  }
+}
+
+.main-menu__mega-product:hover .main-menu__mega-thumb img {
+  transform: scale(1.08);
+}
+
+@include reduced-motion {
+  .main-menu__mega-product:hover .main-menu__mega-thumb img {
+    transform: none;
+  }
+}
+
+.main-menu__mega-badge {
+  position: absolute;
+  top: spacer(1);
+  inset-inline-start: spacer(1);
+  padding-inline: spacer(2);
+  padding-block: 2px;
+  border-radius: $radius-pill;
+  background-color: color();
+  color: color(text);
+  font-size: 0.6875rem;
+  font-weight: $font-weight-bold;
+}
+
+.main-menu__mega-name {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+
+  @include line-clamp(2);
+}
+
+.main-menu__mega-price {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  color: color();
+}
+
+// -----------------------------------------------------------------------------
+// Mobile off-canvas drawer
+// -----------------------------------------------------------------------------
+html.has-open-drawer {
+  overflow: hidden;
+}
+
+.mobile-menu {
+  position: fixed;
+  inset: 0;
+  z-index: z('modal');
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.mobile-menu__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba($ink-950, 0.65);
+  opacity: 0;
+  transition: opacity $duration-base $easing-standard;
+
+  @supports (backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      backdrop-filter: blur(3px);
+    }
+  }
+}
+
+.mobile-menu__panel {
+  position: absolute;
+  inset-block: 0;
+  inset-inline-start: 0;
+  width: min(22rem, 86vw);
+  display: flex;
+  flex-direction: column;
+  background-color: $surface-0;
+  box-shadow: $shadow-xl;
+  transform: translateX(-100%);
+  transition: transform $duration-slow $easing-emphasized;
+
+  @include rtl {
+    inset-inline: auto 0;
+    transform: translateX(100%);
+  }
+}
+
+.mobile-menu.is-open {
+  .mobile-menu__backdrop {
+    opacity: 1;
+  }
+
+  .mobile-menu__panel {
+    transform: translateX(0);
+  }
+}
+
+.mobile-menu__head {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  padding: spacer(4);
+  border-block-end: 1px solid $border-subtle;
+
+  .header__icon-btn {
+    color: $text-heading;
+
+    @media (hover: hover) {
+      &:hover {
+        background-color: $surface-100;
+      }
+    }
+  }
+}
+
+.mobile-menu__nav {
+  flex: 1;
+  overflow-y: auto;
+  padding: spacer(2) spacer(4);
+}
+
+.mobile-menu__nav .main-menu__list--mobile {
+  display: flex;
+  flex-direction: column;
+}
+
+.mobile-menu__nav .main-menu__item {
+  flex-direction: column;
+  align-items: stretch;
+  border-block-end: 1px solid $border-subtle;
+}
+
+.mobile-menu__nav .main-menu__link {
+  color: $text-heading;
+  padding-block: spacer(3);
+  padding-inline: spacer(2);
+  border-radius: $radius-md;
+  justify-content: space-between;
+  transition: background-color $duration-fast $easing-standard;
+
+  &:active {
+    background-color: $surface-100;
+  }
+}
+
+.mobile-menu__nav .main-menu__submenu,
+.mobile-menu__nav .main-menu__mega {
+  position: static;
+  visibility: visible;
+  opacity: 1;
+  transform: none;
+  display: none;
+  padding-inline-start: spacer(4);
+  box-shadow: none;
+  background: none;
+}
+
+.mobile-menu__nav .main-menu__item.is-open {
+  > .main-menu__submenu,
+  > .main-menu__mega {
+    display: block;
+    padding-bottom: spacer(3);
+  }
+
+  > .main-menu__link .main-menu__chevron {
+    transform: rotate(180deg);
+  }
+}
+
+.mobile-menu__nav .main-menu__mega-inner {
+  flex-direction: column;
+  gap: spacer(4);
+  padding: spacer(3) 0 spacer(4);
+}
+
+.mobile-menu__nav .main-menu__mega-columns {
+  column-count: 1;
+}
+
+.mobile-menu__nav .main-menu__mega-products {
+  width: 100%;
+  padding-inline-start: 0;
+  border-inline-start: 0;
+}
+
+.mobile-menu__nav .main-menu__mega-grid {
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(3);
+}
+
+.mobile-menu__nav .main-menu__mega-banner {
+  width: 100%;
+  aspect-ratio: 16 / 7;
+}
+
+.mobile-menu__foot {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(1);
+  padding: spacer(4);
+  border-block-start: 1px solid $border-subtle;
+}
+
+.mobile-menu__foot-link {
+  padding-block: spacer(2);
+  text-align: start;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-heading;
+
+  @include focus-ring;
+}
+
+@include reduced-motion {
+  .header__icon-btn,
+  .main-menu__chevron,
+  .main-menu__submenu,
+  .main-menu__mega,
+  .main-menu__mega-thumb img,
+  .mobile-menu__backdrop,
+  .mobile-menu__panel {
+    transition: none !important;
+  }
+}

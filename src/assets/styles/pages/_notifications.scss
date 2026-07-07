@@ -1,0 +1,74 @@
+// -----------------------------------------------------------------------------
+// Notifications page
+// Markup: views/pages/customer/notifications.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.notifications-list {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(3);
+}
+
+.notification-row {
+  display: flex;
+  align-items: flex-start;
+  gap: spacer(3);
+  padding: spacer(4);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  transition:
+    border-color $duration-base $easing-standard,
+    box-shadow $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: transparent;
+      box-shadow: $shadow-sm;
+    }
+  }
+}
+
+.notification-row__icon {
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  flex: none;
+  width: 2.5rem;
+  height: 2.5rem;
+  border-radius: 50%;
+
+  // `color-mix()`, not `rgba($color-primary-fallback, …)` — the fallback
+  // variable ignores the merchant's actual chosen brand color.
+  background-color: color-mix(in srgb, color() 12%, transparent);
+  color: color();
+}
+
+.notification-row__body {
+  flex: 1;
+  min-width: 0;
+}
+
+.notification-row__title {
+  font-size: $font-size-sm;
+}
+
+.notification-row__subtitle {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.notification-row__date {
+  flex: none;
+  font-size: $font-size-xs;
+  color: $text-muted;
+  white-space: nowrap;
+}
+
+.notifications-empty {
+  padding-block: spacer(6);
+  text-align: center;
+  color: $text-muted;
+}

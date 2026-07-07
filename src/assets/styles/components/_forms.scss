@@ -1,0 +1,116 @@
+// -----------------------------------------------------------------------------
+// Forms
+// Shared `.form-field` (label + input/select/textarea) pattern used by every
+// theme-authored form: customer profile (`pages/_account.scss`), the contact
+// form (`pages/_static-page.scss`), and the product notes textarea
+// (`pages/_product-single.scss`). Salla's own form web components
+// (`salla-quantity-input`, `salla-product-options`, `salla-file-upload`, …)
+// ship with their own styling and are intentionally left untouched here.
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.form-field {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(2);
+}
+
+.form-field label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-heading;
+}
+
+.form-field__hint {
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.form-field__error {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-medium;
+  color: $color-danger;
+}
+
+.form-field input:not([type='checkbox'], [type='radio']),
+.form-field select,
+.form-field textarea,
+.product-form__notes {
+  padding: 0.75rem spacer(4);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  font-family: inherit;
+  font-size: $font-size-sm;
+  background-color: $surface-0;
+  color: $text-heading;
+  transition:
+    border-color $duration-fast $easing-standard,
+    box-shadow $duration-fast $easing-standard;
+
+  @include min-tap-target;
+  @include focus-ring;
+
+  &::placeholder {
+    color: $text-muted;
+  }
+
+  &:hover {
+    border-color: $border-strong;
+  }
+
+  &:focus {
+    border-color: color();
+    box-shadow: 0 0 0 4px color-mix(in srgb, color() 15%, transparent);
+  }
+
+  &:disabled {
+    background-color: $surface-100;
+    color: $text-muted;
+    cursor: not-allowed;
+  }
+
+  &[aria-invalid='true'] {
+    border-color: $color-danger;
+
+    &:focus {
+      box-shadow: 0 0 0 4px color-mix(in srgb, $color-danger 15%, transparent);
+    }
+  }
+}
+
+.form-field select {
+  // Custom chevron so the native control matches the theme's rounded,
+  // bordered inputs instead of the OS default appearance.
+  appearance: none;
+  padding-inline-end: spacer(7);
+  background-image: url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='12' height='8' viewBox='0 0 12 8' fill='none'%3E%3Cpath d='M1 1.5L6 6.5L11 1.5' stroke='%236B7280' stroke-width='1.5' stroke-linecap='round' stroke-linejoin='round'/%3E%3C/svg%3E");
+  background-repeat: no-repeat;
+  background-position: right spacer(4) center;
+
+  @include rtl {
+    background-position: left spacer(4) center;
+  }
+}
+
+.form-field textarea,
+.product-form__notes {
+  resize: vertical;
+  min-height: 6rem;
+}
+
+.form-field--checkbox {
+  flex-direction: row;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.form-field input[type='checkbox'],
+.form-field input[type='radio'] {
+  width: 1.15rem;
+  height: 1.15rem;
+  padding: 0;
+  accent-color: color();
+
+  @include focus-ring;
+}

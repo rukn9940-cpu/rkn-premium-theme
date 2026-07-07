@@ -1,0 +1,193 @@
+{#
+    Premium Header
+    ==============
+    Sticky, dark, mega-menu-aware storefront header.
+
+    | Variable          | Type   | Description                              |
+    |-------------------|--------|-------------------------------------------|
+    | menus             | array  | Main navigation tree (Twilight-injected)  |
+    | cart              | object | cart.items_count (int), cart.total (str)  |
+    | store.scope       | object | Active branch, when store has branches    |
+
+    Mega Menu Builder: the multi-column/icons/featured-products panel itself
+    is rendered by `partials.navigation.menu-tree` straight off of real
+    `menus` data (see that file's doc comment) — this file only resolves the
+    one themeable piece, the optional promotional banner (Theme Settings →
+    "بانر القائمة الضخمة"), and forwards it into the shared macro so both the
+    desktop nav and mobile drawer render it identically.
+
+    Reference: docs.salla.dev — Header Components, Twilight JS Web Components.
+#}
+{% import 'partials.navigation.menu-tree' as nav %}
+
+{% set is_sticky = theme.settings.get('header_is_sticky', true) %}
+{% set announcement_enabled = theme.settings.get('announcement_enabled', false) %}
+{% set announcement_text = theme.settings.get('announcement_text') %}
+{% set dark_mode_enabled = theme.settings.get('dark_mode_enabled', true) %}
+{% set mega_banner_image = theme.settings.get('mega_menu_banner_image') %}
+{% set mega_banner_url = theme.settings.get('mega_menu_banner_url') %}
+{% set mega_banner_title = theme.settings.get('mega_menu_banner_title') %}
+{% set live_search_enabled = theme.settings.get('live_search_enabled', true) %}
+{% set header_layout = theme.settings.get('header_layout', 'classic') %}
+
+{% if announcement_enabled and announcement_text %}
+    <div class="announcement-bar" data-announcement-bar>
+        <div class="container announcement-bar__inner">
+            {% set announcement_link = theme.settings.get('announcement_link') %}
+            {% if announcement_link %}
+                <a href="{{ announcement_link }}" class="announcement-bar__text">{{ announcement_text }}</a>
+            {% else %}
+                <p class="announcement-bar__text">{{ announcement_text }}</p>
+            {% endif %}
+            <button type="button" class="announcement-bar__dismiss" data-announcement-dismiss aria-label="{{ trans('header.announcement_dismiss') }}">
+                <svg width="12" height="12" viewBox="0 0 12 12" fill="none" aria-hidden="true">
+                    <path d="M1 1L11 11M11 1L1 11" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+    </div>
+{% endif %}
+
+<header class="header{{ is_sticky ? ' header--sticky' : '' }}" data-header{{ is_sticky ? ' data-header-sticky' : '' }} data-header-layout="{{ header_layout }}">
+    {% if store.settings.is_multilingual or store.settings.currencies_enabled or store.scope %}
+        <div class="header__utility">
+            <div class="container header__utility-inner">
+                <div class="header__utility-start">
+                    {% if store.scope %}
+                        <salla-scopes></salla-scopes>
+                    {% endif %}
+                </div>
+                <div class="header__utility-end">
+                    {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+                        <button type="button" class="header__utility-link" onclick="document.querySelector('salla-localization-modal')?.open()">
+                            {{ trans('nav.language_currency') }}
+                        </button>
+                        <salla-localization-modal></salla-localization-modal>
+                    {% endif %}
+                </div>
+            </div>
+        </div>
+    {% endif %}
+
+    <div class="header__bar">
+        <div class="container header__bar-inner">
+            <button type="button" class="header__icon-btn header__menu-toggle" data-mobile-menu-open aria-label="{{ trans('nav.open_menu') }}" aria-expanded="false" aria-controls="mobile-menu">
+                <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
+                    <path d="M0 1H22M0 8H22M0 15H22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+            </button>
+
+            <a href="{{ store.url }}" class="header__logo" aria-label="{{ store.name }}">
+                {% if store.logo %}
+                    <img src="{{ store.logo }}" alt="{{ store.name }}" width="140" height="40">
+                {% else %}
+                    <span class="header__logo-text">{{ store.name }}</span>
+                {% endif %}
+            </a>
+
+            <nav class="main-menu" aria-label="{{ trans('nav.main_navigation') }}">
+                <ul class="main-menu__list">
+                    {% for menu in menus %}
+                        {{ nav.item(menu, mega_banner_image, mega_banner_url, mega_banner_title) }}
+                    {% endfor %}
+                </ul>
+            </nav>
+
+            <div class="header__actions">
+                {% if dark_mode_enabled %}
+                    <button type="button" class="header__icon-btn header__icon-btn--theme" data-theme-toggle aria-pressed="false" aria-label="{{ trans('nav.toggle_theme') }}">
+                        <svg class="header__icon-btn-icon header__icon-btn-icon--sun" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <circle cx="10" cy="10" r="4" stroke="currentColor" stroke-width="1.5" />
+                            <path d="M10 1.5v2M10 16.5v2M18.5 10h-2M3.5 10h-2M15.6 4.4l-1.4 1.4M5.8 14.2l-1.4 1.4M15.6 15.6l-1.4-1.4M5.8 5.8L4.4 4.4" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" />
+                        </svg>
+                        <svg class="header__icon-btn-icon header__icon-btn-icon--moon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <path d="M17 11.3A7.5 7.5 0 1 1 8.7 3a6 6 0 0 0 8.3 8.3Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                        </svg>
+                    </button>
+                {% endif %}
+
+                {% if live_search_enabled %}
+                    <button type="button" class="header__icon-btn header__icon-btn--search" data-live-search-open aria-label="{{ trans('nav.search') }}" aria-haspopup="dialog" aria-controls="live-search">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+                            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                {% else %}
+                    {#
+                        Theme Settings → "تفعيل البحث الفوري" is off — fall back
+                        to Salla's own native search modal/component instead of
+                        our custom overlay.
+                    #}
+                    <button type="button" class="header__icon-btn header__icon-btn--search" onclick="document.querySelector('salla-search')?.open()" aria-label="{{ trans('nav.search') }}">
+                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+                            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                        </svg>
+                    </button>
+                    <salla-search></salla-search>
+                {% endif %}
+
+                <a href="{{ page('wishlist') }}" class="header__icon-btn header__icon-btn--wishlist" aria-label="{{ trans('nav.wishlist') }}">
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <path d="M10 17.5s-7-4.35-7-9.5A4 4 0 0 1 10 5a4 4 0 0 1 7 3c0 5.15-7 9.5-7 9.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                    </svg>
+                </a>
+
+                <salla-user-menu class="header__icon-btn header__icon-btn--user"></salla-user-menu>
+
+                <salla-cart-summary class="header__icon-btn header__icon-btn--cart"></salla-cart-summary>
+            </div>
+        </div>
+    </div>
+</header>
+
+{#
+    Mobile off-canvas drawer — shares the same menu macro as the desktop nav
+    so navigation structure/labels never drift between breakpoints.
+#}
+<div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
+    <div class="mobile-menu__backdrop" data-mobile-menu-close></div>
+    <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="{{ trans('nav.mobile_navigation') }}">
+        <div class="mobile-menu__head">
+            <a href="{{ store.url }}" class="header__logo">
+                {% if store.logo %}
+                    <img src="{{ store.logo }}" alt="{{ store.name }}" width="120" height="34">
+                {% else %}
+                    <span class="header__logo-text">{{ store.name }}</span>
+                {% endif %}
+            </a>
+            <button type="button" class="header__icon-btn" data-mobile-menu-close aria-label="{{ trans('nav.close_menu') }}">
+                <svg width="18" height="18" viewBox="0 0 18 18" fill="none" aria-hidden="true">
+                    <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                </svg>
+            </button>
+        </div>
+
+        <nav class="mobile-menu__nav" aria-label="{{ trans('nav.mobile_navigation') }}">
+            <ul class="main-menu__list main-menu__list--mobile">
+                {% for menu in menus %}
+                    {{ nav.item(menu, mega_banner_image, mega_banner_url, mega_banner_title) }}
+                {% endfor %}
+            </ul>
+        </nav>
+
+        <div class="mobile-menu__foot">
+            <a href="{{ page('wishlist') }}" class="mobile-menu__foot-link">{{ trans('nav.wishlist') }}</a>
+            {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+                <button type="button" class="mobile-menu__foot-link" onclick="document.querySelector('salla-localization-modal')?.open()">
+                    {{ trans('nav.language_currency') }}
+                </button>
+            {% endif %}
+            {% if dark_mode_enabled %}
+                <button type="button" class="mobile-menu__foot-link" data-theme-toggle aria-pressed="false">
+                    {{ trans('nav.toggle_theme') }}
+                </button>
+            {% endif %}
+        </div>
+    </div>
+</div>
+
+{% if live_search_enabled %}
+    {% include 'partials.utility.live-search' %}
+{% endif %}

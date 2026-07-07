@@ -1,0 +1,110 @@
+// -----------------------------------------------------------------------------
+// Offers
+// Markup: views/components/home/offers.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.offers__banner {
+  position: relative;
+  display: flex;
+  align-items: center;
+  min-height: 22rem;
+  border-radius: $radius-xl;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  box-shadow: $shadow-lg;
+  padding: spacer(6);
+
+  @include breakpoint-up(lg) {
+    padding: spacer(8);
+  }
+}
+
+// Direction-aware scrim: strongest behind the text (start side in both LTR
+// and RTL), fading toward the far edge — a plain `background-image` gradient
+// baked into the inline style can't respond to `dir`, so it lives here as a
+// logical-property-aware pseudo-element instead.
+.offers__banner-overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(
+    to right,
+    rgba($ink-950, 0.85) 0%,
+    rgba($ink-950, 0.45) 55%,
+    rgba($ink-950, 0.08) 100%
+  );
+
+  @include rtl {
+    background: linear-gradient(
+      to left,
+      rgba($ink-950, 0.85) 0%,
+      rgba($ink-950, 0.45) 55%,
+      rgba($ink-950, 0.08) 100%
+    );
+  }
+}
+
+.offers__banner-content {
+  position: relative;
+  max-width: 30rem;
+
+  // Fixed literal white — sits on the offer banner image, not a page surface.
+  color: #fff;
+}
+
+.offers__title {
+  color: #fff;
+  font-size: $font-size-3xl;
+  letter-spacing: $letter-spacing-tighter;
+  margin-bottom: spacer(3);
+}
+
+.offers__subtitle {
+  color: rgba(255, 255, 255, 0.85);
+  margin-bottom: spacer(5);
+}
+
+.offers__countdown {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(3);
+  margin-bottom: spacer(6);
+}
+
+.offers__countdown-label {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-transform: uppercase;
+  letter-spacing: 0.06em;
+  color: rgba(255, 255, 255, 0.7);
+}
+
+// `salla-count-down` renders its own boxed segments; wrap them in a subtle
+// glass tray so they read as one cohesive premium module rather than floating
+// bare numerals over the banner photo.
+.offers__countdown salla-count-down {
+  display: block;
+  padding: spacer(3) spacer(4);
+  border-radius: $radius-lg;
+  background-color: rgba(255, 255, 255, 0.08);
+  border: 1px solid rgba(255, 255, 255, 0.16);
+
+  @supports (backdrop-filter: blur(1px)) {
+    backdrop-filter: blur(10px);
+  }
+}
+
+.offers__products {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+  margin-top: spacer(6);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacer(5);
+  }
+}

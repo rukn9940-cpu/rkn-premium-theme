@@ -1,0 +1,12 @@
+{#
+    Skip Link
+    =========
+    First focusable element on every page. Lets keyboard and screen-reader
+    users bypass the (yet to be built) header/navigation and jump straight
+    to `#main-content`. Required for WCAG 2.4.1 (Bypass Blocks, Level A) and
+    kept enabled unconditionally — this is compliance scaffolding, not a
+    themeable UI component.
+
+    Styling: `assets/styles/base/_accessibility.scss` (`.skip-link`).
+#}
+<a class="skip-link" href="#main-content">{{ trans('a11y.skip_to_content') }}</a>

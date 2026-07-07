@@ -1,0 +1,27 @@
+{#
+    Smart Recommendations
+    ======================
+    Theme Settings → "تفعيل التوصيات الذكية" (`smart_recommendations_enabled`).
+    On the single product page this feature is served directly by Salla's own
+    related-products system, keyed off the current product (see
+    `views/pages/product/single.twig`) — no markup needed here.
+
+    Everywhere else (cart, home) there's no "current product", so this shell
+    is populated by `js/modules/smart-recommendations.js` using the most
+    recent entry from the visitor's own "recently viewed" history and
+    Salla's own `<salla-products-list source="related">` component — hidden
+    by default, only revealed once a recommendation is actually available.
+
+        {% include 'partials.utility.smart-recommendations' %}
+#}
+<section class="section smart-recommendations" data-smart-recommendations hidden>
+    <div class="container">
+        <div class="section__head">
+            <div class="section__heading">
+                <h2 class="section__title">{{ trans('product.recommended_for_you') }}</h2>
+            </div>
+        </div>
+
+        <div data-smart-recommendations-list></div>
+    </div>
+</section>

@@ -1,0 +1,66 @@
+{#
+    Comments (shared theme component)
+    ===================================
+    Included from any page that allows discussion (static pages, blog posts)
+    via `{% component 'comments' with { type: 'page', id: page.id } %}`.
+
+    | user.can_comment       | bool       | gates the "add a comment" form  |
+    | comments[]             | collection | name, avatar, has_order, stars, |
+    |                         |            | created_at, content              |
+    | comments.next_page     | string     | fed to salla-infinite-scroll     |
+
+    Reference: docs.salla.dev — Comments Component.
+#}
+{% if user.can_comment %}
+    <form class="comments-form" onsubmit="return salla.form.onSubmit('comment.send', event);">
+        <input name="type" type="hidden" value="{{ type }}">
+        <input name="id" type="hidden" value="{{ id }}">
+
+        <h2 class="comments-form__title">{{ trans('blocks.comments.title') }}</h2>
+        <textarea
+            class="comments-form__textarea"
+            name="comment"
+            placeholder="{{ trans('blocks.comments.placeholder') }}"
+            required
+            maxlength="500"
+            rows="4"
+        ></textarea>
+
+        <div class="comments-form__submit">
+            <salla-button type="submit" loader-position="end">
+                {{ trans('blocks.comments.submit') }}
+            </salla-button>
+        </div>
+    </form>
+{% endif %}
+
+{% if comments is not empty %}
+    <div class="comments-list">
+        <h2 class="comments-list__title">{{ trans('blocks.comments.list_title') }}</h2>
+
+        <salla-infinite-scroll next-page="{{ comments.next_page }}" item=".comment-row">
+            {% for comment in comments %}
+                <article class="comment-row">
+                    <img
+                        src="{{ comment.avatar }}"
+                        alt=""
+                        class="comment-row__avatar"
+                        loading="lazy"
+                        width="40"
+                        height="40"
+                    >
+                    <div class="comment-row__body">
+                        <div class="comment-row__meta">
+                            <h3 class="comment-row__name">{{ comment.name }}</h3>
+                            {% if comment.has_order and comment.stars %}
+                                <salla-rating-stars value="{{ comment.stars }}" class="comment-row__rating"></salla-rating-stars>
+                            {% endif %}
+                            <time class="comment-row__date">{{ comment.created_at|date }}</time>
+                        </div>
+                        <p class="comment-row__content">{{ comment.content }}</p>
+                    </div>
+                </article>
+            {% endfor %}
+        </salla-infinite-scroll>
+    </div>
+{% endif %}

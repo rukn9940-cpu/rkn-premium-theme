@@ -1,0 +1,983 @@
+{
+  "name": {
+    "ar": "آر كي إن بريميوم",
+    "en": "RKN Premium Theme"
+  },
+  "repository": "",
+  "author_email": "",
+  "support_url": "",
+  "description": {
+    "ar": "قالب سلة بريميوم كامل مبني على تويلايت بمعمارية نظيفة، يدعم الوضع الليلي وRTL/LTR بالكامل، ومهيأ للأداء وإمكانية الوصول ومحركات البحث في كل صفحاته.",
+    "en": "A complete, premium Salla Twilight theme with a full storefront, customer account area, blog, and campaign pages — built with clean architecture, Dark Mode, full RTL/LTR support, and performance, accessibility, and SEO best practices throughout."
+  },
+  "features": [
+    "mega-menu",
+    "menu-images",
+    "fonts",
+    "color",
+    "breadcrumb",
+    "component-testimonials",
+    "component-store-features"
+  ],
+  "settings": [
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "color_preset",
+      "label": "نظام الألوان الجاهز",
+      "description": "اختر أحد أنظمة الألوان الجاهزة لتغيير هوية المتجر البصرية بالكامل (الأزرار، الروابط، الشارات، إلخ) فوراً دون الحاجة لأي تعديل برمجي. اختر \"اللون المخصص\" للاستمرار باستخدام اللون الذي حددته من إعدادات هوية المتجر.",
+      "icon": "sicon-brush",
+      "required": false,
+      "selected": [
+        {
+          "value": "custom"
+        }
+      ],
+      "options": [
+        {
+          "label": "اللون المخصص (حسب إعدادات الهوية)",
+          "value": "custom"
+        },
+        {
+          "label": "أزرق احترافي",
+          "value": "professional_blue"
+        },
+        {
+          "label": "أسود منتصف الليل",
+          "value": "midnight_black"
+        },
+        {
+          "label": "زمردي",
+          "value": "emerald"
+        },
+        {
+          "label": "بنفسجي ملكي",
+          "value": "royal_purple"
+        },
+        {
+          "label": "برتقالي",
+          "value": "orange"
+        },
+        {
+          "label": "أحمر",
+          "value": "red"
+        },
+        {
+          "label": "أبيض بسيط (مينيمال)",
+          "value": "minimal_white"
+        },
+        {
+          "label": "ذهبي فاخر",
+          "value": "luxury_gold"
+        },
+        {
+          "label": "كحلي",
+          "value": "navy"
+        },
+        {
+          "label": "الوضع الداكن (كنظام ألوان)",
+          "value": "dark_mode"
+        }
+      ]
+    },
+    {
+      "type": "boolean",
+      "id": "header_is_sticky",
+      "label": "تثبيت الهيدر أعلى الصفحة عند التمرير",
+      "description": "يبقى رأس المتجر ظاهراً أثناء تمرير الصفحة لأسفل",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "announcement_enabled",
+      "label": "تفعيل الشريط الإعلاني أعلى الهيدر",
+      "description": "شريط علوي لعرض رسالة قصيرة مثل الشحن المجاني أو عرض حالي",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "type": "string",
+      "id": "announcement_text",
+      "label": "نص الشريط الإعلاني",
+      "format": "text",
+      "multilanguage": true,
+      "required": false,
+      "maxLength": 150
+    },
+    {
+      "type": "string",
+      "id": "announcement_link",
+      "label": "رابط الشريط الإعلاني (اختياري)",
+      "format": "url",
+      "inputType": "url",
+      "required": false
+    },
+    {
+      "type": "boolean",
+      "id": "dark_mode_enabled",
+      "label": "تفعيل الوضع الليلي",
+      "description": "يضيف زر تبديل بين الوضعين الفاتح والداكن في الهيدر، مع اعتماد تفضيل نظام تشغيل الزائر تلقائياً",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "back_to_top_enabled",
+      "label": "تفعيل زر العودة لأعلى الصفحة",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "whatsapp_enabled",
+      "label": "تفعيل زر واتساب العائم",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": false,
+      "selected": false
+    },
+    {
+      "type": "string",
+      "id": "whatsapp_number",
+      "label": "رقم واتساب (مع رمز الدولة، بدون + أو أصفار)",
+      "format": "text",
+      "inputType": "tel",
+      "required": false,
+      "maxLength": 15
+    },
+    {
+      "type": "boolean",
+      "id": "product_360_enabled",
+      "label": "تفعيل عارض 360° للمنتجات",
+      "description": "يعرض تلقائياً عارضاً تفاعلياً بالسحب/اللمس/الجيروسكوب بدلاً من معرض الصور العادي، وذلك فقط للمنتجات التي رفع لها التاجر عدداً كافياً من الصور المتسلسلة (بدون أي فيديو) من نفس المنتج بزوايا مختلفة عبر إدارة صور المنتج في سلة",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "number",
+      "id": "product_360_min_frames",
+      "label": "الحد الأدنى لعدد الصور لتفعيل عارض 360°",
+      "description": "عدد صور المنتج (بدون الفيديوهات) المطلوب كحد أدنى حتى تُعامل تلقائياً كمجموعة تدوير 360° — كلما زاد العدد كانت الحركة أكثر سلاسة. القيمة الافتراضية المقترحة من سلة ومصوّري المنتجات هي 24 صورة",
+      "format": "number",
+      "required": false,
+      "value": 12
+    },
+    {
+      "type": "boolean",
+      "id": "live_search_enabled",
+      "label": "تفعيل البحث الفوري",
+      "description": "يستبدل نافذة البحث الافتراضية بتجربة بحث فوري مخصصة (اقتراحات منتجات وأقسام وعلامات تجارية أثناء الكتابة، مع دعم التنقل بلوحة المفاتيح). عند التعطيل يعود المتجر لاستخدام مكوّن البحث الافتراضي من سلة",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "quick_view_enabled",
+      "label": "تفعيل النظرة السريعة على بطاقات المنتجات",
+      "description": "يضيف زر معاينة سريعة لتفاصيل المنتج والشراء دون مغادرة صفحة التصفح",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "compare_enabled",
+      "label": "تفعيل ميزة مقارنة المنتجات",
+      "description": "يسمح للزائر بإضافة عدة منتجات إلى قائمة مقارنة وعرض الفروقات بينها جنباً إلى جنب",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "number",
+      "id": "compare_max_items",
+      "label": "الحد الأقصى لعدد المنتجات في المقارنة",
+      "format": "number",
+      "required": false,
+      "value": 4
+    },
+    {
+      "type": "boolean",
+      "id": "sticky_atc_enabled",
+      "label": "تفعيل شريط الشراء الثابت في صفحة المنتج",
+      "description": "يعرض شريطاً مختصراً في أسفل الشاشة (اسم المنتج، السعر، زر الإضافة للسلة) بمجرد أن يمرر الزائر الشاشة متجاوزاً زر الشراء الأساسي",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "recently_viewed_enabled",
+      "label": "تفعيل قسم \"شاهدته مؤخراً\"",
+      "description": "يعرض للزائر آخر المنتجات التي تصفحها في هذه الجلسة (يُحفظ محلياً في متصفحه فقط)",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "boolean",
+      "id": "smart_recommendations_enabled",
+      "label": "تفعيل التوصيات الذكية",
+      "description": "يعرض للزائر منتجات ذات صلة بناءً على المنتج الحالي أو آخر منتج تصفحه، بالاعتماد على نظام سلة للمنتجات المرتبطة",
+      "format": "switch",
+      "icon": "sicon-toggle-off",
+      "required": false,
+      "value": true,
+      "selected": true
+    },
+    {
+      "type": "string",
+      "id": "mega_menu_banner_image",
+      "label": "صورة بانر القائمة الضخمة (اختياري)",
+      "description": "يظهر داخل القائمة المنسدلة للأقسام الرئيسية التي تحتوي على قائمة فرعية. المقاس المناسب هو 300×400 بكسل",
+      "format": "image",
+      "required": false
+    },
+    {
+      "type": "string",
+      "id": "mega_menu_banner_url",
+      "label": "رابط بانر القائمة الضخمة",
+      "format": "url",
+      "inputType": "url",
+      "required": false
+    },
+    {
+      "type": "string",
+      "id": "mega_menu_banner_title",
+      "label": "عنوان بانر القائمة الضخمة (اختياري)",
+      "format": "text",
+      "multilanguage": true,
+      "required": false,
+      "maxLength": 60
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "header_layout",
+      "label": "تخطيط الهيدر",
+      "description": "8 تصاميم جاهزة لرأس المتجر — تُطبَّق فوراً دون أي تعديل برمجي، وتحافظ جميعها على نفس عناصر التنقل والبحث والسلة",
+      "icon": "sicon-menu",
+      "required": false,
+      "selected": [{ "value": "classic" }],
+      "options": [
+        { "label": "كلاسيكي (افتراضي)", "value": "classic" },
+        { "label": "قائمة توسيط", "value": "centered_nav" },
+        { "label": "قائمة لنهاية الشريط", "value": "nav_end" },
+        { "label": "شعار في المنتصف (صفّين)", "value": "logo_center" },
+        { "label": "أيقونات موزّعة على الطرفين", "value": "split_actions" },
+        { "label": "الحد الأدنى (قائمة الجوال دائماً)", "value": "minimal" },
+        { "label": "مضغوط", "value": "compact" },
+        { "label": "صندوق عائم", "value": "boxed" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "footer_layout",
+      "label": "تخطيط الفوتر",
+      "description": "8 تصاميم جاهزة لتذييل المتجر",
+      "icon": "sicon-menu",
+      "required": false,
+      "selected": [{ "value": "classic" }],
+      "options": [
+        { "label": "كلاسيكي (افتراضي)", "value": "classic" },
+        { "label": "متوسّط", "value": "centered" },
+        { "label": "مضغوط", "value": "compact" },
+        { "label": "أعمدة متساوية", "value": "columns_equal" },
+        { "label": "شريط سفلي مكدّس", "value": "stacked_bottom" },
+        { "label": "صندوق", "value": "boxed" },
+        { "label": "الحد الأدنى", "value": "minimal" },
+        { "label": "روابط أفقية", "value": "inline_links" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "product_card_style",
+      "label": "تصميم بطاقة المنتج",
+      "description": "المظهر البصري لبطاقات المنتجات في كل صفحات المتجر (نفس البيانات والوظائف، تغيير التصميم فقط)",
+      "icon": "sicon-grid-2",
+      "required": false,
+      "selected": [{ "value": "standard" }],
+      "options": [
+        { "label": "قياسي (افتراضي)", "value": "standard" },
+        { "label": "مينيمال بدون حدود", "value": "minimal" },
+        { "label": "تراكب المعلومات على الصورة", "value": "overlay" },
+        { "label": "حدود بارزة", "value": "bordered" },
+        { "label": "مضغوط", "value": "compact" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "radius_style",
+      "label": "استدارة الحواف",
+      "description": "يتحكم في استدارة زوايا البطاقات والأزرار والنوافذ في كامل المتجر",
+      "icon": "sicon-square",
+      "required": false,
+      "selected": [{ "value": "rounded" }],
+      "options": [
+        { "label": "حادة", "value": "sharp" },
+        { "label": "ناعمة قليلاً", "value": "soft" },
+        { "label": "مستديرة (افتراضي)", "value": "rounded" },
+        { "label": "مستديرة جداً", "value": "extra_rounded" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "shadow_style",
+      "label": "قوة الظلال",
+      "description": "يتحكم في عمق وقوة الظلال المستخدمة في البطاقات والقوائم المنسدلة",
+      "icon": "sicon-layers",
+      "required": false,
+      "selected": [{ "value": "soft" }],
+      "options": [
+        { "label": "بدون ظلال (مسطّح)", "value": "flat" },
+        { "label": "ناعمة (افتراضي)", "value": "soft" },
+        { "label": "بارزة (بريميوم)", "value": "premium" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "spacing_density",
+      "label": "كثافة التباعد",
+      "description": "يتحكم في المسافات بين العناصر في كامل المتجر",
+      "icon": "sicon-align-right",
+      "required": false,
+      "selected": [{ "value": "comfortable" }],
+      "options": [
+        { "label": "مضغوطة", "value": "compact" },
+        { "label": "مريحة (افتراضي)", "value": "comfortable" },
+        { "label": "واسعة", "value": "spacious" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "font_scale",
+      "label": "حجم الخط العام",
+      "description": "يتحكم في الحجم العام للنصوص في كامل المتجر دون التأثير على تكبير المتصفح",
+      "icon": "sicon-font",
+      "required": false,
+      "selected": [{ "value": "standard" }],
+      "options": [
+        { "label": "صغير", "value": "small" },
+        { "label": "قياسي (افتراضي)", "value": "standard" },
+        { "label": "كبير", "value": "large" }
+      ]
+    },
+    {
+      "type": "items",
+      "format": "dropdown-list",
+      "id": "button_style",
+      "label": "تصميم الأزرار",
+      "description": "شكل زوايا الأزرار في كامل المتجر",
+      "icon": "sicon-square",
+      "required": false,
+      "selected": [{ "value": "pill" }],
+      "options": [
+        { "label": "دائرية بالكامل (افتراضي)", "value": "pill" },
+        { "label": "مستديرة الزوايا", "value": "rounded" },
+        { "label": "حادة الزوايا", "value": "sharp" }
+      ]
+    }
+  ],
+  "components": [
+    {
+      "name": "hero-banner",
+      "title": {
+        "ar": "البانر الرئيسي",
+        "en": "Hero Banner"
+      },
+      "icon": "sicon-image-carousel",
+      "path": "home.hero-banner",
+      "fields": [
+        {
+          "id": "layout",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "تصميم البانر الرئيسي",
+          "description": "10 تصاميم جاهزة تستخدم نفس الصور والعناوين والأزرار التي تضيفها أدناه، بترتيب وعرض مختلف فقط",
+          "required": false,
+          "selected": [{ "value": "fullwidth" }],
+          "options": [
+            { "label": "كامل العرض (افتراضي)", "value": "fullwidth" },
+            { "label": "شاشة كاملة", "value": "fullscreen" },
+            { "label": "منقسم — الصورة يمين", "value": "split" },
+            { "label": "منقسم — الصورة يسار", "value": "split_reverse" },
+            { "label": "صندوق بحواف مستديرة", "value": "boxed" },
+            { "label": "توسيط كامل مع تعتيم", "value": "centered_overlay" },
+            { "label": "نص بسيط وتعتيم خفيف", "value": "minimal_text" },
+            { "label": "بطاقة عائمة", "value": "card_stack" },
+            { "label": "شريط جانبي ملوّن", "value": "side_stripe" },
+            { "label": "شريط ترويجي منخفض", "value": "bottom_banner" }
+          ]
+        },
+        {
+          "id": "slides",
+          "type": "collection",
+          "format": "collection",
+          "label": "الشرائح",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 6,
+          "fields": [
+            {
+              "id": "image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة الشريحة (سطح المكتب)",
+              "description": "المقاس المناسب للصورة هو 1920×760 بكسل",
+              "required": true
+            },
+            {
+              "id": "mobile_image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة الشريحة (الجوال، اختياري)",
+              "description": "المقاس المناسب للصورة هو 750×900 بكسل"
+            },
+            {
+              "id": "title",
+              "type": "string",
+              "format": "text",
+              "label": "العنوان الرئيسي",
+              "multilanguage": true,
+              "maxLength": 60
+            },
+            {
+              "id": "subtitle",
+              "type": "string",
+              "format": "textarea",
+              "label": "نص فرعي (اختياري)",
+              "multilanguage": true,
+              "maxLength": 150
+            },
+            {
+              "id": "cta_label",
+              "type": "string",
+              "format": "text",
+              "label": "نص الزر الأساسي",
+              "multilanguage": true,
+              "maxLength": 30
+            },
+            {
+              "id": "cta_url",
+              "type": "string",
+              "format": "url",
+              "inputType": "url",
+              "label": "رابط الزر الأساسي"
+            },
+            {
+              "id": "secondary_cta_label",
+              "type": "string",
+              "format": "text",
+              "label": "نص الزر الثانوي (اختياري)",
+              "multilanguage": true,
+              "maxLength": 30
+            },
+            {
+              "id": "secondary_cta_url",
+              "type": "string",
+              "format": "url",
+              "inputType": "url",
+              "label": "رابط الزر الثانوي (اختياري)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "categories",
+      "title": {
+        "ar": "الأقسام",
+        "en": "Categories"
+      },
+      "icon": "sicon-list",
+      "path": "home.categories",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 120
+        },
+        {
+          "id": "categories",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "الأقسام المعروضة",
+          "icon": "sicon-list",
+          "source": "Categories",
+          "multichoice": true,
+          "required": true,
+          "maxLength": 10
+        }
+      ]
+    },
+    {
+      "name": "featured-products",
+      "title": {
+        "ar": "منتجات مميزة",
+        "en": "Featured Products"
+      },
+      "icon": "sicon-bag2",
+      "path": "home.featured-products",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 120
+        },
+        {
+          "id": "products",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "المنتجات",
+          "icon": "sicon-list",
+          "source": "Products",
+          "multichoice": true,
+          "required": true,
+          "maxLength": 16
+        }
+      ]
+    },
+    {
+      "name": "offers",
+      "title": {
+        "ar": "العروض",
+        "en": "Offers"
+      },
+      "icon": "sicon-discount",
+      "path": "home.offers",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان العرض",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "textarea",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 150
+        },
+        {
+          "id": "image",
+          "type": "string",
+          "format": "image",
+          "label": "صورة خلفية العرض",
+          "description": "المقاس المناسب للصورة هو 1600×500 بكسل",
+          "required": true
+        },
+        {
+          "id": "end_date",
+          "type": "string",
+          "format": "datetime",
+          "label": "تاريخ ووقت انتهاء العرض (لعداد تنازلي، اختياري)",
+          "required": false
+        },
+        {
+          "id": "cta_label",
+          "type": "string",
+          "format": "text",
+          "label": "نص الزر",
+          "multilanguage": true,
+          "maxLength": 30
+        },
+        {
+          "id": "cta_url",
+          "type": "string",
+          "format": "url",
+          "inputType": "url",
+          "label": "رابط الزر"
+        },
+        {
+          "id": "products",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "منتجات العرض (اختياري)",
+          "icon": "sicon-list",
+          "source": "Products",
+          "multichoice": true,
+          "required": false,
+          "maxLength": 8
+        }
+      ]
+    },
+    {
+      "name": "brands",
+      "title": {
+        "ar": "العلامات التجارية",
+        "en": "Brands"
+      },
+      "icon": "sicon-award-ribbon",
+      "path": "home.brands",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "brands",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "العلامات التجارية",
+          "icon": "sicon-award-ribbon",
+          "source": "Brands",
+          "multichoice": true,
+          "required": true,
+          "maxLength": 20
+        }
+      ]
+    },
+    {
+      "name": "rich-text",
+      "title": {
+        "ar": "نص حر (مقتطف تسويقي)",
+        "en": "Rich Text Block"
+      },
+      "icon": "sicon-align-right",
+      "path": "home.rich-text",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "العنوان (اختياري)",
+          "multilanguage": true,
+          "maxLength": 80
+        },
+        {
+          "id": "content",
+          "type": "string",
+          "format": "textarea",
+          "label": "المحتوى",
+          "multilanguage": true,
+          "required": true,
+          "maxLength": 1000
+        },
+        {
+          "type": "boolean",
+          "id": "center_align",
+          "label": "توسيط النص",
+          "format": "switch",
+          "icon": "sicon-toggle-off",
+          "required": false,
+          "value": false,
+          "selected": false
+        }
+      ]
+    },
+    {
+      "name": "gallery",
+      "title": {
+        "ar": "معرض صور",
+        "en": "Photo Gallery"
+      },
+      "icon": "sicon-image",
+      "path": "home.gallery",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم (اختياري)",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "images",
+          "type": "collection",
+          "format": "collection",
+          "label": "الصور",
+          "required": true,
+          "minLength": 2,
+          "maxLength": 12,
+          "fields": [
+            {
+              "id": "image",
+              "type": "string",
+              "format": "image",
+              "label": "الصورة",
+              "description": "المقاس المناسب للصورة هو 800×800 بكسل",
+              "required": true
+            },
+            {
+              "id": "caption",
+              "type": "string",
+              "format": "text",
+              "label": "وصف الصورة (اختياري)",
+              "multilanguage": true,
+              "maxLength": 80
+            },
+            {
+              "id": "url",
+              "type": "string",
+              "format": "url",
+              "inputType": "url",
+              "label": "رابط عند الضغط (اختياري)"
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "video",
+      "title": {
+        "ar": "فيديو ترويجي",
+        "en": "Promo Video"
+      },
+      "icon": "sicon-video-clip",
+      "path": "home.video",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم (اختياري)",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 120
+        },
+        {
+          "id": "youtube_url",
+          "type": "string",
+          "format": "url",
+          "inputType": "url",
+          "label": "رابط فيديو يوتيوب",
+          "description": "مثال: https://www.youtube.com/watch?v=XXXXXXXXXXX",
+          "required": true
+        },
+        {
+          "id": "poster",
+          "type": "string",
+          "format": "image",
+          "label": "صورة مصغّرة (اختياري، يُستخدم غلاف يوتيوب تلقائياً إن لم تُحدد)",
+          "description": "المقاس المناسب للصورة هو 1280×720 بكسل"
+        }
+      ]
+    },
+    {
+      "name": "product-reels",
+      "title": {
+        "ar": "ريلز المنتجات",
+        "en": "Product Reels"
+      },
+      "icon": "sicon-video-clip",
+      "path": "home.product-reels",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم (اختياري)",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "reels",
+          "type": "collection",
+          "format": "collection",
+          "label": "الفيديوهات",
+          "description": "كل ريل هو فيديو قصير رأسي، اربطه بمنتج حقيقي لعرض السعر وزر الإضافة السريعة للسلة",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 12,
+          "fields": [
+            {
+              "id": "video_url",
+              "type": "string",
+              "format": "url",
+              "inputType": "url",
+              "label": "رابط الفيديو",
+              "description": "رابط ملف فيديو مباشر (mp4/webm) من مساحة تخزينك الخاصة للحصول على أفضل تجربة تشغيل تلقائي، أو رابط يوتيوب",
+              "required": true
+            },
+            {
+              "id": "poster",
+              "type": "string",
+              "format": "image",
+              "label": "صورة مصغّرة (اختياري)",
+              "description": "تُعرض قبل بدء تشغيل الفيديو. المقاس المناسب هو 720×1280 بكسل"
+            },
+            {
+              "id": "product",
+              "type": "items",
+              "format": "dropdown-list",
+              "label": "المنتج المرتبط (اختياري)",
+              "icon": "sicon-bag2",
+              "source": "Products",
+              "multichoice": false,
+              "required": false
+            },
+            {
+              "id": "caption",
+              "type": "string",
+              "format": "text",
+              "label": "تعليق قصير (اختياري)",
+              "multilanguage": true,
+              "maxLength": 80
+            }
+          ]
+        }
+      ]
+    },
+    {
+      "name": "banner-grid",
+      "title": {
+        "ar": "بناء البانرات",
+        "en": "Banner Builder"
+      },
+      "icon": "sicon-image-carousel",
+      "path": "home.banner-grid",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم (اختياري)",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "banners",
+          "type": "collection",
+          "format": "collection",
+          "label": "البانرات",
+          "description": "أضف عدد غير محدود من البانرات وحدد مقاس كل واحد لبناء شبكة عروض مرنة (بانر كامل العرض، أو نصف، أو ثلث) — كل بانر يمكن ربطه بأي رابط داخلي أو خارجي حقيقي",
+          "required": true,
+          "minLength": 1,
+          "maxLength": 24,
+          "fields": [
+            {
+              "id": "image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة البانر (سطح المكتب)",
+              "description": "المقاس المناسب يعتمد على حجم البانر المختار أدناه، ويُفضّل نسبة عرض إلى ارتفاع 16:9 للبانر الكامل و 4:3 للنصف/الثلث",
+              "required": true
+            },
+            {
+              "id": "mobile_image",
+              "type": "string",
+              "format": "image",
+              "label": "صورة البانر (الجوال، اختياري)"
+            },
+            {
+              "id": "size",
+              "type": "items",
+              "format": "dropdown-list",
+              "label": "مقاس البانر",
+              "required": false,
+              "selected": [{ "value": "full" }],
+              "options": [
+                { "label": "كامل العرض", "value": "full" },
+                { "label": "نصف العرض", "value": "half" },
+                { "label": "ثلث العرض", "value": "third" }
+              ]
+            },
+            {
+              "id": "title",
+              "type": "string",
+              "format": "text",
+              "label": "عنوان فوق الصورة (اختياري)",
+              "multilanguage": true,
+              "maxLength": 60
+            },
+            {
+              "id": "subtitle",
+              "type": "string",
+              "format": "text",
+              "label": "نص فرعي فوق الصورة (اختياري)",
+              "multilanguage": true,
+              "maxLength": 100
+            },
+            {
+              "id": "cta_label",
+              "type": "string",
+              "format": "text",
+              "label": "نص الزر (اختياري)",
+              "multilanguage": true,
+              "maxLength": 30
+            },
+            {
+              "id": "url",
+              "type": "string",
+              "format": "url",
+              "inputType": "url",
+              "label": "الرابط عند الضغط (اختياري)"
+            }
+          ]
+        }
+      ]
+    }
+  ]
+}

@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// Breakpoints
+// Mobile-first scale: base styles target the smallest viewport, then widen.
+// -----------------------------------------------------------------------------
+
+$breakpoints: (
+  'xs': 375px,
+  // large phones
+  'sm': 576px,
+  // small tablets / landscape phones
+  'md': 768px,
+  // tablets
+  'lg': 992px,
+  // small laptops
+  'xl': 1200px,
+  // desktops
+  'xxl': 1440px, // large desktops
+);

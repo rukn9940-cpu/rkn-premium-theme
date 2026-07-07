@@ -1,0 +1,49 @@
+{#
+    Testimonials (Theme Feature: component-testimonials)
+    ======================================================
+    Pre-defined Twilight feature — Salla injects real, newest-first customer
+    feedback as the `items` collection. Nothing here is authored/fake.
+
+    | items[].avatar | string |                              |
+    | items[].name   | string |                              |
+    | items[].text   | string |                              |
+    | items[].stars  | number | 0–5                          |
+
+    Reference: docs.salla.dev — Testimonials component.
+#}
+{% if items is not empty %}
+    <section class="section testimonials" aria-label="{{ trans('home.testimonials.default_title') }}">
+        <div class="container">
+            <div class="section__head" data-reveal>
+                <div class="section__heading">
+                    <h2 class="section__title">{{ trans('home.testimonials.default_title') }}</h2>
+                </div>
+            </div>
+
+            <div class="carousel testimonials__carousel" data-carousel data-autoplay="7000">
+                <div class="carousel__viewport">
+                    <ul class="carousel__track testimonials__track">
+                        {% for item in items %}
+                            <li class="carousel__slide testimonials__slide">
+                                <figure class="testimonial-card" data-reveal>
+                                    <salla-rating-stars class="testimonial-card__rating" value="{{ item.stars }}"></salla-rating-stars>
+                                    <blockquote class="testimonial-card__text">{{ item.text }}</blockquote>
+                                    <figcaption class="testimonial-card__author">
+                                        {% if item.avatar %}
+                                            <img src="{{ item.avatar }}" alt="" loading="lazy" width="48" height="48">
+                                        {% endif %}
+                                        <span>{{ item.name }}</span>
+                                    </figcaption>
+                                </figure>
+                            </li>
+                        {% endfor %}
+                    </ul>
+                </div>
+
+                {% if items|length > 1 %}
+                    <div class="carousel__dots" data-carousel-dots></div>
+                {% endif %}
+            </div>
+        </div>
+    </section>
+{% endif %}

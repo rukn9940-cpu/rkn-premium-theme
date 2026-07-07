@@ -1,0 +1,31 @@
+// -----------------------------------------------------------------------------
+// Components
+// One partial per UI component, each forwarded here. Mirrors the structure
+// of `src/views/components` + `src/views/partials`.
+// -----------------------------------------------------------------------------
+
+@forward 'button';
+@forward 'forms';
+@forward 'section';
+@forward 'carousel';
+@forward 'product-card';
+@forward 'hero-banner';
+@forward 'hero-layouts';
+@forward 'categories';
+@forward 'featured-products';
+@forward 'offers';
+@forward 'brands';
+@forward 'testimonials';
+@forward 'store-features';
+@forward 'comments';
+@forward 'floating-actions';
+@forward 'rich-text-block';
+@forward 'gallery-block';
+@forward 'video-block';
+@forward 'product-reels';
+@forward 'product-viewer';
+@forward 'live-search';
+@forward 'quick-view';
+@forward 'compare';
+@forward 'recently-viewed';
+@forward 'banner-grid';

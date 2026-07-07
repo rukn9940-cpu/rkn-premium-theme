@@ -1,0 +1,86 @@
+{#
+    Static Single Page (required path: src/views/pages/page-single.twig)
+    =======================================================================
+    Renders every merchant-created static/CMS page (About, FAQ, Terms,
+    Privacy, Shipping/Payment info, Contact Us, ...) — the filename is fixed
+    by Twilight, content is differentiated at runtime via `page.slug`.
+
+    | page.title    | string  |                        |
+    | page.content  | string  | HTML — must use |raw   |
+    | page.slug     | string  |                        |
+    | page.id       | int     | fed into the comments component |
+
+    Reference: docs.salla.dev — Static Single Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% set contact_slugs = ['contact-us', 'contact', 'contact-us-page'] %}
+{% set is_contact_page = page.slug in contact_slugs %}
+
+{% block title %}{{ page.title|striptags }} | {{ store.name }}{% endblock %}
+{% block meta_description %}{{ page.content|striptags|slice(0, 160) }}{% endblock %}
+
+{% block canonical %}
+    <link rel="canonical" href="{{ page.url }}">
+{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    <meta property="og:type" content="website">
+    <meta property="og:title" content="{{ page.title|striptags }}">
+    <meta property="og:description" content="{{ page.content|striptags|slice(0, 160) }}">
+    <meta property="og:url" content="{{ page.url }}">
+{% endblock %}
+
+{% block content %}
+    <div class="container static-page">
+        <salla-breadcrumb></salla-breadcrumb>
+
+        <article class="static-page__article">
+            <h1 class="static-page__title">{{ page.title }}</h1>
+
+            {% if is_contact_page %}
+                <div class="static-page__contact-grid">
+                    <div class="static-page__contact-info">
+                        {% if page.content %}
+                            <div class="content-entry">{{ page.content|raw }}</div>
+                        {% endif %}
+
+                        <salla-contacts></salla-contacts>
+                        <div class="static-page__contact-social">
+                            <salla-social></salla-social>
+                        </div>
+                    </div>
+
+                    <form class="contact-form" onsubmit="return salla.form.onSubmit('contact.send', event);">
+                        <div class="form-field">
+                            <label for="contact-name">{{ trans('pages.contact.name') }}</label>
+                            <input type="text" name="name" id="contact-name" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="contact-email">{{ trans('common.elements.email') }}</label>
+                            <input type="email" name="email" id="contact-email" required>
+                        </div>
+                        <div class="form-field">
+                            <label for="contact-subject">{{ trans('pages.contact.subject') }}</label>
+                            <input type="text" name="subject" id="contact-subject">
+                        </div>
+                        <div class="form-field">
+                            <label for="contact-message">{{ trans('pages.contact.message') }}</label>
+                            <textarea name="message" id="contact-message" rows="5" required></textarea>
+                        </div>
+                        <salla-button type="submit" width="wide" loader-position="end">
+                            {{ trans('pages.contact.send') }}
+                        </salla-button>
+                    </form>
+                </div>
+            {% else %}
+                <div class="content-entry">
+                    {{ page.content|raw }}
+                </div>
+            {% endif %}
+        </article>
+
+        {% component 'comments' with { type: 'page', id: page.id } %}
+    </div>
+{% endblock %}

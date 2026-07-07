@@ -1,0 +1,64 @@
+// -----------------------------------------------------------------------------
+// Brands
+// Markup: views/components/home/brands.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.brands__slide {
+  width: 33.333%;
+  padding-inline: spacer(2);
+
+  @include breakpoint-up(sm) {
+    width: 20%;
+  }
+
+  @include breakpoint-up(lg) {
+    width: 16.666%;
+  }
+}
+
+.brand-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 6.5rem;
+  padding: spacer(4);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  filter: grayscale(1);
+  opacity: 0.65;
+  transition:
+    filter $duration-base $easing-standard,
+    opacity $duration-base $easing-standard,
+    border-color $duration-base $easing-standard,
+    box-shadow $duration-base $easing-standard,
+    transform $duration-base $easing-emphasized;
+
+  @include focus-ring;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      filter: grayscale(0);
+      opacity: 1;
+      border-color: transparent;
+      box-shadow: $shadow-md;
+      transform: translateY(-3px);
+    }
+  }
+
+  @include reduced-motion {
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}

@@ -1,0 +1,64 @@
+{#
+    Banner Builder (Theme Component: home.banner-grid)
+    ====================================================
+    Merchant-built promotional banner grid — add as many banners as needed
+    (up to the Partners Portal collection limit) and pick a size for each one
+    (full/half/third width) to compose a flexible promo layout, Zara/Noon
+    campaign-grid style. Every banner is real merchant content (image + own
+    link/label) — nothing here is generated or hardcoded.
+
+    | component.title                | string|null |                        |
+    | component.banners[].image      | string      | required, desktop art  |
+    | component.banners[].mobile_image | string|null |                      |
+    | component.banners[].size       | full|half|third                      |
+    | component.banners[].title      | string|null |                        |
+    | component.banners[].subtitle   | string|null |                        |
+    | component.banners[].cta_label  | string|null |                        |
+    | component.banners[].url        | string|null |                        |
+#}
+{% if component.banners is not empty %}
+    <section class="section banner-grid" aria-label="{{ component.title|default(trans('home.banner_grid.default_title')) }}">
+        <div class="container">
+            {% if component.title %}
+                <div class="section__head" data-reveal>
+                    <div class="section__heading">
+                        <h2 class="section__title">{{ component.title }}</h2>
+                    </div>
+                </div>
+            {% endif %}
+
+            <div class="banner-grid__grid">
+                {% for banner in component.banners %}
+                    {% set tag = banner.url ? 'a' : 'div' %}
+                    <{{ tag }}
+                        class="banner-grid__item banner-grid__item--{{ banner.size|default('full') }}"
+                        {% if banner.url %}href="{{ banner.url }}"{% endif %}
+                        data-reveal
+                    >
+                        <picture class="banner-grid__media">
+                            {% if banner.mobile_image %}
+                                <source media="(max-width: 767px)" srcset="{{ banner.mobile_image }}">
+                            {% endif %}
+                            <img
+                                src="{{ banner.image }}"
+                                alt="{{ banner.title|default('') }}"
+                                loading="lazy"
+                                width="800"
+                                height="500"
+                            >
+                        </picture>
+
+                        {% if banner.title or banner.subtitle or banner.cta_label %}
+                            <div class="banner-grid__overlay"></div>
+                            <div class="banner-grid__content">
+                                {% if banner.title %}<h3 class="banner-grid__title">{{ banner.title }}</h3>{% endif %}
+                                {% if banner.subtitle %}<p class="banner-grid__subtitle">{{ banner.subtitle }}</p>{% endif %}
+                                {% if banner.cta_label %}<span class="banner-grid__cta">{{ banner.cta_label }}</span>{% endif %}
+                            </div>
+                        {% endif %}
+                    </{{ tag }}>
+                {% endfor %}
+            </div>
+        </div>
+    </section>
+{% endif %}

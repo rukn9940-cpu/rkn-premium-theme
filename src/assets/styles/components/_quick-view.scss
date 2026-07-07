@@ -1,0 +1,202 @@
+// -----------------------------------------------------------------------------
+// Quick View modal
+// Markup: views/partials/utility/quick-view.twig (shell) +
+//         views/partials/product/card.twig (per-product `<template>` content)
+// Behaviour: js/modules/quick-view.js
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.quick-view {
+  position: fixed;
+  inset: 0;
+  z-index: z('modal');
+
+  &[hidden] {
+    display: none;
+  }
+}
+
+.quick-view__backdrop {
+  position: absolute;
+  inset: 0;
+  background-color: rgba($ink-950, 0.6);
+  opacity: 0;
+  transition: opacity $duration-base $easing-standard;
+
+  @supports (backdrop-filter: blur(1px)) {
+    @media (prefers-reduced-transparency: no-preference) {
+      backdrop-filter: blur(3px);
+    }
+  }
+}
+
+.quick-view__panel {
+  position: relative;
+  width: min(56rem, 92vw);
+  max-height: 88vh;
+  margin: 6vh auto 0;
+  overflow-y: auto;
+  background-color: $surface-0;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-xl;
+  opacity: 0;
+  transform: translateY(-12px) scale(0.98);
+  transition:
+    opacity $duration-base $easing-emphasized,
+    transform $duration-base $easing-emphasized;
+}
+
+.quick-view.is-open {
+  .quick-view__backdrop {
+    opacity: 1;
+  }
+
+  .quick-view__panel {
+    opacity: 1;
+    transform: none;
+  }
+}
+
+@include reduced-motion {
+  .quick-view__backdrop,
+  .quick-view__panel {
+    transition: none;
+  }
+}
+
+.quick-view__close {
+  position: absolute;
+  top: spacer(4);
+  inset-inline-end: spacer(4);
+  z-index: 1;
+  display: inline-flex;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: $radius-pill;
+  background-color: $surface-0;
+  color: $text-muted;
+  box-shadow: $shadow-sm;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  &:hover {
+    color: $text-heading;
+    background-color: $surface-100;
+  }
+}
+
+.quick-view__body {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(6);
+  padding: spacer(6);
+
+  @include breakpoint-up(md) {
+    grid-template-columns: 1fr 1fr;
+    padding: spacer(8);
+  }
+}
+
+.quick-view__media img {
+  width: 100%;
+  height: auto;
+  aspect-ratio: 1;
+  object-fit: cover;
+  border-radius: $radius-lg;
+  background-color: $surface-100;
+}
+
+.quick-view__info {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(2);
+  min-width: 0;
+}
+
+.quick-view__brand {
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+  text-transform: uppercase;
+  letter-spacing: 0.04em;
+
+  @include focus-ring;
+
+  &:hover {
+    color: color();
+  }
+}
+
+.quick-view__name {
+  font-size: $font-size-xl;
+  letter-spacing: $letter-spacing-tight;
+}
+
+.quick-view__subtitle {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.quick-view__price {
+  display: flex;
+  align-items: baseline;
+  gap: spacer(3);
+  margin-block: spacer(1);
+}
+
+.quick-view__price-current {
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+  font-variant-numeric: tabular-nums;
+}
+
+.quick-view__price-current--sale {
+  color: $color-danger;
+}
+
+.quick-view__price-regular {
+  font-size: $font-size-sm;
+  color: $text-muted;
+  text-decoration: line-through;
+  font-variant-numeric: tabular-nums;
+}
+
+.quick-view__form {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(4);
+  width: 100%;
+  margin-top: spacer(2);
+}
+
+.quick-view__quantity {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.quick-view__quantity-label {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.quick-view__submit {
+  width: 100%;
+}
+
+.quick-view__link {
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: color();
+  text-underline-offset: 3px;
+  text-decoration: underline;
+
+  @include focus-ring;
+}

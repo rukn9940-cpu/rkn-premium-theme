@@ -1,0 +1,224 @@
+{#
+    Product card
+    ============
+    Shared product tile used by the Featured Products and Offers home
+    sections (and, later, any listing/category page).
+
+    Expects a `product` variable in scope with the standard Twilight product
+    entity shape (see docs.salla.dev — Twig variables › Product). Pass
+    `hide_add_btn: true` to omit the add-to-cart button (e.g. quick-buy
+    landing pages that use their own checkout widget). Pass `reveal: true`
+    to fade/rise the card in on scroll (`data-reveal`, see
+    `js/modules/scroll-reveal.js`) — only safe for cards rendered once,
+    server-side (e.g. the homepage sections); leave it off wherever cards can
+    be appended later by `salla-infinite-scroll`, since those wouldn't have
+    an observer attached and would stay invisible.
+
+    Also renders the Quick View trigger + its hidden content `<template>`
+    (Theme Settings → "تفعيل النظرة السريعة") — see `js/modules/quick-view.js`
+    and `partials.utility.quick-view` for the shared modal shell — and the
+    Compare toggle (Theme Settings → "تفعيل ميزة مقارنة المنتجات"), whose
+    `data-compare-*` attributes carry just enough real data (name/url/image/
+    price) for `js/modules/compare.js` to render the floating compare bar
+    without a fetch; the fuller side-by-side table is built from
+    `salla.product.getDetails()` when the compare modal opens.
+
+        {% include 'partials.product.card' with { product: product } %}
+#}
+{% set on_sale = product.is_on_sale ?? product.on_sale ?? false %}
+{% set in_wishlist = product.is_in_wishlist ?? false %}
+
+<article class="product-card"{{ reveal ? ' data-reveal' : '' }}>
+    <div class="product-card__media">
+        <a href="{{ product.url }}" class="product-card__media-link" aria-label="{{ product.name }}">
+            <img
+                class="product-card__image"
+                src="{{ product.image.url }}"
+                alt="{{ product.image.alt|default(product.name) }}"
+                loading="lazy"
+                width="480"
+                height="480"
+            >
+            {#
+                Premium hover treatment: crossfade to the product's real
+                second uploaded photo (never a placeholder/stock image) when
+                the merchant has one — purely CSS-driven (`:hover`), no JS.
+                Silently skipped whenever a product only has a single image.
+            #}
+            {% if product.images is defined and product.images|length > 1 and product.images[1].url and product.images[1].url != product.image.url %}
+                <img
+                    class="product-card__image product-card__image--alt"
+                    src="{{ product.images[1].url }}"
+                    alt=""
+                    aria-hidden="true"
+                    loading="lazy"
+                    width="480"
+                    height="480"
+                >
+            {% endif %}
+        </a>
+
+        {% if product.promotion_title %}
+            <span class="product-card__badge">{{ product.promotion_title }}</span>
+        {% elseif on_sale and product.regular_price and product.regular_price > product.sale_price %}
+            {% set discount = ((product.regular_price - product.sale_price) / product.regular_price * 100)|round %}
+            <span class="product-card__badge product-card__badge--sale">-{{ discount }}%</span>
+        {% endif %}
+
+        <button
+            type="button"
+            class="product-card__wishlist{{ in_wishlist ? ' is-active' : '' }}"
+            data-wishlist-toggle
+            data-product-id="{{ product.id }}"
+            data-label-add="{{ trans('product.add_to_wishlist') }}"
+            data-label-remove="{{ trans('product.remove_from_wishlist') }}"
+            aria-pressed="{{ in_wishlist ? 'true' : 'false' }}"
+            aria-label="{{ in_wishlist ? trans('product.remove_from_wishlist') : trans('product.add_to_wishlist') }}"
+        >
+            <svg width="18" height="18" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                <path d="M10 17.5s-7-4.35-7-9.5A4 4 0 0 1 10 5a4 4 0 0 1 7 3c0 5.15-7 9.5-7 9.5Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+            </svg>
+        </button>
+
+        {% if theme.settings.get('compare_enabled', true) %}
+            <button
+                type="button"
+                class="product-card__compare"
+                data-compare-toggle
+                data-product-id="{{ product.id }}"
+                data-compare-name="{{ product.name }}"
+                data-compare-url="{{ product.url }}"
+                data-compare-image="{{ product.image.url }}"
+                data-compare-price="{{ (on_sale ? product.sale_price : product.price)|money }}"
+                data-compare-type="{{ product.type }}"
+                data-compare-status="{{ product.status }}"
+                data-label-add="{{ trans('product.add_to_compare') }}"
+                data-label-remove="{{ trans('product.remove_from_compare') }}"
+                aria-pressed="false"
+                aria-label="{{ trans('product.add_to_compare') }}"
+            >
+                <svg width="15" height="15" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M4 6h9m0 0-3-3m3 3-3 3M16 14H7m0 0 3 3m-3-3 3-3" stroke="currentColor" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+                <span class="product-card__compare-label">{{ trans('product.compare') }}</span>
+            </button>
+        {% endif %}
+
+        {% if theme.settings.get('quick_view_enabled', true) %}
+            <button
+                type="button"
+                class="product-card__quick-view"
+                data-quick-view-open
+                data-quick-view-id="{{ product.id }}"
+                aria-label="{{ trans('product.quick_view') }}"
+                aria-haspopup="dialog"
+                aria-controls="quick-view"
+            >
+                <svg width="17" height="17" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                    <path d="M1 10s3.5-6 9-6 9 6 9 6-3.5 6-9 6-9-6-9-6Z" stroke="currentColor" stroke-width="1.5" stroke-linejoin="round" />
+                    <circle cx="10" cy="10" r="2.25" stroke="currentColor" stroke-width="1.5" />
+                </svg>
+            </button>
+        {% endif %}
+    </div>
+
+    <div class="product-card__body">
+        {% if product.rating %}
+            <salla-rating-stars class="product-card__rating" value="{{ product.rating.stars }}" reviews="{{ product.rating.count }}"></salla-rating-stars>
+        {% endif %}
+
+        <h3 class="product-card__name">
+            <a href="{{ product.url }}">{{ product.name }}</a>
+        </h3>
+
+        <div class="product-card__price">
+            {% if on_sale %}
+                <span class="product-card__price-current product-card__price-current--sale">{{ product.sale_price|money }}</span>
+                <span class="product-card__price-regular">{{ product.regular_price|money }}</span>
+            {% else %}
+                <span class="product-card__price-current">{{ product.price|money }}</span>
+            {% endif %}
+        </div>
+
+        {% if not hide_add_btn %}
+            <salla-add-product-button
+                class="product-card__add"
+                product-id="{{ product.id }}"
+                product-status="{{ product.status }}"
+                product-type="{{ product.type }}"
+            ></salla-add-product-button>
+        {% endif %}
+    </div>
+</article>
+
+{% if theme.settings.get('quick_view_enabled', true) %}
+    {#
+        Quick View content — built server-side from this exact `product`
+        (real data, same add-to-cart form/options partial as the single
+        product page), so opening it needs no extra fetch and works
+        identically for every product type. Inert until
+        `js/modules/quick-view.js` clones it into the shared
+        `partials.utility.quick-view` modal.
+    #}
+    <template data-quick-view-template="{{ product.id }}">
+        <div class="quick-view__media">
+            <img
+                src="{{ product.image.url }}"
+                alt="{{ product.image.alt|default(product.name) }}"
+                width="480"
+                height="480"
+                loading="lazy"
+            >
+        </div>
+        <div class="quick-view__info">
+            {% if product.brand %}
+                <a href="{{ product.brand.url }}" class="quick-view__brand">{{ product.brand.name }}</a>
+            {% endif %}
+
+            {% if product.rating %}
+                <salla-rating-stars value="{{ product.rating.stars }}" reviews="{{ product.rating.count }}"></salla-rating-stars>
+            {% endif %}
+
+            <h2 class="quick-view__name">{{ product.name }}</h2>
+
+            {% if product.subtitle %}
+                <p class="quick-view__subtitle">{{ product.subtitle }}</p>
+            {% endif %}
+
+            <div class="quick-view__price">
+                {% if on_sale %}
+                    <span class="quick-view__price-current quick-view__price-current--sale">{{ product.sale_price|money }}</span>
+                    <span class="quick-view__price-regular">{{ product.regular_price|money }}</span>
+                {% else %}
+                    <span class="quick-view__price-current">{{ product.price|money }}</span>
+                {% endif %}
+            </div>
+
+            <form class="quick-view__form" onsubmit="return salla.form.onSubmit('cart.addItem', event)">
+                <input type="hidden" name="id" value="{{ product.id }}">
+
+                {% include 'partials.product.options' with { product: product } %}
+
+                {% if not product.is_hidden_quantity %}
+                    <div class="quick-view__quantity">
+                        <span class="quick-view__quantity-label">{{ trans('pages.products.quantity') }}</span>
+                        <salla-quantity-input max="{{ product.max_quantity }}" value="1" name="quantity"></salla-quantity-input>
+                    </div>
+                {% else %}
+                    <input type="hidden" name="quantity" value="1">
+                {% endif %}
+
+                <salla-add-product-button
+                    class="quick-view__submit"
+                    width="wide"
+                    product-id="{{ product.id }}"
+                    product-type="{{ product.type }}"
+                    product-status="{{ product.status }}"
+                    type="submit"
+                >{{ product.add_to_cart_label }}</salla-add-product-button>
+            </form>
+
+            <a href="{{ product.url }}" class="quick-view__link">{{ trans('product.view_full_details') }}</a>
+        </div>
+    </template>
+{% endif %}

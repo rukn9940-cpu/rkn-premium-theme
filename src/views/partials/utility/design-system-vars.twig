@@ -1,0 +1,58 @@
+{#
+    Design System tokens
+    ====================
+    Resolves the merchant's Theme Settings for the global design system
+    (border radius, shadow depth, spacing density, base font scale) into CSS
+    custom properties that `abstracts/_variables.scss` already routes every
+    `$radius-*`/`$shadow-*`/spacer()/`html` font-size through — so switching
+    any of these from the Partners Portal restyles the entire storefront
+    instantly, with no rebuild and no per-component changes.
+
+    `button_style` and `product_card_style` are plain layout switches (not
+    numeric scales) so they're exposed as `data-*` attributes on `<html>`
+    instead, read by the corresponding `[data-btn-style]`/
+    `[data-product-card-style]` selectors in `components/_button.scss` and
+    `components/_product-card.scss`.
+
+    Included once from `layouts/master.twig`, right after the color tokens.
+#}
+{% set radius_style = theme.settings.get('radius_style', 'rounded') %}
+{% set shadow_style = theme.settings.get('shadow_style', 'soft') %}
+{% set spacing_density = theme.settings.get('spacing_density', 'comfortable') %}
+{% set font_scale = theme.settings.get('font_scale', 'standard') %}
+
+{% set radius_scale_map = {
+    'sharp': '0',
+    'soft': '0.5',
+    'rounded': '1',
+    'extra_rounded': '1.4'
+} %}
+{% set shadow_scale_map = {
+    'flat': '0.35',
+    'soft': '1',
+    'premium': '1.6'
+} %}
+{% set space_scale_map = {
+    'compact': '0.85',
+    'comfortable': '1',
+    'spacious': '1.15'
+} %}
+{% set font_scale_map = {
+    'small': '0.9375',
+    'standard': '1',
+    'large': '1.0625'
+} %}
+
+{% set radius_scale = radius_scale_map[radius_style]|default('1') %}
+{% set shadow_scale = shadow_scale_map[shadow_style]|default('1') %}
+{% set space_scale = space_scale_map[spacing_density]|default('1') %}
+{% set text_scale = font_scale_map[font_scale]|default('1') %}
+
+<style>
+    :root {
+        --radius-scale: {{ radius_scale }};
+        --shadow-scale: {{ shadow_scale }};
+        --space-scale: {{ space_scale }};
+        --font-scale: {{ text_scale }};
+    }
+</style>

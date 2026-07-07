@@ -1,0 +1,95 @@
+{#
+    Thank You Page (order confirmation — required path: src/views/pages/thank-you.twig)
+    =======================================================================================
+    Customer lands here immediately after Salla's hosted checkout completes a
+    successful payment — this is the theme side of "checkout compatibility".
+
+    | order.reference_id     | int    | customer-facing order number     |
+    | order.id / order.url    | —      | fed into salla.order.show()      |
+    | order.total             | float  |                                    |
+    | order.customer.email    | string |                                    |
+    | order.instructions      | string | HTML, merchant/payment provider   |
+    | order.email_sent        | bool   |                                    |
+    | order.items[]           | array  | same shape as customer orders     |
+
+    Reference: docs.salla.dev — Thank You Page Template.
+#}
+{% extends "layouts.master" %}
+
+{% block title %}{{ trans('pages.thank_you.title') }} | {{ store.name }}{% endblock %}
+
+{% block head_scripts %}
+    {{ parent() }}
+    <meta name="robots" content="noindex, nofollow">
+{% endblock %}
+
+{% block content %}
+    <div class="container thank-you-page">
+        <div class="thank-you-message">
+            <span class="thank-you-message__icon" aria-hidden="true">
+                <svg width="40" height="40" viewBox="0 0 24 24" fill="none">
+                    <circle cx="12" cy="12" r="10" stroke="currentColor" stroke-width="1.4" />
+                    <path d="M8 12.5l2.5 2.5L16 9.5" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" stroke-linejoin="round" />
+                </svg>
+            </span>
+
+            <h1 class="thank-you-message__title">{{ trans('pages.thank_you.title') }}</h1>
+            <p class="thank-you-message__subtitle">{{ trans('pages.thank_you.subtitle') }}</p>
+
+            <div class="thank-you-message__ref">
+                <span>{{ trans('pages.thank_you.order_id') }}</span>
+                <button type="button" class="thank-you-message__ref-value" data-copy="{{ order.reference_id }}" aria-label="{{ trans('pages.thank_you.copy_reference') }}">
+                    <span>#{{ order.reference_id }}</span>
+                    <svg width="14" height="14" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <rect x="7" y="7" width="10" height="10" rx="1.5" stroke="currentColor" stroke-width="1.4" />
+                        <path d="M4 13V4.5A1.5 1.5 0 0 1 5.5 3H13" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
+                    </svg>
+                </button>
+            </div>
+
+            <div class="thank-you-message__actions">
+                <salla-button onclick="salla.order.show({order_id:'{{ order.id }}', url:'{{ order.url }}'})">
+                    <i class="sicon-newspaper" aria-hidden="true"></i>
+                    {{ trans('pages.thank_you.order_details') }}
+                </salla-button>
+                <a href="{{ store.url }}" class="btn btn--ghost">{{ trans('pages.cart.continue_shopping') }}</a>
+            </div>
+
+            {% if order.email_sent %}
+                <p class="thank-you-message__email-note">
+                    {{ trans('pages.thank_you.email_sent') }} <strong>{{ order.customer.email }}</strong>
+                </p>
+            {% endif %}
+        </div>
+
+        {% if order.instructions %}
+            <div class="thank-you-instructions">
+                {{ order.instructions|raw }}
+            </div>
+        {% endif %}
+
+        {% if order.items is not empty %}
+            <div class="account-card thank-you-summary">
+                <h2 class="account-card__title">{{ trans('pages.orders.items') }}</h2>
+                <div class="order-items">
+                    {% for item in order.items %}
+                        <div class="order-item">
+                            <span class="order-item__media">
+                                <img src="{{ item.image }}" alt="{{ item.name }}" loading="lazy" width="64" height="64">
+                            </span>
+                            <div class="order-item__body">
+                                <span class="order-item__name">{{ item.name }}</span>
+                                <span class="order-item__meta">{{ trans('pages.products.quantity') }}: {{ item.quantity }}</span>
+                            </div>
+                            <strong class="order-item__total">{{ item.total|money }}</strong>
+                        </div>
+                    {% endfor %}
+                </div>
+                <div class="thank-you-summary__total">
+                    <span>{{ trans('pages.cart.total') }}</span>
+                    <strong>{{ order.total|money }}</strong>
+                </div>
+            </div>
+        {% endif %}
+    </div>
+{% endblock %}

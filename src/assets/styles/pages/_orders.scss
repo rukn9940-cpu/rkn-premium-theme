@@ -1,0 +1,210 @@
+// -----------------------------------------------------------------------------
+// Orders (list + single)
+// Markup: views/pages/customer/orders/{index,single}.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.order-status-badge {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(1);
+  padding-inline: spacer(2);
+  padding-block: 2px;
+  border-radius: $radius-pill;
+  background-color: color-mix(in srgb, var(--status-color) 12%, transparent);
+  color: var(--status-color);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+}
+
+.order-status-badge--lg {
+  padding-inline: spacer(3);
+  padding-block: spacer(1);
+  font-size: $font-size-sm;
+}
+
+// Orders list --------------------------------------------------------------
+
+.orders-table {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(2);
+}
+
+.orders-table__head {
+  display: none;
+  padding: spacer(3);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+
+  @include breakpoint-up(md) {
+    display: grid;
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    gap: spacer(3);
+  }
+}
+
+.orders-table__row {
+  display: grid;
+  grid-template-columns: 1fr 1fr;
+  gap: spacer(2) spacer(3);
+  padding: spacer(4);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  transition:
+    border-color $duration-base $easing-standard,
+    box-shadow $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: transparent;
+      box-shadow: $shadow-md;
+    }
+  }
+
+  @include breakpoint-up(md) {
+    grid-template-columns: 1fr 1fr 1fr 1fr auto;
+    align-items: center;
+  }
+}
+
+.orders-table__row [data-label]::before {
+  content: attr(data-label) ': ';
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+
+  @include breakpoint-up(md) {
+    content: none;
+  }
+}
+
+.orders-table__chevron {
+  display: none;
+  color: $text-muted;
+
+  @include breakpoint-up(md) {
+    display: inline-flex;
+    justify-self: end;
+  }
+
+  [dir='rtl'] & {
+    transform: scaleX(-1);
+  }
+}
+
+.orders-empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(3);
+  padding-block: spacer(8);
+  text-align: center;
+  color: $text-muted;
+}
+
+// Single order --------------------------------------------------------------
+
+.order-single__header {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: spacer(3);
+}
+
+.order-single__label {
+  display: block;
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.order-single__id {
+  font-size: $font-size-2xl;
+  letter-spacing: $letter-spacing-tighter;
+}
+
+.order-single__date {
+  display: block;
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.order-single__payment-notice {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: spacer(3);
+  background-color: $color-warning-tint;
+  border-color: color-mix(in srgb, $color-warning 30%, transparent);
+}
+
+.order-items {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(3);
+}
+
+.order-item {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.order-item__media img {
+  width: 4rem;
+  height: 4rem;
+  object-fit: cover;
+  border-radius: $radius-md;
+  background-color: $surface-100;
+}
+
+.order-item__body {
+  display: flex;
+  flex-direction: column;
+  flex: 1;
+  min-width: 0;
+}
+
+.order-item__name {
+  font-weight: $font-weight-semibold;
+
+  @include focus-ring;
+}
+
+.order-item__meta {
+  font-size: $font-size-xs;
+  color: $text-muted;
+}
+
+.order-item__total {
+  white-space: nowrap;
+}
+
+.order-shipping {
+  display: flex;
+  align-items: center;
+  gap: spacer(3);
+}
+
+.order-shipping__logo {
+  border-radius: $radius-sm;
+  object-fit: contain;
+}
+
+.order-shipping__number {
+  display: block;
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.order-single__actions {
+  display: flex;
+  gap: spacer(4);
+}

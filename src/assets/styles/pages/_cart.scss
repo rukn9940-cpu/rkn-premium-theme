@@ -1,0 +1,214 @@
+// -----------------------------------------------------------------------------
+// Cart page
+// Markup: views/pages/cart.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.cart-page {
+  padding-block: spacer(6) spacer(9);
+}
+
+.cart-page__title {
+  font-size: $font-size-3xl;
+  letter-spacing: $letter-spacing-tighter;
+  margin-bottom: spacer(6);
+}
+
+.cart-page__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(6);
+  align-items: start;
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 2fr 1fr;
+    gap: spacer(7);
+  }
+}
+
+.cart-page__items {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+}
+
+.cart-item {
+  position: relative;
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  gap: spacer(4);
+  padding: spacer(4);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-lg;
+  transition:
+    box-shadow $duration-base $easing-standard,
+    border-color $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: transparent;
+      box-shadow: $shadow-md;
+    }
+  }
+}
+
+.cart-item--unavailable {
+  opacity: 0.6;
+}
+
+.cart-item__media img {
+  width: 6rem;
+  height: 6rem;
+  object-fit: cover;
+  border-radius: $radius-md;
+  background-color: $surface-100;
+}
+
+.cart-item__body {
+  display: flex;
+  flex-direction: column;
+  align-items: flex-start;
+  gap: spacer(2);
+  min-width: 0;
+}
+
+.cart-item__name {
+  font-weight: $font-weight-semibold;
+  transition: color $duration-fast $easing-standard;
+
+  @include line-clamp(2);
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      color: color();
+    }
+  }
+}
+
+.cart-item__unavailable-badge {
+  padding-inline: spacer(2);
+  padding-block: 2px;
+  border-radius: $radius-pill;
+  background-color: $color-danger-tint;
+  color: $color-danger;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.cart-item__price {
+  color: $text-muted;
+  font-size: $font-size-sm;
+  font-variant-numeric: tabular-nums;
+}
+
+.cart-item__controls {
+  display: flex;
+  align-items: center;
+  flex-wrap: wrap;
+  gap: spacer(4);
+  margin-top: spacer(2);
+}
+
+.cart-item__remove {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(1);
+  padding: spacer(1);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  color: $text-muted;
+  border-radius: $radius-sm;
+  transition: color $duration-fast $easing-standard;
+
+  @include focus-ring;
+  @include min-tap-target;
+
+  @media (hover: hover) {
+    &:hover {
+      color: $color-danger;
+    }
+  }
+}
+
+.cart-item__total {
+  align-self: center;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+  font-variant-numeric: tabular-nums;
+  white-space: nowrap;
+}
+
+.cart-page__summary {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(4);
+  padding: spacer(6);
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  border-radius: $radius-xl;
+  box-shadow: $shadow-md;
+
+  @include breakpoint-up(lg) {
+    position: sticky;
+    top: spacer(6);
+  }
+}
+
+.cart-page__summary-title {
+  font-size: $font-size-lg;
+}
+
+.cart-page__summary-row {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  font-size: $font-size-sm;
+  color: $text-body;
+
+  strong {
+    font-variant-numeric: tabular-nums;
+  }
+}
+
+.cart-page__summary-row--discount strong {
+  color: $color-success;
+}
+
+.cart-page__summary-row--total {
+  padding-top: spacer(4);
+  border-top: 1px dashed $border-strong;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-bold;
+  color: $text-heading;
+}
+
+.cart-page__continue-link {
+  text-align: center;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  color: color();
+
+  @include focus-ring;
+}
+
+.cart-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(4);
+  padding-block: spacer(9);
+  text-align: center;
+  color: $text-muted;
+
+  svg {
+    color: $ink-100;
+  }
+
+  h2 {
+    font-size: $font-size-xl;
+  }
+}

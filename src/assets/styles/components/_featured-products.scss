@@ -1,0 +1,21 @@
+// -----------------------------------------------------------------------------
+// Featured products
+// Markup: views/components/home/featured-products.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.featured-products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacer(5);
+  }
+}

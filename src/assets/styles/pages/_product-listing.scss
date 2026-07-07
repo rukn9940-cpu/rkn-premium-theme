@@ -1,0 +1,101 @@
+// -----------------------------------------------------------------------------
+// Product listing page (category / search / tag / offers)
+// Markup: views/pages/product/index.twig
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.listing-page {
+  padding-block: spacer(5) spacer(8);
+}
+
+.listing-page__head {
+  margin-block: spacer(4) spacer(2);
+}
+
+.listing-page__subtitle {
+  color: $text-muted;
+}
+
+.listing-page__subcategories {
+  display: flex;
+  flex-wrap: wrap;
+  gap: spacer(2);
+  margin-bottom: spacer(4);
+}
+
+.listing-page__subcategory-chip {
+  padding-inline: spacer(3);
+  padding-block: spacer(2);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-pill;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-medium;
+  color: $text-heading;
+
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: color();
+      color: color();
+    }
+  }
+}
+
+.listing-page__toolbar {
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  gap: spacer(3);
+  padding-block: spacer(4);
+  margin-bottom: spacer(4);
+  border-block: 1px solid $border-subtle;
+}
+
+.listing-page__count {
+  font-size: $font-size-sm;
+  color: $text-muted;
+}
+
+.listing-page__sort {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+  font-size: $font-size-sm;
+}
+
+.listing-page__sort select {
+  padding: spacer(2);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-sm;
+  font-family: inherit;
+  font-size: $font-size-sm;
+
+  @include focus-ring;
+}
+
+.listing-page__grid {
+  display: grid;
+  grid-template-columns: repeat(2, 1fr);
+  gap: spacer(4);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(4, 1fr);
+    gap: spacer(5);
+  }
+}
+
+.listing-page__empty {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(4);
+  padding-block: spacer(8);
+  text-align: center;
+  color: $text-muted;
+}
