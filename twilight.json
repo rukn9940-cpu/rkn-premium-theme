@@ -327,11 +327,11 @@
         {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
-                "en": "Enhances Animated Images",
-                "ar": " صور متحركة (محسنة)"
+                "en": "Hero Slider + Category Sidebar",
+                "ar": "سلايدر رئيسي مع قائمة الأقسام"
             },
             "icon": "sicon-image-carousel",
-            "path": "home.enhanced-slider",
+            "path": "home.hero-with-sidebar",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
             "is_default": true,
             "fields": [
@@ -880,7 +880,7 @@
                 "ar": "صور مربعة (محسنة)"
             },
             "icon": "sicon-image",
-            "path": "home.enhanced-square-banners",
+            "path": "home.banner-grid",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
             "is_default": true,
             "fields": [

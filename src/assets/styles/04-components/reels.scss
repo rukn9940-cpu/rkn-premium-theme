@@ -2,40 +2,6 @@
    Rukn Al-Ahtraf — homepage Reels (video cards) section
    ============================================================ */
 
-.s-block--reels {
-  .rkn-sechead {
-    display: flex;
-    align-items: flex-end;
-    justify-content: space-between;
-    margin-bottom: 22px;
-  }
-
-  .rkn-sectitle {
-    font-size: 24px;
-    font-weight: 900;
-    margin: 0;
-    letter-spacing: -0.01em;
-    display: flex;
-    align-items: center;
-    gap: 11px;
-    color: var(--rkn-ink);
-
-    &::before {
-      content: '';
-      width: 6px;
-      height: 24px;
-      border-radius: 3px;
-      background: var(--rkn-gold);
-    }
-  }
-
-  .rkn-secsub {
-    font-size: 14px;
-    color: var(--rkn-muted);
-    margin: 6px 0 0;
-  }
-}
-
 .rkn-reels-grid {
   display: grid;
   grid-template-columns: repeat(6, 1fr);

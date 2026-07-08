@@ -6,37 +6,31 @@
 | position                       | int     | Sorting number start from zero                                               |
 #}
 {% set display_all_url = theme.settings.get('is_more_button_enabled') %}
-<section class="s-block s-block--logos-slider s-block--full-bg bg-gray-100 pt-8 sm:pt-12 pb-8 sm:pb-20">
+<section class="s-block rkn-brands-block">
     <div class="container">
-    
-        {% if component.title or component.show_all %}
-          <div class="s-block__title">
-            {% if component.title %}
-              <div class="right-side">
-                <h2>{{ component.title }}</h2>
-                {# <p>عنوان فرعي توصيفي صغير</p> #}
-              </div>
-            {% endif %}
-            {% if display_all_url %}
-              <a href="{{ link('brands') }}" class="s-block__display-all"> {{ trans('blocks.home.display_all') }} <i class="sicon-arrow-left"></i></a>
-            {% endif %}
-          </div>
-        {% endif %}
-
-        <div class="grid grid-cols-2 {{ component.brands|length > 5 ? 'md:grid-cols-4' : 'md:grid-cols-5' }} grid-flow-row gap-4 lg:gap-8">
-            {% for brand in component.brands %}
-                {% if loop.first or loop.index0%3==0 %}
-                    <a href="{{ brand.url }}"
-                       class="brand-item {{ component.brands|length > 5  ? 'sm:row-span-2 sm:h-auto': '' }}">
-                        <img class="max-h-full" width="400" height="300" src="{{ brand.logo }}" alt="{{ brand.name }}"/>
-                    </a>
-                {% else %}
-                    <a href="{{ brand.url }}"
-                       class="brand-item">
-                        <img class="max-h-full" width="400" height="300" src="{{ brand.logo }}" alt="{{ brand.name }}"/>
+        {% if component.title or display_all_url %}
+            <div class="rkn-sechead">
+                {% if component.title %}<h2 class="rkn-sectitle">{{ component.title }}</h2>{% endif %}
+                {% if display_all_url %}
+                    <a href="{{ link('brands') }}" class="rkn-morelink">
+                        {{ trans('blocks.home.display_all') }}
+                        <i class="sicon-arrow-left-1 rtl:inline-block ltr:hidden"></i>
+                        <i class="sicon-arrow-right-1 ltr:inline-block rtl:hidden"></i>
                     </a>
                 {% endif %}
-            {% endfor %}
-        </div>
+            </div>
+        {% endif %}
+
+        <salla-slider type="carousel" controls-outer id="rkn-brands-{{ position }}">
+            <div slot="items">
+                {% for brand in component.brands %}
+                    <div class="swiper-slide rkn-brand-slide">
+                        <a href="{{ brand.url }}" class="rkn-brand-tile" aria-label="{{ brand.name }}">
+                            <img src="{{ brand.logo }}" width="160" height="80" loading="lazy" alt="{{ brand.name }}">
+                        </a>
+                    </div>
+                {% endfor %}
+            </div>
+        </salla-slider>
     </div>
 </section>

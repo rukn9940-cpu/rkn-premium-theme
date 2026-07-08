@@ -59,7 +59,7 @@
     {{ theme.settings.set('placeholder', 'images/placeholder.png') }}
 
     <script defer data-cfasync="false" crossorigin="anonymous" src="{{ 'product-card.js'|asset }}"></script>
-    <script defer src="{{ 'main-menu.js'|asset }}"></script>
+    <script defer src="{{ 'mega-menu.js'|asset }}"></script>
     <script defer src="{{ 'category-menu.js'|asset }}"></script>
     {% if theme.settings.get('enable_add_product_toast', true) %}
         <script defer src="{{ 'add-product-toast.js'|asset }}"></script>
@@ -69,7 +69,6 @@
 
 
     <script data-cfasync="false">
-        window.header_is_sticky = "{{theme.settings.get('header_is_sticky', 'Default Value')}}"
         window.imageZoom = "{{theme.settings.get('imageZoom')}}"
         window.can_access_wallet = {{ user.can_access_wallet | json_encode }}
         window.enable_more_menu = "{{ theme.settings.get('enable_more_menu', true) }}"

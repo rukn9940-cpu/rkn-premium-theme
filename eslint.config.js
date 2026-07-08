@@ -39,7 +39,6 @@ const browserGlobals = {
 const sallaGlobals = {
     salla: 'readonly',
     app: 'writable',
-    header_is_sticky: 'readonly',
     imageZoom: 'readonly',
     fslightbox: 'writable',
     can_access_wallet: 'readonly',

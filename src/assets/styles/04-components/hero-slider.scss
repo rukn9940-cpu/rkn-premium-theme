@@ -2,6 +2,13 @@
    Rukn Al-Ahtraf hero slider + homepage category sidebar
    ============================================================ */
 
+// Sit flush under the header when it's the first homepage block,
+// same rhythm the old `.s-block--full-bg:first-of-type` gave the
+// stock hero, without pulling in that class's other side effects.
+.rkn-hero-block:first-of-type {
+  margin-top: 0;
+}
+
 .rkn-homehero {
   display: grid;
   grid-template-columns: 282px 1fr;

@@ -1,72 +1,76 @@
-<footer class="store-footer rkn-scope">
-	<div aria-label="footer" class="store-footer__inner">
-		<div class="container grid grid-col-1 lg:grid-cols-6 gap-8 lg:gap-6">
-			<div class="lg:col-span-2 rtl:lg:pl-20 ltr:lg:pr-20">
-				<a href="{{ link('/') }}" class="flex items-center m-0">
-					<h3>{{store.name}}</h3>
-				</a>
-				{% if store.description %}
-					<div class="max-w-sm leading-6 mb-6">
-						{{ store.description|raw }}
-          </div>
-				{% endif %}
-
-				<div class="hidden lg:block">
-					<salla-social class="block mb-6"></salla-social>
-				</div>
-
-		<div class="flex gap-4">
-		  {# trust badges #}
-		  <salla-trust-badges {% if theme.settings.get('footer_is_dark') %} dark {% endif %}></salla-trust-badges>
-          {# vat #}
-          {% if store.settings.tax.number %}
-            <div class="flex rtl:space-x-reverse space-x-2 items-end">
-              {% if store.settings.tax.certificate %}
-                <a class="load-img-onclick" data-modal-id="modal-value-tax" href="#/" alt="{{ store.settings.tax.number }}">
-                  <img width="40" height="50" src="{{'images/tax.png' | cdn(70,70)}}" loading="lazy" class="w-10 rounded-sm hover:opacity-80 transition-opacity" alt="value added tax">
+{#
+| Variable                     | Type    | Description |
+|-------------------------------|---------|-------------|
+| store.name                   | string  |             |
+| store.description            | ?string | HTML        |
+| store.settings.tax.number      | ?string |             |
+| store.settings.tax.certificate | ?string | image url   |
+#}
+<footer class="rkn-footer" aria-label="footer">
+    <div class="container">
+        <div class="rkn-footer__grid">
+            <div class="rkn-footer__brand">
+                <a href="{{ link('/') }}" class="rkn-footer__logo">
+                    <span class="rkn-footer__logomark">{{ store.name|slice(0, 1) }}</span>
+                    <h3>{{ store.name }}</h3>
                 </a>
-              {% endif %}
-              <div>
-                <p class="text-sm text-text-grey mb-1">{{ trans('common.elements.tax_number') }}</p>
-                <b class="text-sm">{{ store.settings.tax.number }}</b>
-              </div>
+
+                {% if store.description %}
+                    <div class="rkn-footer__desc">{{ store.description|raw }}</div>
+                {% endif %}
+
+                <salla-social class="rkn-footer__social"></salla-social>
+
+                <div class="rkn-footer__trust">
+                    <salla-trust-badges {% if theme.settings.get('footer_is_dark') %}dark{% endif %}></salla-trust-badges>
+
+                    {% if store.settings.tax.number %}
+                        <div class="rkn-footer__tax">
+                            {% if store.settings.tax.certificate %}
+                                <a class="rkn-footer__tax-icon load-img-onclick" data-modal-id="modal-value-tax" href="#/" alt="{{ store.settings.tax.number }}">ض</a>
+                            {% else %}
+                                <span class="rkn-footer__tax-icon">ض</span>
+                            {% endif %}
+                            <div>
+                                <span class="rkn-footer__tax-label">{{ trans('common.elements.tax_number') }}</span>
+                                <b class="rkn-footer__tax-value">{{ store.settings.tax.number }}</b>
+                            </div>
+                        </div>
+
+                        {% if store.settings.tax.certificate %}
+                            <salla-modal sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
+                                <div class="flex justify-center max-w-full">
+                                    <img class="w-full" loading="lazy" data-src="{{ store.settings.tax.certificate }}" alt="{{ store.settings.tax.number }}"/>
+                                </div>
+                            </salla-modal>
+                        {% endif %}
+                    {% endif %}
+                </div>
             </div>
 
-            {% if store.settings.tax.certificate %}
-              <salla-modal sub-title-first sub-title="{{ trans('common.elements.tax_number') }}" modal-title="{{ store.settings.tax.number }}" id="modal-value-tax">
-                <div class="flex justify-center max-w-full">
-                  <img class="w-full" loading="lazy"
-                  data-src="{{ store.settings.tax.certificate }}"
-                  alt="{{ store.settings.tax.number }}"/>
+            <div class="rkn-footer__col">
+                <h5>{{ trans('blocks.footer.pages_links') }}</h5>
+                <salla-menu source="footer" with-cookie-preferences></salla-menu>
+            </div>
+
+            <div class="rkn-footer__col rkn-footer__col--contact">
+                <h5>{{ trans('blocks.footer.contact_us') }}</h5>
+                <salla-contacts></salla-contacts>
+                <div class="rkn-footer__social rkn-footer__social--mobile">
+                    <salla-social></salla-social>
                 </div>
-              </salla-modal>
-            {% endif %}
-          {% endif %}
+            </div>
+
+            <div class="rkn-footer__col rkn-footer__col--apps">
+                <salla-apps-icons></salla-apps-icons>
+            </div>
         </div>
+    </div>
+
+    <div class="rkn-footer__bar">
+        <div class="container rkn-footer__bar-inner">
+            <span class="rkn-footer__copyright">{% hook copyright %}</span>
+            <salla-payments></salla-payments>
         </div>
-
-			<div>
-				<h3>{{ trans('blocks.footer.pages_links') }}</h3>
-				<salla-menu source="footer" with-cookie-preferences></salla-menu>
-			</div>
-
-			<div>
-				<salla-contacts></salla-contacts>
-
-				<div class="lg:hidden contact-social">
-					<salla-social></salla-social>
-				</div>
-			</div>
-
-			<salla-apps-icons class="lg:col-span-2 rtl:lg:pr-20 ltr:lg:pl-20"></salla-apps-icons>
-
-		</div>
-	</div>
-
-	<div class="md:flex items-center justify-between py-4 container text-center">
-		<span class="text-sm copyright-text">{% hook copyright %}</span>
-		<salla-payments></salla-payments>
-	</div>
-</div>
-
-<span class="hidden bottom-2 rtl:pl-24 ltr:pr-24 md:grid-cols-3 opacity-40"></span></footer>
+    </div>
+</footer>

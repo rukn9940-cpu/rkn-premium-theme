@@ -1,0 +1,31 @@
+{#
+| Variable                        | Type     | Description                                                                  |
+|---------------------------------|----------|------------------------------------------------------------------------------|
+| component                       | object   | Contains merchant settings for fields from twilight.json `component` section |
+| component.banners               | object[] | list of banners                                                              |
+| component.banners[].image       | string   |                                                                              |
+| component.banners[].url         | string   |                                                                              |
+| component.banners[].title       | ?string  |                                                                              |
+| component.banners[].description | ?string  |                                                                              |
+| position                        | int      | Sorting number start from zero                                               |
+#}
+<section class="s-block rkn-banner-grid-block">
+    <div class="container">
+        <div class="rkn-banner-grid rkn-banner-grid--count-{{ component.banners|length }}">
+            {% for index, banner in component.banners %}
+                <a href="{{ banner.url }}"
+                   aria-label="{{ (banner.title ? banner.title : 'banner-' ~ index)|e('html_attr') }}"
+                   class="rkn-banner-tile {{ loop.first and component.banners|length > 3 ? 'rkn-banner-tile--wide' : '' }}"
+                   style="background-image:url({{ banner.image|cdn(900) }})">
+                    {% if banner.title or banner.description %}
+                        <span class="rkn-banner-tile__scrim"></span>
+                        <span class="rkn-banner-tile__text">
+                            {% if banner.title %}<b class="rkn-banner-tile__title">{{ banner.title }}</b>{% endif %}
+                            {% if banner.description %}<span class="rkn-banner-tile__desc">{{ banner.description }}</span>{% endif %}
+                        </span>
+                    {% endif %}
+                </a>
+            {% endfor %}
+        </div>
+    </div>
+</section>

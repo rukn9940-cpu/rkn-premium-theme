@@ -2,8 +2,8 @@
  * <rkn-category-menu variant="sidebar|dropdown">
  *
  * Reusable "all categories" list backed by the same
- * `salla.api.component.getMenus()` call the stock `<custom-main-menu>`
- * uses. Two presentations share one data source:
+ * `salla.api.component.getMenus()` call `<rkn-mega-menu>` uses.
+ * Two presentations share one data source:
  *  - variant="sidebar"  → homepage panel next to the hero slider.
  *  - variant="dropdown" → header "all categories" toggle panel.
  */

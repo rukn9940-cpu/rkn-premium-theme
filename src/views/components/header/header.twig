@@ -47,7 +47,7 @@
                   <a class="lg:hidden mburger mburger--collapse leading-none" href="#mobile-menu" aria-label="Open-menu">
                     <i class="sicon-menu text-2xl"></i>
                   </a>
-                  <a class="navbar-brand rkn-logo" href="{{ store.url }}">
+                  <a class="rkn-logo" href="{{ store.url }}">
                       <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
                       {% if is_page('index') %}
                         <h1 class="sr-only">{{ store.name }}</h1>
@@ -87,7 +87,7 @@
               <span>{{ trans('blocks.header.all_categories') }}</span>
               <i class="sicon-arrow-down-1 rkn-allcats-btn__chev"></i>
           </button>
-          <custom-main-menu></custom-main-menu>
+          {% include 'header.mega-menu' %}
           <rkn-category-menu variant="dropdown" class="rkn-allcats-dropdown"></rkn-category-menu>
       </div>
   </nav>
