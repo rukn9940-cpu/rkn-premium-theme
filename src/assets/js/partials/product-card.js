@@ -1,4 +1,3 @@
-import BasePage from '../base-page';
 class ProductCard extends HTMLElement {
   constructor(){
     super()
@@ -83,7 +82,7 @@ class ProductCard extends HTMLElement {
   }
 
   getProductPrice() {
-    let price = '';
+    let price;
     if (this.product.is_on_sale) {
       price = `<div class="s-product-card-sale-price">
                 <h4>${this.getPriceFormat(this.product.sale_price)}</h4>

@@ -1,0 +1,42 @@
+{#
+| Variable                  | Type     | Description                                                          |
+|----------------------------|----------|-----------------------------------------------------------------------|
+| component.title            | ?string  | Section title                                                        |
+| component.subtitle         | ?string  | Section subtitle                                                     |
+| component.items[].poster   | string   | Thumbnail image url                                                  |
+| component.items[].video_url| string   | Direct .mp4 url or external YouTube/Vimeo url                        |
+| component.items[].title    | ?string  | Caption shown on the card                                            |
+| component.items[].link     | ?string  | Optional "shop now" url shown inside the video modal                 |
+| component.items           | object[] | up to 6 reel/video cards                                              |
+| position                   | int      | Sorting number start from zero                                       |
+#}
+{% if theme.settings.get('enable_reels', true) and component.items|length %}
+<section class="s-block s-block--reels rkn-scope container">
+    <div class="rkn-sechead">
+        <div>
+            {% if component.title %}<h2 class="rkn-sectitle">{{ component.title }}</h2>{% endif %}
+            {% if component.subtitle %}<p class="rkn-secsub">{{ component.subtitle }}</p>{% endif %}
+        </div>
+    </div>
+
+    <div class="rkn-reels-grid">
+        {% for item in component.items %}
+            {% if item.poster and item.video_url %}
+                <button type="button"
+                        class="rkn-reel-card"
+                        data-rkn-reel
+                        data-video-url="{{ item.video_url }}"
+                        data-title="{{ item.title|default('') }}"
+                        {% if item.link %}data-link="{{ item.link }}"{% endif %}
+                        aria-label="{{ trans('blocks.reels.play') }}">
+                    <img src="{{ item.poster|cdn(480) }}" alt="{{ item.title|default(component.title) }}" loading="lazy" class="rkn-reel-card__poster">
+                    <span class="rkn-reel-card__play">
+                        <svg width="22" height="22" viewBox="0 0 24 24" fill="currentColor"><path d="M8 5v14l11-7z"></path></svg>
+                    </span>
+                    {% if item.title %}<span class="rkn-reel-card__title">{{ item.title }}</span>{% endif %}
+                </button>
+            {% endif %}
+        {% endfor %}
+    </div>
+</section>
+{% endif %}

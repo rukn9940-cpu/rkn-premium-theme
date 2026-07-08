@@ -58,9 +58,7 @@ export function zoom(imgID, zoom) {
 			'-' + (x * zoom - w + bw) + 'px -' + (y * zoom - h + bw) + 'px';
 	}
 	function getCursorPos(e) {
-		var a,
-			x = 0,
-			y = 0;
+		var a, x, y;
 		e = e || window.event;
 		/*get the x and y positions of the image:*/
 		a = img.getBoundingClientRect();

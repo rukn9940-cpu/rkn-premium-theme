@@ -1,0 +1,30 @@
+/**
+ * Rukn Al-Ahtraf brand tokens.
+ *
+ * Salla's own `--color-primary` family stays driven by the merchant's theme
+ * color choice (see 01-settings/global.scss) so we never break that hook.
+ * These `--rkn-*` variables carry the fixed teal/gold identity used by the
+ * new design-matched sections (header, mega menu, hero, features, category
+ * icons, reels, product video/360 gallery) without touching the merchant's
+ * global color settings.
+ */
+:root {
+  --rkn-teal: #0e4d5a;
+  --rkn-teal-2: #0a3a44;
+  --rkn-teal-3: #0f5d6d;
+  --rkn-gold: #c9a24a;
+  --rkn-gold-2: #b88c30;
+  --rkn-ink: #15282d;
+  --rkn-muted: #6a7c81;
+  --rkn-bg: #eceff0;
+  --rkn-soft: #f5f7f7;
+  --rkn-line: #e2e8e9;
+  --rkn-red: #c2453a;
+  --rkn-green: #1f8a5b;
+  --rkn-font: 'Tajawal', var(--font-main), sans-serif;
+  --rkn-font-mono: 'JetBrains Mono', monospace;
+}
+
+.rkn-scope {
+  font-family: var(--rkn-font);
+}

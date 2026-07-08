@@ -293,3 +293,158 @@ salla-menu[topnav]:not(.hydrated) {
     );
   }
 }
+
+/* ============================================================
+   Rukn Al-Ahtraf header
+   ============================================================ */
+.rkn-header {
+  background: #fff;
+}
+
+// Top bar
+.rkn-topbar {
+  background: var(--rkn-teal-2);
+  color: #bcd2d6;
+  font-size: 13px;
+
+  .container {
+    min-height: 38px;
+    padding-block: 8px;
+  }
+
+  a {
+    color: #bcd2d6;
+    transition: color 0.15s;
+
+    &:hover {
+      color: #fff;
+    }
+  }
+}
+
+.rkn-topbar__perks {
+  @apply flex items-center gap-4 flex-wrap;
+  list-style: none;
+  margin: 0;
+  padding: 0;
+
+  li {
+    @apply flex items-center gap-2;
+  }
+}
+
+.rkn-dot {
+  width: 5px;
+  height: 5px;
+  border-radius: 50%;
+  background: var(--rkn-gold);
+  flex-shrink: 0;
+}
+
+.rkn-topbar__links {
+  @apply flex items-center gap-4;
+
+  salla-contacts {
+    @apply text-sm;
+  }
+}
+
+// Main header row
+.rkn-header-main {
+  padding-block: 18px;
+
+  .container > .flex {
+    align-items: center;
+  }
+}
+
+.rkn-logo {
+  gap: 12px;
+
+  img {
+    max-height: 48px;
+    border-radius: 13px;
+  }
+}
+
+.rkn-search {
+  flex: 1;
+  max-width: 640px;
+  margin-inline: 24px;
+
+  salla-search {
+    width: 100%;
+  }
+
+  @media (max-width: 640px) {
+    .s-search-results {
+      @apply w-screen max-w-[100vw] rtl:-left-2.5 ltr:-right-2.5;
+    }
+  }
+}
+
+.rkn-icon-btn {
+  @apply flex flex-col items-center justify-center gap-1 text-center;
+  min-width: 44px;
+  padding: 4px 6px;
+  font-size: 11px;
+  font-weight: 600;
+  color: var(--rkn-ink);
+  transition: color 0.15s;
+
+  &:hover {
+    color: var(--rkn-teal-3);
+  }
+
+  &__icon {
+    font-size: 22px;
+    line-height: 1;
+  }
+
+  &__label {
+    white-space: nowrap;
+  }
+}
+
+salla-user-menu.rkn-icon-btn {
+  min-height: 44px;
+}
+
+// Category nav / mega menu bar
+.rkn-catnav {
+  background: var(--rkn-teal);
+  z-index: 40;
+  box-shadow: 0 2px 12px rgba(10, 58, 68, 0.15);
+
+  &--sticky {
+    position: sticky;
+    top: 0;
+  }
+
+  .container {
+    min-height: 50px;
+    gap: 4px;
+  }
+}
+
+.rkn-allcats-btn {
+  @apply flex items-center gap-2 flex-shrink-0;
+  background: var(--rkn-teal-2);
+  color: #fff;
+  font-weight: 700;
+  font-size: 14px;
+  padding: 8px 16px;
+  border-radius: 9px;
+  white-space: nowrap;
+  margin-inline-end: 6px;
+
+  &__chev {
+    font-size: 10px;
+    transition: transform 0.2s;
+  }
+
+  &.is-open &__chev,
+  &[aria-expanded="true"] &__chev {
+    transform: rotate(180deg);
+  }
+}

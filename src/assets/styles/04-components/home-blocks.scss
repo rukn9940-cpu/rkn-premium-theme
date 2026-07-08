@@ -399,6 +399,111 @@
   padding-top: 2em;
 }
 
+/* ============================================================
+   Rukn Al-Ahtraf — store features strip
+   ============================================================ */
+.rkn-scope.s-block--features {
+  .s-block--features__item {
+    @apply flex-row items-center text-start gap-3.5;
+    background: #fff;
+    border: 1px solid var(--rkn-line);
+    border-radius: 14px;
+    padding: 18px 20px;
+    box-shadow: none;
+
+    &:first-child {
+      @apply col-span-1;
+    }
+
+    &:hover {
+      box-shadow: 0 10px 24px rgba(14, 77, 90, 0.08);
+    }
+
+    .feature-icon {
+      @apply mb-0 shrink-0;
+      width: 46px;
+      height: 46px;
+      background: var(--rkn-soft);
+
+      i {
+        color: var(--rkn-teal);
+      }
+
+      &:hover i {
+        animation: none;
+      }
+    }
+  }
+
+  .s-block--features__body {
+    min-width: 0;
+
+    h2 {
+      font-size: 15px;
+      font-weight: 800;
+      color: var(--rkn-ink);
+      margin: 0 0 2px;
+    }
+
+    p {
+      font-size: 13px;
+      color: var(--rkn-muted);
+      margin: 0;
+    }
+  }
+}
+
+/* ============================================================
+   Rukn Al-Ahtraf — category icons grid (Quick Links block)
+   ============================================================ */
+.rkn-scope.s-block--categories {
+  .slide--cat-entry {
+    @apply border-[var(--rkn-line)] h-auto py-4;
+    border-radius: 15px;
+    gap: 11px;
+    transition: transform 0.2s, box-shadow 0.2s, border-color 0.2s;
+
+    &:hover {
+      @apply text-inherit;
+      border-color: var(--rkn-teal-3);
+      transform: translateY(-4px);
+      box-shadow: 0 12px 24px rgba(14, 77, 90, 0.12);
+    }
+
+    i {
+      @apply text-2xl mb-0;
+      width: 60px;
+      height: 60px;
+      border-radius: 50%;
+      background: var(--rkn-soft);
+      color: var(--rkn-teal);
+      display: flex;
+      align-items: center;
+      justify-content: center;
+      transition: background 0.2s, color 0.2s;
+    }
+
+    &:hover i {
+      background: var(--rkn-teal);
+      color: #fff;
+    }
+
+    img {
+      transition: box-shadow 0.2s;
+    }
+
+    &:hover img {
+      box-shadow: 0 0 0 3px var(--rkn-teal-3);
+    }
+
+    h2 {
+      font-size: 13px;
+      font-weight: 700;
+      color: var(--rkn-ink);
+    }
+  }
+}
+
 
 .s-blocks-wrapper{
   @apply empty:hidden;

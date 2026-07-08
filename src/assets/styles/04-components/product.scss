@@ -347,6 +347,30 @@ salla-add-product-button[product-status="out-and-notify"],
   @apply opacity-100;
 }
 
+// Video gallery entries (main slide + thumbnail) — play badge indicator
+.homeslider__slide.video-entry,
+.slide--one-fourth.video-entry {
+  position: relative;
+
+  &::after {
+    content: '';
+    position: absolute;
+    inset: 0;
+    margin: auto;
+    width: 42px;
+    height: 42px;
+    border-radius: 50%;
+    background: rgba(0, 0, 0, 0.55) url("data:image/svg+xml,%3Csvg xmlns='http://www.w3.org/2000/svg' width='16' height='16' viewBox='0 0 24 24' fill='white'%3E%3Cpath d='M8 5v14l11-7z'/%3E%3C/svg%3E") no-repeat center;
+    pointer-events: none;
+  }
+}
+
+.slide--one-fourth.video-entry::after {
+  width: 26px;
+  height: 26px;
+  background-size: 11px;
+}
+
 
 // Horizontal card
 .s-product-card-horizontal{

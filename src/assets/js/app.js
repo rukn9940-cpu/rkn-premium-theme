@@ -89,7 +89,7 @@ class App extends AppHelpers {
 
     if (articleElements.length) {
       articleElements.forEach(article => {
-        article.innerHTML = article.innerHTML.replace(/\&nbsp;/g, ' ')
+        article.innerHTML = article.innerHTML.replace(/&nbsp;/g, ' ')
       })
     }
   }

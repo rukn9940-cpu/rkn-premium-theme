@@ -11,4 +11,7 @@
 {% endblock %}
 {% block scripts %}
     <script defer src="{{ 'home.js' | asset }}"></script>
+    {% if theme.settings.get('enable_reels', true) %}
+        <script defer src="{{ 'reels.js' | asset }}"></script>
+    {% endif %}
 {% endblock %}

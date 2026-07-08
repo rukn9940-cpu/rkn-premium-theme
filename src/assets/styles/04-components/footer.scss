@@ -1,14 +1,16 @@
 
 .store-footer {
-  @apply relative bg-darker text-white mt-8 sm:mt-16;
+  @apply relative text-white mt-8 sm:mt-16;
+  background: var(--rkn-teal-2);
 
   a{
     @apply transition-opacity hover:opacity-75;
   }
 
   &__inner{
-    @apply bg-dark py-8 lg:py-16 border-b border-dashed border-b-white/10;
-  }  
+    @apply py-8 lg:py-16 border-b border-dashed border-b-white/10;
+    background: var(--rkn-teal);
+  }
 
   h3{
     @apply text-lg font-bold mb-3 lg:mb-5;
