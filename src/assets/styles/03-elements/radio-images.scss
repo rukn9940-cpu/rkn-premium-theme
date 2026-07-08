@@ -1,6 +1,11 @@
 .radio-images {
   &__label{
     @apply inline-block mb-0.5 cursor-pointer rounded-md overflow-hidden h-24 md:h-20 w-full;
+    transition: transform 0.15s ease, box-shadow 0.15s ease;
+  }
+
+  &__label:hover{
+    transform: translateY(-2px);
   }
 
   &__badge{
@@ -56,6 +61,8 @@
 
     &:checked {
       + label {
+        box-shadow: 0 0 0 2px var(--rkn-teal, var(--color-primary));
+
         &:after {
           opacity: 1;
           transform: translate(-50%, -50%) scale(1);

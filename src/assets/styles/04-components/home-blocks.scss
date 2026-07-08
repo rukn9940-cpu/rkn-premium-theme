@@ -527,8 +527,138 @@
 }
 
 .container--breadcrumbs{
-  &, 
+  &,
   & + .s-blocks-wrapper{
     @apply mt-0 #{!important}
+  }
+}
+
+/* ============================================================
+   Rukn Al-Ahtraf — premium section headers, tabs, promo banners
+   Applies to every block using the shared `.s-block__title`
+   pattern: best sellers, new arrivals, offers, brands, banners...
+   ============================================================ */
+.rkn-scope {
+  .s-block__title {
+    align-items: flex-end;
+
+    h2 {
+      font-size: 24px;
+      font-weight: 900;
+      letter-spacing: -0.01em;
+      color: var(--rkn-ink);
+      display: flex;
+      align-items: center;
+      gap: 11px;
+
+      &::before {
+        content: '';
+        width: 6px;
+        height: 24px;
+        border-radius: 3px;
+        background: var(--rkn-gold);
+        flex-shrink: 0;
+      }
+    }
+
+    p {
+      color: var(--rkn-muted);
+      opacity: 1;
+    }
+  }
+
+  .s-block__display-all {
+    color: var(--rkn-teal);
+    font-weight: 700;
+
+    &:hover {
+      color: var(--rkn-gold-2);
+      opacity: 1;
+    }
+  }
+
+  // Tabs (best sellers / new arrivals / offers switcher)
+  .s-block--special-products,
+  .s-block--tabs-produtcs {
+    .tab-trigger {
+      font-weight: 700;
+      color: var(--rkn-muted);
+      padding-inline: 4px;
+      padding-block: 6px;
+      border-bottom: 2px solid transparent;
+      transition: color 0.15s, border-color 0.15s;
+
+      &.is-active,
+      &.is-active button {
+        color: var(--rkn-teal) !important;
+        border-color: var(--rkn-gold) !important;
+        background: transparent !important;
+      }
+
+      &:hover {
+        color: var(--rkn-teal-3);
+      }
+    }
+  }
+
+  // Promo banner grid (square/fixed banners)
+  .banner-entry {
+    border-radius: 16px;
+    transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+    &:hover {
+      transform: translateY(-3px);
+      box-shadow: 0 16px 34px rgba(14, 77, 90, 0.16);
+    }
+  }
+
+  .has-overlay::after {
+    background: linear-gradient(to top, rgba(10, 40, 45, 0.85), rgba(10, 40, 45, 0.15));
+  }
+
+  .banner__title {
+    font-size: 20px;
+    font-weight: 900;
+  }
+
+  .banner__description {
+    font-size: 13px;
+  }
+
+  // Testimonials
+  .s-reviews-header-wrapper {
+    text-align: center;
+    margin-bottom: 22px;
+  }
+
+  .s-reviews-header {
+    font-size: 24px;
+    font-weight: 900;
+    color: var(--rkn-ink);
+  }
+
+  .s-reviews-testimonial {
+    background: #fff;
+    border: 1px solid var(--rkn-line);
+    border-radius: 16px;
+    height: 100%;
+
+    &__inner {
+      padding: 24px;
+    }
+
+    &__avatar img {
+      border-radius: 50%;
+      border: 2px solid var(--rkn-soft);
+    }
+
+    &__icon {
+      color: var(--rkn-gold);
+      opacity: 0.35;
+    }
+
+    &__name_wrapper h2 {
+      color: var(--rkn-ink);
+    }
   }
 }

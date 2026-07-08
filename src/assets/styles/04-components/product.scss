@@ -347,6 +347,24 @@ salla-add-product-button[product-status="out-and-notify"],
   @apply opacity-100;
 }
 
+// Premium "buy box" — price + quantity + add-to-cart cards
+.rkn-buybox {
+  border: 1px solid var(--rkn-line) !important;
+  border-radius: 14px !important;
+
+  + .rkn-buybox {
+    border-top: none !important;
+    border-top-left-radius: 0 !important;
+    border-top-right-radius: 0 !important;
+    margin-top: -1px;
+  }
+
+  &:last-of-type {
+    box-shadow: 0 14px 30px rgba(14, 77, 90, 0.08);
+    margin-bottom: 20px;
+  }
+}
+
 // Video gallery entries (main slide + thumbnail) — play badge indicator
 .homeslider__slide.video-entry,
 .slide--one-fourth.video-entry {

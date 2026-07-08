@@ -21,6 +21,7 @@ class App extends AppHelpers {
     this.initiateDropdowns();
     this.initiateModals();
     this.initiateCollapse();
+    this.initiateScrollReveal();
     
     // Ensure #more-menu-dropdown exists before running changeMenuDirection
     const menuDirInterval = setInterval(() => {
@@ -231,6 +232,31 @@ isElementLoaded(selector){
     if (!isOpen) {
       setTimeout(() => this.addClass(id, 'hidden'), 350);
     }
+  }
+
+  /**
+   * Premium scroll-in reveal for homepage/category/product sections.
+   * Progressive enhancement: elements only fade/slide if this runs, so a
+   * failed/blocked script never hides content.
+   */
+  initiateScrollReveal() {
+    if (!('IntersectionObserver' in window)) return;
+
+    const items = document.querySelectorAll('.s-block, .rkn-reel-card');
+    if (!items.length) return;
+
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('rkn-reveal--in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach((el) => {
+      el.classList.add('rkn-reveal');
+      io.observe(el);
+    });
   }
 
   initiateCollapse() {

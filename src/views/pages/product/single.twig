@@ -385,7 +385,7 @@
 
                     {% hook 'product:single.form.end' %}
 
-                    <section class="flex bg-white p-5 sm:pb-0 rounded-md rounded-b-none">
+                    <section class="rkn-buybox flex bg-white p-5 sm:pb-0 rounded-md rounded-b-none">
                         <div class="center-between w-full">
                             <label class="form-label">
                                 <b class="block">
@@ -416,7 +416,7 @@
                         </section>
                     {% endif %}
 
-                    <section class="sticky-product-bar bg-white p-5 rounded-md rounded-b-none">
+                    <section class="rkn-buybox sticky-product-bar bg-white p-5 rounded-md rounded-b-none">
                         {# Quantity #}
                         {% if product.is_hidden_quantity or product.type == 'booking' %}
                             <input type="hidden" value="1" name="quantity" aria-label="Quantity"/>

@@ -22,6 +22,7 @@ const browserGlobals = {
     setInterval: 'readonly',
     clearInterval: 'readonly',
     requestAnimationFrame: 'readonly',
+    IntersectionObserver: 'readonly',
     DecompressionStream: 'readonly',
     atob: 'readonly',
     btoa: 'readonly',

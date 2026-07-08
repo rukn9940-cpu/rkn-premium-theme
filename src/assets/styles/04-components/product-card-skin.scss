@@ -1,0 +1,120 @@
+/* ============================================================
+   Rukn Al-Ahtraf — premium product card skin
+   Restyles the shared `.s-product-card-*` classes rendered by
+   custom-salla-product-card (product-card.js) + the
+   @salla.sa/twilight-tailwind-theme base. Applies everywhere the
+   card is used: best sellers, new arrivals, offers, category
+   grids, related products, search results.
+   Interactive controls (add-to-cart, wishlist icon) keep using
+   Salla's `--color-primary` mechanism — only shape/spacing/type
+   are restyled here, not the merchant's brand color.
+   ============================================================ */
+
+.rkn-scope {
+  .s-product-card-entry {
+    background: #fff;
+    border: 1px solid var(--rkn-line);
+    border-radius: 16px;
+    overflow: hidden;
+    transition: transform 0.25s ease, box-shadow 0.25s ease, border-color 0.25s ease;
+
+    &:hover {
+      border-color: var(--rkn-teal-3);
+      box-shadow: 0 14px 30px rgba(14, 77, 90, 0.13);
+      transform: translateY(-4px);
+    }
+  }
+
+  .s-product-card-image {
+    padding: 16px;
+    background: #fff;
+
+    img {
+      border-radius: 11px;
+      aspect-ratio: 1;
+    }
+  }
+
+  .s-product-card-wishlist-btn {
+    transition: color 0.2s, border-color 0.2s;
+
+    &.s-product-card-wishlist-added {
+      color: var(--rkn-red);
+      border-color: var(--rkn-red);
+    }
+  }
+
+  .s-product-card-promotion-title {
+    background: var(--rkn-red);
+    color: #fff;
+    font-weight: 800;
+    border-radius: 8px;
+  }
+
+  .s-product-card-quantity,
+  .s-product-card-out-badge {
+    background: var(--rkn-gold);
+    color: #fff;
+    font-weight: 700;
+    border-radius: 8px;
+  }
+
+  .s-product-card-content {
+    padding-inline: 16px;
+    padding-bottom: 16px;
+  }
+
+  .s-product-card-content-title {
+    font-size: 14px;
+    font-weight: 700;
+    line-height: 1.55;
+    color: var(--rkn-ink);
+    transition: color 0.15s;
+
+    a:hover {
+      color: var(--rkn-teal-3);
+    }
+  }
+
+  .s-product-card-content-subtitle {
+    color: var(--rkn-muted);
+    font-size: 12.5px;
+  }
+
+  .s-product-card-rating {
+    color: var(--rkn-muted);
+    font-size: 12px;
+
+    i {
+      color: var(--rkn-gold);
+    }
+  }
+
+  .s-product-card-price,
+  .s-product-card-sale-price h4,
+  .s-product-card-starting-price h4 {
+    color: var(--rkn-ink);
+    font-weight: 900;
+  }
+
+  .s-product-card-sale-price span {
+    color: var(--rkn-muted);
+    font-weight: 600;
+  }
+
+  .s-product-card-starting-price p {
+    color: var(--rkn-muted);
+    font-size: 12px;
+  }
+
+  .s-product-card-content-footer {
+    margin-top: 14px;
+  }
+
+  // Horizontal + full-image variants keep the same border/radius language
+  .s-product-card-horizontal,
+  .s-product-card-full-image {
+    border-radius: 16px;
+    overflow: hidden;
+  }
+}

@@ -41,3 +41,24 @@
     }
   }
 }
+
+.rkn-scope {
+  .s-block--logos-slider {
+    background: var(--rkn-soft) !important;
+  }
+
+  .brand-item {
+    border: 1px solid var(--rkn-line);
+    border-radius: 12px;
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition: transform 0.2s, box-shadow 0.2s, filter 0.2s, opacity 0.2s;
+
+    &:hover {
+      filter: grayscale(0);
+      opacity: 1;
+      transform: translateY(-3px);
+      box-shadow: 0 12px 24px rgba(14, 77, 90, 0.1);
+    }
+  }
+}
