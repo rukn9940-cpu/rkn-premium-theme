@@ -66,6 +66,7 @@
           justify-content: center;
           align-items: center;
           background-color: #ddd;
+          transition: transform 0.15s ease, box-shadow 0.15s ease;
 
           &::after {
             content: "";
@@ -75,6 +76,14 @@
             border-radius: 50%;
           }
         }
+
+        &:hover span {
+          transform: scale(1.08);
+        }
+      }
+
+      &:checked + label span {
+        box-shadow: 0 0 0 2px #fff, 0 0 0 4px var(--rkn-teal);
       }
     }
   }

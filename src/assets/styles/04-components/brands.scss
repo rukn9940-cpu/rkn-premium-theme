@@ -41,3 +41,43 @@
     }
   }
 }
+
+/* ============================================================
+   Rukn Al-Ahtraf — brands carousel (home/brands.twig)
+   ============================================================ */
+.rkn-brands-block {
+  background: var(--rkn-soft);
+  padding-block: 40px;
+}
+
+.rkn-brand-slide {
+  width: auto !important;
+}
+
+.rkn-brand-tile {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  width: 160px;
+  height: 84px;
+  background: #fff;
+  border: 1px solid var(--rkn-line);
+  border-radius: 12px;
+  padding: 14px 20px;
+  filter: grayscale(1);
+  opacity: 0.75;
+  transition: transform 0.2s ease, box-shadow 0.2s ease, filter 0.2s ease, opacity 0.2s ease;
+
+  img {
+    max-width: 100%;
+    max-height: 100%;
+    object-fit: contain;
+  }
+
+  &:hover {
+    filter: grayscale(0);
+    opacity: 1;
+    transform: translateY(-3px);
+    box-shadow: 0 12px 24px rgba(14, 77, 90, 0.1);
+  }
+}

@@ -14,21 +14,11 @@ class App extends AppHelpers {
     this.commonThings();
     this.initiateNotifier();
     this.initiateMobileMenu();
-    if (header_is_sticky) {
-      this.initiateStickyMenu();
-    }
     this.initAddToCart();
     this.initiateDropdowns();
     this.initiateModals();
     this.initiateCollapse();
-    
-    // Ensure #more-menu-dropdown exists before running changeMenuDirection
-    const menuDirInterval = setInterval(() => {
-      if (document.querySelector('#more-menu-dropdown')) {
-        this.changeMenuDirection();
-        clearInterval(menuDirInterval);
-      }
-    }, 100);
+    this.initiateScrollReveal();
 
     initTootTip();
     this.loadModalImgOnclick();
@@ -44,24 +34,6 @@ class App extends AppHelpers {
     salla.log(`ThemeApp(Raed)::${message}`);
     return this;
   }
-
-    changeMenuDirection() {
-      setTimeout(() => {
-        app.all('.root-level.has-children', item => {
-          if (item.classList.contains('change-menu-dir')) return;
-          app.on('mouseover', item, () => {
-            let allSubMenus = item.querySelectorAll('.sub-menu');
-            allSubMenus.forEach((submenu, idx) => {
-              if (idx === 0) return;
-              let rect = submenu.getBoundingClientRect();
-              if (rect.left < 10 || rect.right > window.innerWidth - 10) {
-                app.addClass(item, 'change-menu-dir');
-              }
-            });
-          });
-        });
-      }, 1000);
-    }
 
   loadModalImgOnclick(){
     document.querySelectorAll('.load-img-onclick').forEach(link => {
@@ -89,7 +61,7 @@ class App extends AppHelpers {
 
     if (articleElements.length) {
       articleElements.forEach(article => {
-        article.innerHTML = article.innerHTML.replace(/\&nbsp;/g, ' ')
+        article.innerHTML = article.innerHTML.replace(/&nbsp;/g, ' ')
       })
     }
   }
@@ -175,29 +147,6 @@ isElementLoaded(selector){
 
   }
 
-  initiateStickyMenu() {
-    let header = this.element('#mainnav'),
-      height = this.element('#mainnav .inner')?.clientHeight;
-    //when it's landing page, there is no header
-    if (!header) {
-      return;
-    }
-
-    window.addEventListener('load', () => setTimeout(() => this.setHeaderHeight(), 500))
-    window.addEventListener('resize', () => this.setHeaderHeight())
-
-    window.addEventListener('scroll', () => {
-      window.scrollY >= header.offsetTop + height ? header.classList.add('fixed-pinned', 'animated') : header.classList.remove('fixed-pinned');
-      window.scrollY >= 200 ? header.classList.add('fixed-header') : header.classList.remove('fixed-header', 'animated');
-    }, { passive: true });
-  }
-
-  setHeaderHeight() {
-    let height = this.element('#mainnav .inner').clientHeight,
-      header = this.element('#mainnav');
-    header.style.height = height + 'px';
-  }
-
   initiateDropdowns() {
     this.onClick('.dropdown__trigger', ({ target: btn }) => {
       btn.parentElement.classList.toggle('is-opened');
@@ -231,6 +180,31 @@ isElementLoaded(selector){
     if (!isOpen) {
       setTimeout(() => this.addClass(id, 'hidden'), 350);
     }
+  }
+
+  /**
+   * Premium scroll-in reveal for homepage/category/product sections.
+   * Progressive enhancement: elements only fade/slide if this runs, so a
+   * failed/blocked script never hides content.
+   */
+  initiateScrollReveal() {
+    if (!('IntersectionObserver' in window)) return;
+
+    const items = document.querySelectorAll('.s-block, .rkn-reel-card');
+    if (!items.length) return;
+
+    const io = new IntersectionObserver((entries, observer) => {
+      entries.forEach((entry) => {
+        if (!entry.isIntersecting) return;
+        entry.target.classList.add('rkn-reveal--in');
+        observer.unobserve(entry.target);
+      });
+    }, { threshold: 0.12, rootMargin: '0px 0px -40px 0px' });
+
+    items.forEach((el) => {
+      el.classList.add('rkn-reveal');
+      io.observe(el);
+    });
   }
 
   initiateCollapse() {

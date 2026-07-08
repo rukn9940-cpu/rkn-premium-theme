@@ -269,17 +269,69 @@
             "required": false,
             "value": false,
             "selected": false
+        },
+        {
+            "type": "static",
+            "format": "title",
+            "id": "static-label-media",
+            "value": "<div class='rounded-lg' style='background-color: #0e4d5a; display: flex; justify-content: center; align-items: center;padding: 15px;margin-bottom: 20px !important; flex-direction: column;gap: 15px;'><h6 style='color: #ffffff;font-size: 15px; font-weight: bold;'>الفيديو والوسائط</h6></div>",
+            "variant": "h6"
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "تفعيل قسم الريلز (فيديوهات الصفحة الرئيسية)",
+            "description": "إظهار أو إخفاء قسم بطاقات الفيديو (ريلز) في الصفحة الرئيسية",
+            "id": "enable_reels",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "تفعيل معرض فيديو المنتج",
+            "description": "إظهار مقاطع الفيديو المرفقة بصور المنتج داخل معرض صفحة المنتج",
+            "id": "enable_product_videos",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "boolean",
+            "icon": "sicon-toggle-off",
+            "label": "تفعيل عرض 360° للمنتج",
+            "description": "عند توفر عدد كافٍ من صور المنتج المتتابعة، يظهر زر لعرض المنتج بتقنية 360°",
+            "id": "enable_product_360",
+            "format": "switch",
+            "required": false,
+            "value": true,
+            "selected": true
+        },
+        {
+            "type": "number",
+            "icon": "sicon-image",
+            "label": "الحد الأدنى لعدد الصور لتفعيل عرض 360°",
+            "description": "يجب أن يحتوي المنتج على هذا العدد من الصور على الأقل (يُفضّل 24-36 صورة) حتى يظهر زر عرض 360°",
+            "id": "product_360_min_images",
+            "format": "integer",
+            "required": false,
+            "value": 24,
+            "minimum": 8,
+            "maximum": 72
         }
     ],
     "components": [
         {
             "key": "186b3f4f-25cf-4d3c-abca-cef7eed6f0ab",
             "title": {
-                "en": "Enhances Animated Images",
-                "ar": " صور متحركة (محسنة)"
+                "en": "Hero Slider + Category Sidebar",
+                "ar": "سلايدر رئيسي مع قائمة الأقسام"
             },
             "icon": "sicon-image-carousel",
-            "path": "home.enhanced-slider",
+            "path": "home.hero-with-sidebar",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/images-slider-enhancement.png?v=1.1",
             "is_default": true,
             "fields": [
@@ -369,6 +421,44 @@
                             "required": false,
                             "value": false,
                             "selected": false
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-tag",
+                            "label": "وسم صغير (اختياري)",
+                            "multilanguage": true,
+                            "id": "slides.badge",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "نص قصير يظهر أعلى العنوان، مثل \"عرض خاص\" أو اسم القسم",
+                            "placeholder": "⚡ عرض خاص",
+                            "minLength": 0,
+                            "maxLength": 40
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-link",
+                            "label": "رابط الزر",
+                            "id": "slides.link",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "description": "رابط الانتقال عند الضغط على زر التسوّق",
+                            "placeholder": "https://"
+                        },
+                        {
+                            "type": "string",
+                            "icon": "sicon-format-text-alt",
+                            "label": "نص الزر",
+                            "multilanguage": true,
+                            "id": "slides.button_text",
+                            "value": null,
+                            "required": false,
+                            "format": "text",
+                            "placeholder": "تسوّق الآن",
+                            "minLength": 0,
+                            "maxLength": 30
                         }
                     ]
                 }
@@ -790,7 +880,7 @@
                 "ar": "صور مربعة (محسنة)"
             },
             "icon": "sicon-image",
-            "path": "home.enhanced-square-banners",
+            "path": "home.banner-grid",
             "image": "https://cdn.salla.network/images/themes/raed/preview-images/square-images.png?v=1.1",
             "is_default": true,
             "fields": [
@@ -1129,6 +1219,130 @@
                     "required": false,
                     "minLength": 1,
                     "maxLength": 30
+                }
+            ]
+        },
+        {
+            "key": "7c2c9d3a-2f7e-4b1a-9b3e-6a1f9d0c5e21",
+            "title": {
+                "en": "Reels (Video Cards)",
+                "ar": "ريلز (بطاقات فيديو)"
+            },
+            "icon": "sicon-video-file",
+            "path": "home.reels",
+            "image": "https://cdn.salla.network/images/themes/raed/preview-images/custom-testimonials.png?v=1.1",
+            "is_default": false,
+            "fields": [
+                {
+                    "type": "static",
+                    "format": "description",
+                    "id": "reels-static-desc",
+                    "value": "<div>يظهر هذا القسم عند تفعيل خيار \"تفعيل قسم الريلز\" من إعدادات المتجر العامة للثيم.</div>"
+                },
+                {
+                    "id": "title",
+                    "type": "string",
+                    "format": "text",
+                    "label": "عنوان القسم",
+                    "multilanguage": true,
+                    "value": "شاهد وتسوّق",
+                    "required": false,
+                    "placeholder": "شاهد وتسوّق"
+                },
+                {
+                    "id": "subtitle",
+                    "type": "string",
+                    "format": "text",
+                    "label": "العنوان الفرعي",
+                    "multilanguage": true,
+                    "value": "أحدث الفيديوهات والعروض",
+                    "required": false,
+                    "placeholder": "أحدث الفيديوهات والعروض"
+                },
+                {
+                    "id": "items",
+                    "type": "collection",
+                    "format": "collection",
+                    "label": "الفيديوهات",
+                    "item_label": "فيديو",
+                    "icon": "sicon-list-add",
+                    "required": true,
+                    "minLength": 1,
+                    "maxLength": 6,
+                    "value": [
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 1"
+                        },
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 2"
+                        },
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 3"
+                        },
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 4"
+                        },
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 5"
+                        },
+                        {
+                            "items.poster": "https://cdn.assets.salla.network/prod/stores/themes/default/assets/images/placeholder.png",
+                            "items.video_url": "",
+                            "items.title": "فيديو 6"
+                        }
+                    ],
+                    "fields": [
+                        {
+                            "id": "items.poster",
+                            "type": "string",
+                            "format": "image",
+                            "label": "الصورة المصغرة (Poster)",
+                            "description": "تظهر قبل تشغيل الفيديو، المقاس المناسب 720×1280 بكسل",
+                            "icon": "sicon-image",
+                            "value": null,
+                            "required": true
+                        },
+                        {
+                            "id": "items.video_url",
+                            "type": "string",
+                            "format": "text",
+                            "label": "رابط الفيديو",
+                            "description": "رابط ملف MP4 مباشر، أو رابط يوتيوب/فيميو خارجي",
+                            "icon": "sicon-link",
+                            "value": null,
+                            "required": true,
+                            "placeholder": "https://example.com/video.mp4"
+                        },
+                        {
+                            "id": "items.title",
+                            "type": "string",
+                            "format": "text",
+                            "label": "عنوان الفيديو",
+                            "multilanguage": true,
+                            "value": null,
+                            "required": false,
+                            "placeholder": "عنوان قصير للفيديو"
+                        },
+                        {
+                            "id": "items.link",
+                            "type": "string",
+                            "format": "text",
+                            "label": "رابط المنتج / التسوق (اختياري)",
+                            "value": null,
+                            "required": false,
+                            "placeholder": "https://"
+                        }
+                    ]
                 }
             ]
         }

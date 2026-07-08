@@ -1,11 +1,33 @@
 {
   "blocks": {
     "header": {
-      "cart": "Cart"
+      "cart": "Cart",
+      "free_shipping": "Free shipping on orders over SAR 300",
+      "secure_payment": "100% secure payment",
+      "certified_warranty": "Certified warranty",
+      "all_categories": "All Categories",
+      "wishlist": "Wishlist",
+      "account": "My Account",
+      "close_menu": "Close menu"
     },
-    "appBanner": {
-      "download_now": "download now"
+    "reels": {
+      "title": "Watch & Shop",
+      "subtitle": "Latest videos and offers",
+      "play": "Play video",
+      "close": "Close"
+    },
+    "product": {
+      "video_gallery": "Video Gallery",
+      "view_360": "360° View",
+      "drag_to_rotate": "Drag to rotate",
+      "exit_360": "Exit 360° view"
+    },
+    "footer": {
+      "contact_us": "Contact Us"
     }
+  },
+  "appBanner": {
+    "download_now": "download now"
   },
   "pages": {
     "cart": {

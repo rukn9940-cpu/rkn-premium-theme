@@ -1,0 +1,76 @@
+/* ============================================================
+   Rukn Al-Ahtraf — testimonials (home/custom-testimonials.twig)
+   ============================================================ */
+
+.rkn-sechead--center {
+  justify-content: center;
+  text-align: center;
+}
+
+.rkn-sectitle--center {
+  justify-content: center;
+
+  &::before {
+    display: none;
+  }
+}
+
+.rkn-testimonials-slider {
+  .swiper-slide {
+    height: auto;
+  }
+}
+
+.rkn-review-slide {
+  display: flex;
+  justify-content: center;
+}
+
+.rkn-review-card {
+  width: min(720px, 100%);
+  background: #fff;
+  border: 1px solid var(--rkn-line);
+  border-radius: 16px;
+  padding: 28px 32px;
+  display: flex;
+  flex-direction: column;
+  gap: 14px;
+  text-align: start;
+
+  &__quote {
+    font-size: 44px;
+    line-height: 0.4;
+    color: var(--rkn-gold);
+    font-family: Georgia, serif;
+    opacity: 0.6;
+  }
+
+  &__text {
+    font-size: 15px;
+    line-height: 1.8;
+    color: #3a4a4e;
+    margin: 0;
+  }
+
+  &__footer {
+    display: flex;
+    align-items: center;
+    gap: 12px;
+  }
+
+  &__avatar {
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    object-fit: cover;
+    border: 2px solid var(--rkn-soft);
+  }
+
+  &__name {
+    display: block;
+    font-size: 14px;
+    font-weight: 800;
+    color: var(--rkn-ink);
+    margin-bottom: 2px;
+  }
+}

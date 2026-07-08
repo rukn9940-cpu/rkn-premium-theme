@@ -1,0 +1,9 @@
+{#
+    Mega menu partial.
+    The actual menu tree is fetched client-side via `salla.api.component.getMenus()`
+    (see assets/js/partials/mega-menu.js) since Salla exposes the merchant's
+    menu structure through that endpoint rather than a Twig variable here.
+    This partial only owns the mount point + skeleton, kept out of header.twig
+    so the mega menu is a standalone, reusable piece.
+#}
+<rkn-mega-menu></rkn-mega-menu>

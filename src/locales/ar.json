@@ -1,11 +1,33 @@
 {
   "blocks": {
     "header": {
-      "cart": "السلة"
+      "cart": "السلة",
+      "free_shipping": "شحن مجاني للطلبات فوق 300 ر.س",
+      "secure_payment": "دفع آمن 100%",
+      "certified_warranty": "ضمان معتمد",
+      "all_categories": "جميع الأقسام",
+      "wishlist": "المفضلة",
+      "account": "حسابي",
+      "close_menu": "إغلاق القائمة"
     },
-    "appBanner": {
-      "download_now": "حمله الان"
+    "reels": {
+      "title": "شاهد وتسوّق",
+      "subtitle": "أحدث الفيديوهات والعروض",
+      "play": "تشغيل الفيديو",
+      "close": "إغلاق"
+    },
+    "product": {
+      "video_gallery": "معرض الفيديو",
+      "view_360": "عرض 360°",
+      "drag_to_rotate": "اسحب للتدوير",
+      "exit_360": "الخروج من عرض 360°"
+    },
+    "footer": {
+      "contact_us": "تواصل معنا"
     }
+  },
+  "appBanner": {
+    "download_now": "حمله الان"
   },
   "pages": {
     "cart": {

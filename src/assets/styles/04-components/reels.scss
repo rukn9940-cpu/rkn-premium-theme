@@ -1,0 +1,178 @@
+/* ============================================================
+   Rukn Al-Ahtraf — homepage Reels (video cards) section
+   ============================================================ */
+
+.rkn-reels-grid {
+  display: grid;
+  grid-template-columns: repeat(6, 1fr);
+  gap: 14px;
+
+  @media (max-width: 1080px) {
+    grid-template-columns: repeat(3, 1fr);
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+}
+
+.rkn-reel-card {
+  position: relative;
+  display: block;
+  width: 100%;
+  aspect-ratio: 9 / 16;
+  border-radius: 16px;
+  overflow: hidden;
+  border: 1px solid var(--rkn-line);
+  background: var(--rkn-soft);
+  padding: 0;
+  cursor: pointer;
+  transition: transform 0.2s, box-shadow 0.2s;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 14px 30px rgba(14, 77, 90, 0.16);
+
+    .rkn-reel-card__play {
+      background: var(--rkn-teal);
+      color: #fff;
+    }
+  }
+
+  &__poster {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+
+  &__play {
+    position: absolute;
+    inset: 0 0 auto auto;
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    width: 48px;
+    height: 48px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.92);
+    color: var(--rkn-teal);
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    transition: background 0.2s, color 0.2s;
+
+    svg {
+      margin-inline-start: 2px;
+    }
+  }
+
+  &__title {
+    position: absolute;
+    inset-inline: 0;
+    bottom: 0;
+    padding: 22px 12px 12px;
+    background: linear-gradient(to top, rgba(10, 40, 45, 0.85), transparent);
+    color: #fff;
+    font-size: 12.5px;
+    font-weight: 700;
+    text-align: start;
+    line-height: 1.4;
+  }
+}
+
+/* Playback modal (shared, injected once by reels.js) */
+.rkn-reel-modal {
+  position: fixed;
+  inset: 0;
+  z-index: 200;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  padding: 24px;
+
+  &.is-open {
+    display: flex;
+  }
+
+  &__backdrop {
+    position: absolute;
+    inset: 0;
+    background: rgba(10, 40, 45, 0.82);
+  }
+
+  &__box {
+    position: relative;
+    z-index: 1;
+    width: min(420px, 100%);
+    max-height: 90vh;
+    background: #000;
+    border-radius: 18px;
+    overflow: hidden;
+    display: flex;
+    flex-direction: column;
+  }
+
+  &__close {
+    position: absolute;
+    top: 10px;
+    inset-inline-end: 10px;
+    z-index: 2;
+    width: 36px;
+    height: 36px;
+    border-radius: 50%;
+    background: rgba(255, 255, 255, 0.16);
+    color: #fff;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+
+    &:hover {
+      background: rgba(255, 255, 255, 0.3);
+    }
+  }
+
+  &__media {
+    position: relative;
+    width: 100%;
+    aspect-ratio: 9 / 16;
+    background: #000;
+  }
+
+  &__video,
+  &__iframe {
+    width: 100%;
+    height: 100%;
+    display: block;
+    border: none;
+    object-fit: contain;
+  }
+
+  &__footer {
+    padding: 12px;
+    background: #fff;
+
+    &:empty {
+      display: none;
+    }
+  }
+
+  &__cta {
+    display: block;
+    text-align: center;
+    background: var(--rkn-gold);
+    color: #fff;
+    font-weight: 800;
+    font-size: 14px;
+    padding: 12px;
+    border-radius: 10px;
+    text-decoration: none;
+
+    &:hover {
+      background: var(--rkn-gold-2);
+    }
+  }
+}
+
+body.rkn-reel-open {
+  overflow: hidden;
+}

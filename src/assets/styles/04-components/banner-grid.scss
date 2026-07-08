@@ -1,0 +1,82 @@
+/* ============================================================
+   Rukn Al-Ahtraf — promo banner grid (home/banner-grid.twig)
+   ============================================================ */
+
+.rkn-banner-grid {
+  display: grid;
+  grid-template-columns: repeat(3, 1fr);
+  gap: 16px;
+
+  &--count-1 {
+    grid-template-columns: 1fr;
+  }
+
+  &--count-2 {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @media (max-width: 1080px) {
+    grid-template-columns: repeat(2, 1fr) !important;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr !important;
+  }
+}
+
+.rkn-banner-tile {
+  position: relative;
+  display: flex;
+  align-items: flex-end;
+  min-height: 180px;
+  border-radius: 18px;
+  overflow: hidden;
+  background-size: cover;
+  background-position: center;
+  background-color: var(--rkn-soft);
+  transition: transform 0.25s ease, box-shadow 0.25s ease;
+
+  &:hover {
+    transform: translateY(-4px);
+    box-shadow: 0 16px 34px rgba(14, 77, 90, 0.16);
+  }
+
+  &--wide {
+    grid-column: span 2;
+    min-height: 260px;
+
+    @media (max-width: 1080px) {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 640px) {
+      grid-column: span 1;
+    }
+  }
+}
+
+.rkn-banner-tile__scrim {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(to top, rgba(10, 40, 45, 0.85), rgba(10, 40, 45, 0.1) 60%);
+}
+
+.rkn-banner-tile__text {
+  position: relative;
+  z-index: 1;
+  padding: 22px;
+  color: #fff;
+}
+
+.rkn-banner-tile__title {
+  display: block;
+  font-size: 19px;
+  font-weight: 900;
+  margin-bottom: 4px;
+}
+
+.rkn-banner-tile__desc {
+  display: block;
+  font-size: 13px;
+  opacity: 0.9;
+}

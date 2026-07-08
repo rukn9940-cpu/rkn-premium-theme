@@ -1,0 +1,52 @@
+{#
+| Variable                       | Type     | Description                                                                  |
+|--------------------------------|----------|------------------------------------------------------------------------------|
+| component                      | object   | Contains merchant settings for fields from twilight.json `component` section |
+| component.slides[].image       | string   | Image url                                                                    |
+| component.slides[].title       | ?string  |                                                                              |
+| component.slides[].description | ?string  |                                                                              |
+| component.slides[].badge       | ?string  | Small pill text shown above the title                                       |
+| component.slides[].link        | ?string  | CTA button url                                                              |
+| component.slides[].button_text | ?string  | CTA button label                                                            |
+| component.slides               | object[] | list of slides                                                               |
+| position                       | int      | Sorting number start from zero                                               |
+#}
+<section class="s-block rkn-hero-block">
+    <div class="container">
+        <div class="rkn-homehero">
+            <aside class="rkn-homehero__sidebar hidden lg:block">
+                <rkn-category-menu variant="sidebar"></rkn-category-menu>
+            </aside>
+
+            <div class="rkn-hero">
+                <salla-slider
+                  id="main-slider-{{ position }}"
+                  auto-play
+                  static-when-single
+                  slider-config='{"lazy":"false"}'
+                  {{ component.slides|length > 1 ? '' : 'show-controls="false"' }}
+                  type="fullwidth">
+                    <div slot="items">
+                        {% for slide in component.slides %}
+                            <div class="swiper-slide rkn-hero__slide">
+                                <div style="background-image: url({{ slide.image }});" class="{{ slide.without_overlay ? '' : 'rkn-hero__overlay' }} bg-cover bg-center absolute inset-0"></div>
+                                <div class="rkn-hero__content">
+                                    {% if slide.badge %}<span data-swiper-parallax="-400" class="rkn-hero__badge">{{ slide.badge }}</span>{% endif %}
+                                    {% if slide.title %}<h2 data-swiper-parallax="-500">{{ slide.title }}</h2>{% endif %}
+                                    {% if slide.description %}<p data-swiper-parallax="-300" class="line-clamp-2">{{ slide.description }}</p>{% endif %}
+                                    {% if slide.link and slide.button_text %}
+                                        <a href="{{ slide.link }}" data-swiper-parallax="-200" class="rkn-hero__btn">
+                                            {{ slide.button_text }}
+                                            <i class="sicon-arrow-left-1 rtl:inline-block ltr:hidden"></i>
+                                            <i class="sicon-arrow-right-1 ltr:inline-block rtl:hidden"></i>
+                                        </a>
+                                    {% endif %}
+                                </div>
+                            </div>
+                        {% endfor %}
+                    </div>
+                </salla-slider>
+            </div>
+        </div>
+    </div>
+</section>

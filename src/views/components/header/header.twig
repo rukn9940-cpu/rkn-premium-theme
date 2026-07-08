@@ -6,68 +6,89 @@
 | cart.total       | string  | Formatted total ex: "١٠٠ ر.س"   |
 #}
 {% set important_links = theme.settings.get('important_links') %}
-<header class="store-header">
-  {# Top Nav #}
-  <div class="top-navbar">
-    <div class="container flex justify-between">
-      <div class="flex-1 flex items-center gap-2">
+<header class="store-header rkn-scope rkn-header">
+  {# Top Bar #}
+  <div class="rkn-topbar">
+    <div class="container flex items-center justify-between flex-wrap gap-y-1.5">
+      <ul class="rkn-topbar__perks">
+        <li><span class="rkn-dot"></span>{{ trans('blocks.header.free_shipping') }}</li>
+        <li class="hidden sm:flex"><span class="rkn-dot"></span>{{ trans('blocks.header.secure_payment') }}</li>
+        <li class="hidden lg:flex"><span class="rkn-dot"></span>{{ trans('blocks.header.certified_warranty') }}</li>
+      </ul>
+
+      <div class="rkn-topbar__links">
           {# Footer Menu #}
           {% if important_links %}
             <salla-menu source="footer" topnav></salla-menu>
           {% endif %}
 
           {# Language & Currency Component #}
-          <div class="header-buttons">
-              {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
-                  <salla-localization-modal show-trigger></salla-localization-modal>
-              {% endif %}
-          </div>
+          {% if store.settings.is_multilingual or store.settings.currencies_enabled %}
+              <salla-localization-modal show-trigger></salla-localization-modal>
+          {% endif %}
 
           {# Scopes | Branches #}
           {% if store.scope %}
-              <button class="btn--rounded-gray"
-                      onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
+              <button class="btn--rounded-gray" onclick="salla.event.dispatch('scopes::open', {'mode': 'default'})">
                   <i class="sicon-location rtl:ml-1 ltr:mr-1"></i> {{ store.scope.name }}
               </button>
           {% endif %}
 
-          {# Search bar #}
-          <div class="header-search flex-1">
-            <salla-search inline oval height="36"></salla-search>
-          </div>
+          <salla-contacts is-header class="rkn-topbar__contacts"></salla-contacts>
       </div>
-
-      <salla-contacts is-header></salla-contacts>
     </div>
   </div>
 
-  {# Main Nav #}
-  <div id="mainnav" class="main-nav-container shadow-default bg-white flex items-center">
-      <div class="inner bg-inherit w-full">
-          <div class="container">
-              <div class="flex items-stretch justify-between relative">
-                  <div class="flex items-center">
-                      <a class="lg:hidden mburger mburger--collapse leading-none rtl:ml-4 ltr:mr-4" href="#mobile-menu" aria-label="Open-menu">
-                        <i class="sicon-menu text-primary text-2xl"></i>
-                      </a>
-                      <a class="navbar-brand" href="{{ store.url }}">
-                          <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
-                          {% if is_page('index') %}
-                            <h1 class="sr-only">{{ store.name }}</h1>
-                          {% else %}
-                            <h2 class="sr-only">{{ store.name }}</h2>
-                          {% endif %}
-                      </a>
-                      <custom-main-menu></custom-main-menu>
-                  </div>
-                  <div class="flex items-center justify-end my-2.5">
-                      <salla-user-menu avatar-only show-header show-trigger></salla-user-menu>
-                      <salla-cart-summary class="ml-4 rtl:ml-[unset] rtl:mr-4">
-                        <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
-                      </salla-cart-summary>
-                  </div>
+  {# Main Header: logo + search + account/wishlist/cart #}
+  <div class="rkn-header-main">
+      <div class="container">
+          <div class="flex items-stretch justify-between gap-4">
+              <div class="flex items-center gap-3">
+                  <a class="lg:hidden mburger mburger--collapse leading-none" href="#mobile-menu" aria-label="Open-menu">
+                    <i class="sicon-menu text-2xl"></i>
+                  </a>
+                  <a class="rkn-logo" href="{{ store.url }}">
+                      <img fetchpriority="high" width="100%" height="100%" loading="eager" src="{{ store.logo|cdn(175) }}" alt="{{ store.name }} logo">
+                      {% if is_page('index') %}
+                        <h1 class="sr-only">{{ store.name }}</h1>
+                      {% else %}
+                        <h2 class="sr-only">{{ store.name }}</h2>
+                      {% endif %}
+                  </a>
               </div>
+
+              <div class="rkn-search hidden md:flex">
+                <salla-search inline oval height="52"></salla-search>
+              </div>
+
+              <div class="flex items-center gap-1.5 sm:gap-2.5">
+                  <salla-user-menu avatar-only show-header show-trigger class="rkn-icon-btn"></salla-user-menu>
+                  <a href="{{ link('wishlist') }}" class="rkn-icon-btn" aria-label="{{ trans('blocks.header.wishlist') }}">
+                      <span class="rkn-icon-btn__icon"><i class="sicon-heart"></i></span>
+                      <span class="rkn-icon-btn__label">{{ trans('blocks.header.wishlist') }}</span>
+                  </a>
+                  <salla-cart-summary class="rkn-icon-btn rkn-cart-btn">
+                    <i slot="icon" class="header-btn__icon icon sicon-shopping-bag"></i>
+                  </salla-cart-summary>
+              </div>
+          </div>
+
+          <div class="rkn-search md:hidden pb-3">
+            <salla-search inline oval height="46"></salla-search>
           </div>
       </div>
   </div>
+
+  {# Category Nav / Mega Menu #}
+  <nav class="rkn-catnav {{ theme.settings.get('header_is_sticky', true) ? 'rkn-catnav--sticky' : '' }}">
+      <div class="container flex items-center relative">
+          <button type="button" class="rkn-allcats-btn" data-rkn-allcats-toggle aria-haspopup="true" aria-expanded="false">
+              <i class="sicon-menu"></i>
+              <span>{{ trans('blocks.header.all_categories') }}</span>
+              <i class="sicon-arrow-down-1 rkn-allcats-btn__chev"></i>
+          </button>
+          {% include 'header.mega-menu' %}
+          <rkn-category-menu variant="dropdown" class="rkn-allcats-dropdown"></rkn-category-menu>
+      </div>
+  </nav>
 </header>

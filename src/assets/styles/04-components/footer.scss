@@ -1,49 +1,184 @@
+/* ============================================================
+   Rukn Al-Ahtraf footer (views/components/footer/footer.twig)
+   ============================================================ */
 
-.store-footer {
-  @apply relative bg-darker text-white mt-8 sm:mt-16;
+.rkn-footer {
+  background: var(--rkn-teal-2);
+  color: #bcd2d6;
+  margin-top: 60px;
+  padding-top: 54px;
 
-  a{
-    @apply transition-opacity hover:opacity-75;
-  }
+  a {
+    transition: opacity 0.2s;
 
-  &__inner{
-    @apply bg-dark py-8 lg:py-16 border-b border-dashed border-b-white/10;
-  }  
-
-  h3{
-    @apply text-lg font-bold mb-3 lg:mb-5;
-  }
-
-  .social-link {
-    @apply border rounded-full w-8 h-8 justify-center flex items-center hover:opacity-75 transition duration-300 text-sm
-  }
-
-  .contact-social{
-    @apply mt-5 pt-5 border-t border-white/10;
-
-    ul {
-      @apply mb-0;
+    &:hover {
+      opacity: 0.85;
     }
   }
 
-  .footer-is-light & {
-    @apply bg-gray-50 text-gray-700;
+  h5 {
+    color: #fff;
+    font-size: 16px;
+    font-weight: 800;
+    margin: 0 0 18px;
+  }
+}
 
-    .store-footer__inner {
-      @apply bg-gray-100 border-b-gray-200;
+.rkn-footer__grid {
+  display: grid;
+  grid-template-columns: 1.6fr 1fr 1fr 1.2fr;
+  gap: 40px;
+  padding-bottom: 40px;
+
+  @media (max-width: 1024px) {
+    grid-template-columns: 1fr 1fr;
+  }
+
+  @media (max-width: 640px) {
+    grid-template-columns: 1fr;
+  }
+}
+
+.rkn-footer__logo {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  margin-bottom: 16px;
+
+  h3 {
+    color: #fff;
+    font-size: 19px;
+    font-weight: 900;
+    margin: 0;
+  }
+}
+
+.rkn-footer__logomark {
+  width: 40px;
+  height: 40px;
+  border-radius: 11px;
+  background: linear-gradient(145deg, var(--rkn-teal-3), var(--rkn-teal-2));
+  border: 1px solid rgba(255, 255, 255, 0.15);
+  color: #fff;
+  font-weight: 900;
+  font-size: 17px;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rkn-footer__desc {
+  font-size: 14px;
+  line-height: 1.8;
+  color: #a8c1c6;
+  margin: 0 0 16px;
+  max-width: 32rem;
+}
+
+.rkn-footer__social {
+  display: block;
+  margin-bottom: 16px;
+
+  &--mobile {
+    display: none;
+    margin-top: 14px;
+
+    @media (max-width: 1024px) {
+      display: block;
     }
+  }
 
-    .social-link {
-      @apply border-gray-300;
-    }
-
-    .contact-social{
-      @apply border-gray-100;
+  @media (max-width: 1024px) {
+    &:not(&--mobile) {
+      display: none;
     }
   }
 }
 
+.rkn-footer__trust {
+  display: flex;
+  align-items: flex-end;
+  gap: 16px;
+  flex-wrap: wrap;
+}
 
-.copyright-text p{
-  @apply text-gray-700;
+.rkn-footer__tax {
+  display: flex;
+  align-items: center;
+  gap: 12px;
+  background: rgba(255, 255, 255, 0.06);
+  border: 1px solid rgba(255, 255, 255, 0.1);
+  border-radius: 12px;
+  padding: 10px 14px;
+}
+
+.rkn-footer__tax-icon {
+  width: 34px;
+  height: 34px;
+  border-radius: 9px;
+  background: var(--rkn-gold);
+  color: #fff;
+  font-weight: 900;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  flex-shrink: 0;
+}
+
+.rkn-footer__tax-label {
+  display: block;
+  font-size: 11px;
+  color: #a8c1c6;
+}
+
+.rkn-footer__tax-value {
+  display: block;
+  color: #fff;
+  font-family: var(--rkn-font-mono);
+  font-size: 13px;
+}
+
+.rkn-footer__col {
+  salla-menu a,
+  salla-contacts a {
+    display: block;
+    font-size: 14px;
+    color: #a8c1c6;
+    padding: 6px 0;
+    transition: color 0.15s, padding 0.15s;
+
+    &:hover {
+      color: var(--rkn-gold);
+      padding-inline-start: 5px;
+      opacity: 1;
+    }
+  }
+
+  &--apps {
+    @media (max-width: 1024px) {
+      grid-column: span 2;
+    }
+
+    @media (max-width: 640px) {
+      grid-column: span 1;
+    }
+  }
+}
+
+.rkn-footer__bar {
+  border-top: 1px solid rgba(255, 255, 255, 0.1);
+}
+
+.rkn-footer__bar-inner {
+  padding-block: 20px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+  flex-wrap: wrap;
+  gap: 14px;
+}
+
+.rkn-footer__copyright {
+  font-size: 14px;
 }
