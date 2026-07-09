@@ -1,12 +1,22 @@
 {
   "name": "rkn-premium-theme",
-  "version": "0.1.0",
-  "description": "RKN Premium Theme — a production-ready, mobile-first Salla Twilight theme foundation.",
+  "version": "1.0.0",
+  "description": "RKN Premium Theme — a commercial Salla Twilight theme for the Salla Theme Store. Premium storefront, design system, and merchant-configurable shopping features.",
   "license": "UNLICENSED",
   "private": true,
-  "author": "RKN",
+  "author": "RUKN",
+  "repository": {
+    "type": "git",
+    "url": "https://github.com/rukn9940-cpu/rkn-premium-theme.git"
+  },
+  "homepage": "https://github.com/rukn9940-cpu/rkn-premium-theme",
+  "bugs": {
+    "url": "https://github.com/rukn9940-cpu/rkn-premium-theme/issues"
+  },
+  "packageManager": "pnpm@9.15.9",
   "engines": {
-    "node": ">=18.0.0"
+    "node": ">=18.0.0",
+    "pnpm": ">=9.0.0"
   },
   "scripts": {
     "development": "webpack --mode development",
@@ -18,7 +28,7 @@
     "lint:js:fix": "eslint \"src/assets/js/**/*.js\" --fix",
     "lint:css": "stylelint \"src/assets/styles/**/*.scss\"",
     "lint:css:fix": "stylelint \"src/assets/styles/**/*.scss\" --fix",
-    "lint": "npm run lint:js && npm run lint:css",
+    "lint": "pnpm run lint:js && pnpm run lint:css",
     "format": "prettier --write \"src/assets/js/**/*.js\" \"src/assets/styles/**/*.scss\"",
     "twilight:preview": "salla theme preview",
     "twilight:serve": "salla theme serve"

@@ -67,7 +67,7 @@
 
         - `image.three_d_image_url` → merchant uploaded a real 3D model
           (Attach 3D Model, Salla Merchant API). Rendered with Google's
-          `<model-viewer>`, exactly like Salla's official Raed theme.
+          `<model-viewer>` web component.
         - Plain, ordered `product.images` (excluding video/3D entries) →
           when there are enough of them (`product_360_min_frames`, Theme
           Settings), treated as a 360° turntable sequence — this is just the
@@ -375,7 +375,8 @@
 
 {% block scripts %}
     {% if product.has_3d_image %}
-        {# Same CDN build Salla's own official Raed theme uses for `product.has_3d_image` — loaded only for the (rare) products that actually have a 3D model, so it never costs regular product pages anything. #}
+        {# Google's `<model-viewer>` — loaded only for products with a real 3D
+           model attached in Salla, so regular product pages pay zero cost. #}
         <script type="module" defer src="https://unpkg.com/@google/model-viewer/dist/model-viewer.min.js"></script>
     {% endif %}
 {% endblock %}

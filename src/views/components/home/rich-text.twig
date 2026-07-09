@@ -1,26 +1,16 @@
 {#
     Rich Text Block (Theme Component: home.rich-text)
-    ====================================================
-    Free-form merchant-authored HTML (WYSIWYG field) — a "Custom Section"
-    building block for marketing copy, store policies highlights, seasonal
-    messaging, etc. that doesn't warrant a dedicated component.
-
-    | component.title         | string|null | optional heading             |
-    | component.content       | string      | plain text (textarea field)  |
-    | component.center_align  | bool        | center the text block        |
-
-    `component.content` is a plain textarea field (Twilight custom-component
-    fields don't offer a WYSIWYG/HTML format), so line breaks are preserved
-    via CSS `white-space: pre-line` rather than an (unsafe/unsupported) `|raw`
-    HTML render.
+    Merchant-authored copy block — RKN storefront styling.
 #}
 {% if component.content %}
-    <section class="section rich-text-block{{ component.center_align ? ' rich-text-block--center' : '' }}">
-        <div class="container rich-text-block__inner">
+    <section class="rkn-block rkn-rich-text{{ component.center_align ? ' rkn-rich-text--center' : '' }}">
+        <div class="container rkn-rich-text__inner">
             {% if component.title %}
-                <h2 class="section__title">{{ component.title }}</h2>
+                {% include 'partials.home.section-head' with {
+                    title: component.title
+                } %}
             {% endif %}
-            <p class="rich-text-block__content">{{ component.content }}</p>
+            <div class="rkn-rich-text__content">{{ component.content }}</div>
         </div>
     </section>
 {% endif %}

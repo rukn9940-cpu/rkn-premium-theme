@@ -1,0 +1,20 @@
+{#
+    RKN New Arrivals — latest products shelf
+    Auto-fetches via Salla `source="latest"` or manual product picker.
+#}
+{% set mode = component.source_mode|default('auto') %}
+{% set use_manual = mode == 'manual' and component.products is defined and component.products is not empty %}
+{% set use_auto = mode == 'auto' %}
+
+{% if use_manual or use_auto %}
+    {% include 'partials.home.product-shelf' with {
+        title: component.title|default(trans('home.new_arrivals.default_title')),
+        subtitle: component.subtitle|default(null),
+        eyebrow: trans('home.new_arrivals.eyebrow'),
+        link_url: component.view_all_url|default(null),
+        link_label: component.view_all_url ? trans('home.view_all') : null,
+        products: use_manual ? component.products : [],
+        source: use_auto ? 'latest' : null,
+        limit: component.limit|default(8)
+    } %}
+{% endif %}

@@ -1,48 +1,41 @@
 {#
-    Offers (Theme Component: home.offers)
-    =======================================
-    Promotional banner with an optional live countdown (`salla-count-down`)
-    and an optional grid of real, merchant-selected sale products.
-
-    | component.title        | string | optional heading                    |
-    | component.subtitle     | string | optional sub heading                |
-    | component.image        | string | required, banner background         |
-    | component.end_date     | string | optional, feeds salla-count-down    |
-    | component.cta_label    | string | optional                            |
-    | component.cta_url      | string | optional                            |
-    | component.products     | array  | optional, full Product entities     |
+    RKN Flash offer — split promo banner + product row
 #}
 {% if component.image %}
-    <section class="section offers" aria-label="{{ component.title|default(trans('home.offers.default_title')) }}">
+    <section class="rkn-block rkn-deal" aria-label="{{ component.title|default(trans('home.offers.default_title')) }}">
         <div class="container">
-            <div class="offers__banner" style="background-image: url('{{ component.image }}');">
-                <div class="offers__banner-overlay" aria-hidden="true"></div>
-                <div class="offers__banner-content">
-                    <h2 class="offers__title">{{ component.title|default(trans('home.offers.default_title')) }}</h2>
-                    {% if component.subtitle %}
-                        <p class="offers__subtitle">{{ component.subtitle }}</p>
-                    {% endif %}
-
-                    {% if component.end_date %}
-                        <div class="offers__countdown">
-                            <span class="offers__countdown-label">{{ trans('home.offers.countdown_ends_in') }}</span>
-                            <salla-count-down date="{{ component.end_date }}" color="light" size="sm" boxed="true"></salla-count-down>
-                        </div>
-                    {% endif %}
-
-                    {% if component.cta_label %}
-                        <a href="{{ component.cta_url|default('#') }}" class="btn btn--primary btn--lg">{{ component.cta_label }}</a>
-                    {% endif %}
+            <div class="rkn-deal__layout">
+                <div class="rkn-deal__banner" data-reveal>
+                    <picture class="rkn-deal__media">
+                        <img src="{{ component.image }}" alt="{{ component.title|default('') }}" loading="lazy" width="640" height="720">
+                    </picture>
+                    <div class="rkn-deal__overlay" aria-hidden="true"></div>
+                    <div class="rkn-deal__content">
+                        <span class="rkn-deal__badge">{{ trans('home.offers.flash_badge') }}</span>
+                        <h2 class="rkn-deal__title">{{ component.title|default(trans('home.offers.default_title')) }}</h2>
+                        {% if component.subtitle %}
+                            <p class="rkn-deal__subtitle">{{ component.subtitle }}</p>
+                        {% endif %}
+                        {% if component.end_date %}
+                            <div class="rkn-deal__countdown">
+                                <span class="rkn-deal__countdown-label">{{ trans('home.offers.countdown_ends_in') }}</span>
+                                <salla-count-down date="{{ component.end_date }}" color="light" size="sm" boxed="true"></salla-count-down>
+                            </div>
+                        {% endif %}
+                        {% if component.cta_label %}
+                            <a href="{{ component.cta_url|default('#') }}" class="rkn-deal__cta">{{ component.cta_label }}</a>
+                        {% endif %}
+                    </div>
                 </div>
+
+                {% if component.products is not empty %}
+                    <div class="rkn-deal__products">
+                        {% for product in component.products %}
+                            {% include 'partials.product.card' with { product: product, reveal: true, variant: 'premium' } %}
+                        {% endfor %}
+                    </div>
+                {% endif %}
             </div>
-
-            {% if component.products is not empty %}
-                <div class="offers__products">
-                    {% for product in component.products %}
-                        {% include 'partials.product.card' with { product: product, reveal: true } %}
-                    {% endfor %}
-                </div>
-            {% endif %}
         </div>
     </section>
 {% endif %}

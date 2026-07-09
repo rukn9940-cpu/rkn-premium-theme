@@ -3,12 +3,12 @@
     "ar": "آر كي إن بريميوم",
     "en": "RKN Premium Theme"
   },
-  "repository": "",
+  "repository": "https://github.com/rukn9940-cpu/rkn-premium-theme",
   "author_email": "",
-  "support_url": "",
+  "support_url": "https://github.com/rukn9940-cpu/rkn-premium-theme/issues",
   "description": {
-    "ar": "قالب سلة بريميوم كامل مبني على تويلايت بمعمارية نظيفة، يدعم الوضع الليلي وRTL/LTR بالكامل، ومهيأ للأداء وإمكانية الوصول ومحركات البحث في كل صفحاته.",
-    "en": "A complete, premium Salla Twilight theme with a full storefront, customer account area, blog, and campaign pages — built with clean architecture, Dark Mode, full RTL/LTR support, and performance, accessibility, and SEO best practices throughout."
+    "ar": "قالب RKN Premium Theme — قالب سلة بريميوم تجاري لمتجر قوالب سلة. واجهة متجر كاملة، نظام تصميم متقدم، وميزات تسوق قابلة للتخصيص بالكامل من إعدادات القالب، مع دعم الوضع الليلي وRTL/LTR والأداء وإمكانية الوصول.",
+    "en": "RKN Premium Theme — a commercial Salla Twilight theme for the Salla Theme Store. Full storefront, advanced design system, and merchant-configurable premium shopping features with Dark Mode, RTL/LTR, performance, and accessibility built in."
   },
   "features": [
     "mega-menu",
@@ -30,10 +30,14 @@
       "required": false,
       "selected": [
         {
-          "value": "custom"
+          "value": "rkn_premium"
         }
       ],
       "options": [
+        {
+          "label": "RKN Premium (افتراضي القالب)",
+          "value": "rkn_premium"
+        },
         {
           "label": "اللون المخصص (حسب إعدادات الهوية)",
           "value": "custom"
@@ -99,8 +103,8 @@
       "format": "switch",
       "icon": "sicon-toggle-off",
       "required": false,
-      "value": false,
-      "selected": false
+      "value": true,
+      "selected": true
     },
     {
       "type": "string",
@@ -419,6 +423,10 @@
         "ar": "البانر الرئيسي",
         "en": "Hero Banner"
       },
+      "description": {
+        "ar": "بانر رئيسي قابل للتخصيص بالكامل — ارفع صورك وعناوينك وأزرارك من إعدادات القالب دون أي محتوى افتراضي.",
+        "en": "Fully merchant-configurable hero carousel — upload your own slides, headlines, and CTAs from Theme Settings. No bundled demo content."
+      },
       "icon": "sicon-image-carousel",
       "path": "home.hero-banner",
       "fields": [
@@ -520,8 +528,12 @@
     {
       "name": "categories",
       "title": {
-        "ar": "الأقسام",
-        "en": "Categories"
+        "ar": "أقسام المتجر",
+        "en": "Store Categories"
+      },
+      "description": {
+        "ar": "اعرض أقساماً حقيقية من كتالوج متجرك في سلة — يختار التاجر الأقسام من القائمة.",
+        "en": "Highlight real categories from your Salla catalog — the merchant picks which sections to show."
       },
       "icon": "sicon-list",
       "path": "home.categories",
@@ -556,10 +568,152 @@
       ]
     },
     {
+      "name": "best-sellers",
+      "title": {
+        "ar": "الأكثر مبيعاً",
+        "en": "Best Sellers"
+      },
+      "description": {
+        "ar": "يعرض المنتجات الأكثر مبيعاً تلقائياً من متجرك، أو اختر منتجات يدوياً.",
+        "en": "Shows your store's best-selling products automatically, or curate them manually."
+      },
+      "icon": "sicon-fire",
+      "path": "home.best-sellers",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 120
+        },
+        {
+          "id": "source_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "مصدر المنتجات",
+          "required": false,
+          "selected": [{ "value": "auto" }],
+          "options": [
+            { "label": "تلقائي — الأكثر مبيعاً", "value": "auto" },
+            { "label": "يدوي — اختر المنتجات", "value": "manual" }
+          ]
+        },
+        {
+          "id": "limit",
+          "type": "number",
+          "format": "number",
+          "label": "عدد المنتجات (الوضع التلقائي)",
+          "required": false,
+          "value": 8
+        },
+        {
+          "id": "view_all_url",
+          "type": "string",
+          "format": "url",
+          "inputType": "url",
+          "label": "رابط عرض الكل (اختياري)"
+        },
+        {
+          "id": "products",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "المنتجات (الوضع اليدوي)",
+          "icon": "sicon-list",
+          "source": "Products",
+          "multichoice": true,
+          "required": false,
+          "maxLength": 16
+        }
+      ]
+    },
+    {
+      "name": "new-arrivals",
+      "title": {
+        "ar": "وصل حديثاً",
+        "en": "New Arrivals"
+      },
+      "description": {
+        "ar": "يعرض أحدث المنتجات تلقائياً من متجرك، أو اختر منتجات يدوياً.",
+        "en": "Shows your latest products automatically, or curate them manually."
+      },
+      "icon": "sicon-sparkles",
+      "path": "home.new-arrivals",
+      "fields": [
+        {
+          "id": "title",
+          "type": "string",
+          "format": "text",
+          "label": "عنوان القسم",
+          "multilanguage": true,
+          "maxLength": 60
+        },
+        {
+          "id": "subtitle",
+          "type": "string",
+          "format": "text",
+          "label": "نص فرعي (اختياري)",
+          "multilanguage": true,
+          "maxLength": 120
+        },
+        {
+          "id": "source_mode",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "مصدر المنتجات",
+          "required": false,
+          "selected": [{ "value": "auto" }],
+          "options": [
+            { "label": "تلقائي — الأحدث", "value": "auto" },
+            { "label": "يدوي — اختر المنتجات", "value": "manual" }
+          ]
+        },
+        {
+          "id": "limit",
+          "type": "number",
+          "format": "number",
+          "label": "عدد المنتجات (الوضع التلقائي)",
+          "required": false,
+          "value": 8
+        },
+        {
+          "id": "view_all_url",
+          "type": "string",
+          "format": "url",
+          "inputType": "url",
+          "label": "رابط عرض الكل (اختياري)"
+        },
+        {
+          "id": "products",
+          "type": "items",
+          "format": "dropdown-list",
+          "label": "المنتجات (الوضع اليدوي)",
+          "icon": "sicon-list",
+          "source": "Products",
+          "multichoice": true,
+          "required": false,
+          "maxLength": 16
+        }
+      ]
+    },
+    {
       "name": "featured-products",
       "title": {
         "ar": "منتجات مميزة",
         "en": "Featured Products"
+      },
+      "description": {
+        "ar": "اختر منتجات حقيقية من مخزون متجرك لعرضها في الصفحة الرئيسية.",
+        "en": "Curate real products from your store inventory for the homepage."
       },
       "icon": "sicon-bag2",
       "path": "home.featured-products",
@@ -596,8 +750,12 @@
     {
       "name": "offers",
       "title": {
-        "ar": "العروض",
-        "en": "Offers"
+        "ar": "قسم العروض",
+        "en": "Promotional Offer"
+      },
+      "description": {
+        "ar": "روّج لعرض حقيقي بصورة خلفية ترفعها أنت، عداد تنازلي اختياري، ومنتجات من متجرك.",
+        "en": "Promote a real sale with your own background image, optional countdown, and linked store products."
       },
       "icon": "sicon-discount",
       "path": "home.offers",
@@ -665,7 +823,11 @@
       "name": "brands",
       "title": {
         "ar": "العلامات التجارية",
-        "en": "Brands"
+        "en": "Brand Showcase"
+      },
+      "description": {
+        "ar": "اعرض شعارات علامات تجارية حقيقية من متجرك في سلة.",
+        "en": "Display logos from real brands configured in your Salla store."
       },
       "icon": "sicon-award-ribbon",
       "path": "home.brands",
@@ -694,8 +856,12 @@
     {
       "name": "rich-text",
       "title": {
-        "ar": "نص حر (مقتطف تسويقي)",
-        "en": "Rich Text Block"
+        "ar": "كتلة نص تسويقي",
+        "en": "Marketing Text Block"
+      },
+      "description": {
+        "ar": "أضف رسالة تسويقية أو قصة علامتك التجارية — النص يكتبه التاجر بالكامل.",
+        "en": "Add a marketing message or brand story — fully merchant-authored text."
       },
       "icon": "sicon-align-right",
       "path": "home.rich-text",
@@ -732,8 +898,12 @@
     {
       "name": "gallery",
       "title": {
-        "ar": "معرض صور",
-        "en": "Photo Gallery"
+        "ar": "معرض الصور",
+        "en": "Image Gallery"
+      },
+      "description": {
+        "ar": "ابنِ شبكة صور من صور ترفعها أنت — لا صور افتراضية أو جاهزة.",
+        "en": "Build a photo grid from images you upload — no default or stock imagery."
       },
       "icon": "sicon-image",
       "path": "home.gallery",
@@ -788,6 +958,10 @@
         "ar": "فيديو ترويجي",
         "en": "Promo Video"
       },
+      "description": {
+        "ar": "اربط فيديو يوتيوب حقيقي لمتجرك مع تحميل كسول عند النقر لحماية الأداء.",
+        "en": "Embed your own YouTube promo video with click-to-play lazy loading for performance."
+      },
       "icon": "sicon-video-clip",
       "path": "home.video",
       "fields": [
@@ -813,7 +987,7 @@
           "format": "url",
           "inputType": "url",
           "label": "رابط فيديو يوتيوب",
-          "description": "مثال: https://www.youtube.com/watch?v=XXXXXXXXXXX",
+          "description": "الصق رابط فيديو يوتيوب الخاص بمتجرك",
           "required": true
         },
         {
@@ -830,6 +1004,10 @@
       "title": {
         "ar": "ريلز المنتجات",
         "en": "Product Reels"
+      },
+      "description": {
+        "ar": "فيديوهات قصيرة رأسية ترفعها أنت وترتبط بمنتجات حقيقية من متجرك.",
+        "en": "Short vertical videos you upload, linked to real products from your store."
       },
       "icon": "sicon-video-clip",
       "path": "home.product-reels",
@@ -893,8 +1071,12 @@
     {
       "name": "banner-grid",
       "title": {
-        "ar": "بناء البانرات",
+        "ar": "منشئ البانرات",
         "en": "Banner Builder"
+      },
+      "description": {
+        "ar": "أنشئ شبكة بانرات ترويجية مرنة — كل بانر بصورة وعنوان ورابط تختارها أنت.",
+        "en": "Build a flexible promo banner grid — every tile uses your own image, copy, and link."
       },
       "icon": "sicon-image-carousel",
       "path": "home.banner-grid",

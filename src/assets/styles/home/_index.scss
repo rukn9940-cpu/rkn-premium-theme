@@ -1,0 +1,18 @@
+// -----------------------------------------------------------------------------
+// RKN Homepage — electronics storefront design system
+// Noon / Golden Technology inspired layout shell and section styles.
+// Markup: views/pages/index.twig + views/components/home/*
+// -----------------------------------------------------------------------------
+
+@forward 'section-head';
+@forward 'search-bar';
+@forward 'shell';
+@forward 'hero';
+@forward 'categories';
+@forward 'promos';
+@forward 'products';
+@forward 'brands';
+@forward 'deal';
+@forward 'reviews';
+@forward 'trust';
+@forward 'extras';

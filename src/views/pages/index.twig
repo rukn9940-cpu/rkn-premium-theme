@@ -1,13 +1,22 @@
 {#
-    Home Page
-    =========
-    Renders every enabled Theme Feature and Theme Component declared in
-    `twilight.json` (`features` + `components`), in the order configured by
-    the merchant from the Salla Partners Portal theme editor.
+    Home Page — RKN Premium Theme (Electronics / CCTV / Smart Home)
+    =================================================================
+    Custom homepage shell for a premium electronics storefront.
+    Section order is merchant-controlled via `{% component home %}` in
+    the Salla Partners Portal — recommended RKN layout:
 
-    Section markup/styling lives with each component itself:
-      src/views/components/home/{hero-banner,categories,featured-products,
-                                  offers,brands,testimonials,store-features}.twig
+      1. Hero Banner
+      2. Store Features (trust strip — Theme Feature)
+      3. Store Categories
+      4. Best Sellers
+      5. Promotional Banners
+      6. New Arrivals
+      7. Promotional Offer
+      8. Brand Showcase
+      9. Testimonials (Theme Feature)
+
+    Markup lives under `components/home/` with reusable partials in
+    `partials/home/`. Presentation uses the `rkn-*` design system.
 #}
 {% extends "layouts.master" %}
 
@@ -30,7 +39,7 @@
     <script type="application/ld+json">
     {
         "@context": "https://schema.org",
-        "@type": "Organization",
+        "@type": "Store",
         "name": {{ store.name|json_encode|raw }},
         "url": {{ store.url|json_encode|raw }}
         {%- if store.logo %}, "logo": {{ store.logo|json_encode|raw }}{% endif -%}
@@ -39,17 +48,20 @@
 {% endblock %}
 
 {% block content %}
-    {# Exactly one <h1> per page — the visual heading lives inside each
-       merchant-configured section (hero, category, ...), so this stays
-       screen-reader-only to keep the document outline correct for SEO/AT. #}
-    <h1 class="sr-only">{{ store.name }}{% if store.tagline %} — {{ store.tagline }}{% endif %}</h1>
+    <div class="rkn-home">
+        <h1 class="sr-only">{{ store.name }}{% if store.tagline %} — {{ store.tagline }}{% endif %}</h1>
 
-    {% component home %}
+        {% component home %}
 
-    {% if theme.settings.get('recently_viewed_enabled', true) %}
-        {% include 'partials.utility.recently-viewed' %}
-    {% endif %}
-    {% if theme.settings.get('smart_recommendations_enabled', true) %}
-        {% include 'partials.utility.smart-recommendations' %}
-    {% endif %}
+        {% if theme.settings.get('recently_viewed_enabled', true) %}
+            <div class="rkn-home__tail">
+                {% include 'partials.utility.recently-viewed' %}
+            </div>
+        {% endif %}
+        {% if theme.settings.get('smart_recommendations_enabled', true) %}
+            <div class="rkn-home__tail">
+                {% include 'partials.utility.smart-recommendations' %}
+            </div>
+        {% endif %}
+    </div>
 {% endblock %}

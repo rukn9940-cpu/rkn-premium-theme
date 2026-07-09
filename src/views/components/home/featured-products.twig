@@ -1,32 +1,12 @@
 {#
-    Featured Products (Theme Component: home.featured-products)
-    ==============================================================
-    Modern product-card grid rendering real, merchant-selected products
-    (Products entity picker — see twilight.json). Reuses
-    `partials/product/card.twig` and the real Salla product entity + the
-    `salla-add-product-button` / `salla-rating-stars` web components.
-
-    | component.title            | string | optional heading             |
-    | component.subtitle         | string | optional sub heading         |
-    | component.products         | array  | full Product entities        |
+    RKN Featured products — modern electronics product grid
 #}
 {% if component.products is not empty %}
-    <section class="section featured-products" aria-label="{{ component.title|default(trans('home.featured_products.default_title')) }}">
-        <div class="container">
-            <div class="section__head" data-reveal>
-                <div class="section__heading">
-                    <h2 class="section__title">{{ component.title|default(trans('home.featured_products.default_title')) }}</h2>
-                    {% if component.subtitle %}
-                        <p class="section__subtitle">{{ component.subtitle }}</p>
-                    {% endif %}
-                </div>
-            </div>
-
-            <div class="featured-products__grid">
-                {% for product in component.products %}
-                    {% include 'partials.product.card' with { product: product, reveal: true } %}
-                {% endfor %}
-            </div>
-        </div>
-    </section>
+    {% include 'partials.home.product-shelf' with {
+        title: component.title|default(trans('home.featured_products.default_title')),
+        subtitle: component.subtitle|default(null),
+        eyebrow: trans('home.featured_products.eyebrow'),
+        products: component.products,
+        limit: component.products|length
+    } %}
 {% endif %}

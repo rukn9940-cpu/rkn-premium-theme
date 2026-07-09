@@ -1,0 +1,183 @@
+// -----------------------------------------------------------------------------
+// Storefront header — RKN Premium light electronics layout
+// Logo + large search + actions, dedicated mega-menu row below.
+// Markup: views/components/header/header.twig (.header--storefront)
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+// Override the default always-dark header shell for the RKN storefront.
+.header--storefront {
+  background-color: $surface-0;
+  color: $text-heading;
+  border-block-end: 1px solid $border-subtle;
+  box-shadow: 0 1px 0 rgba(0, 73, 86, 0.04);
+}
+
+.header--storefront.header--scrolled {
+  box-shadow: $shadow-md;
+}
+
+.header--storefront .header__utility {
+  background-color: var(--rkn-primary, #004956);
+  color: #fff;
+  font-size: $font-size-xs;
+}
+
+.header--storefront .header__utility-link {
+  color: rgba(255, 255, 255, 0.92);
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      color: #fff;
+    }
+  }
+}
+
+.header--storefront .header__main {
+  background-color: $surface-0;
+  border-block-end: 1px solid $border-subtle;
+}
+
+.header--storefront .header__main-inner {
+  display: grid;
+  grid-template-columns: auto 1fr auto;
+  align-items: center;
+  gap: spacer(3);
+  padding-block: spacer(3);
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: auto minmax(10rem, 12rem) minmax(0, 1fr) auto;
+    gap: spacer(4);
+    padding-block: spacer(4);
+  }
+}
+
+.header--storefront .header__menu-toggle {
+  color: var(--rkn-primary, #004956);
+
+  @include breakpoint-up(lg) {
+    display: none;
+  }
+}
+
+.header--storefront .header__logo-text {
+  color: var(--rkn-primary, #004956);
+  font-weight: $font-weight-extrabold;
+}
+
+.header--storefront .header__logo img {
+  height: 2.25rem;
+
+  @include breakpoint-up(lg) {
+    height: 2.625rem;
+  }
+}
+
+.header--storefront .header__search-slot {
+  display: none;
+  grid-column: 3;
+  min-width: 0;
+
+  @include breakpoint-up(lg) {
+    display: block;
+  }
+}
+
+.header--storefront .header__actions {
+  display: flex;
+  align-items: center;
+  gap: spacer(1);
+  margin-inline-start: 0;
+}
+
+.header--storefront .header__icon-btn {
+  color: var(--rkn-primary, #004956);
+  background-color: transparent;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      background-color: color-mix(in srgb, var(--rkn-secondary, #06c2b7) 12%, $surface-0);
+      color: var(--rkn-primary-dark, #003640);
+    }
+  }
+}
+
+.header--storefront .header__icon-btn--search-mobile {
+  @include breakpoint-up(lg) {
+    display: none;
+  }
+}
+
+.header--storefront .header__nav {
+  display: none;
+  background-color: var(--rkn-primary, #004956);
+  color: #fff;
+
+  @include breakpoint-up(lg) {
+    display: block;
+  }
+}
+
+.main-menu--storefront {
+  display: block;
+}
+
+.main-menu__list--storefront {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  gap: spacer(1);
+  padding-block: spacer(2);
+}
+
+.main-menu__list--storefront > .main-menu__item > .main-menu__link {
+  padding: spacer(2) spacer(3);
+  border-radius: $radius-md;
+  color: rgba(255, 255, 255, 0.92);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+  white-space: nowrap;
+  transition:
+    background-color $duration-base $easing-standard,
+    color $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      background-color: rgba(255, 255, 255, 0.12);
+      color: #fff;
+    }
+  }
+}
+
+.header--storefront .main-menu__mega {
+  inset-inline: 0;
+  border-radius: 0 0 $radius-lg $radius-lg;
+  background-color: $surface-0;
+  color: $text-heading;
+  box-shadow: $shadow-lg;
+}
+
+.header--storefront.header--scrolled .header__nav {
+  display: none;
+}
+
+// Announcement bar — dual-tone RKN strip (secondary accent)
+.announcement-bar--storefront {
+  background: linear-gradient(
+    90deg,
+    var(--rkn-secondary, #06c2b7) 0%,
+    color-mix(in srgb, var(--rkn-secondary, #06c2b7) 70%, var(--rkn-primary, #004956)) 100%
+  );
+  color: #fff;
+}
+
+@include reduced-motion {
+  .main-menu__list--storefront > .main-menu__item > .main-menu__link,
+  .header--storefront .header__icon-btn {
+    transition: none;
+  }
+}

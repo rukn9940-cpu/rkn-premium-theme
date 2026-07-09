@@ -1,0 +1,225 @@
+@use '../abstracts' as *;
+
+// Rich text, gallery, video, product reels — optional home blocks
+
+.rkn-rich-text__content {
+  margin: 0;
+  color: $text-muted;
+  font-size: $font-size-md;
+  line-height: $line-height-relaxed;
+  white-space: pre-line;
+}
+
+.rkn-rich-text--center {
+  text-align: center;
+
+  .rkn-section-head {
+    justify-content: center;
+  }
+
+  .rkn-rich-text__content {
+    max-width: 42rem;
+    margin-inline: auto;
+  }
+}
+
+.rkn-gallery__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacer(3);
+
+  @include breakpoint-up(md) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+.rkn-gallery__item {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  aspect-ratio: 1;
+  background-color: $surface-200;
+  color: inherit;
+  text-decoration: none;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-standard;
+  }
+
+  @media (hover: hover) {
+    &:hover img,
+    &:focus-visible img {
+      transform: scale(1.05);
+    }
+  }
+}
+
+.rkn-gallery__caption {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: spacer(3);
+  background: linear-gradient(180deg, transparent, rgba(5, 7, 10, 0.75));
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-semibold;
+}
+
+.rkn-video__player {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  aspect-ratio: 16 / 9;
+  background-color: $ink-900;
+}
+
+.rkn-video__poster {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rkn-video__iframe,
+.video-block__iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.rkn-reels__iframe,
+.product-reels__iframe {
+  width: 100%;
+  height: 100%;
+  border: 0;
+}
+
+.rkn-video__play {
+  position: absolute;
+  inset: 50% auto auto 50%;
+  translate: -50% -50%;
+  display: grid;
+  place-items: center;
+  width: 4rem;
+  height: 4rem;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgba(255, 255, 255, 0.95);
+  color: $ink-900;
+  cursor: pointer;
+  transition: transform $duration-base $easing-standard;
+
+  @media (hover: hover) {
+    &:hover,
+    &:focus-visible {
+      transform: scale(1.08);
+    }
+  }
+}
+
+.rkn-reels__track {
+  display: flex;
+  gap: spacer(3);
+  overflow-x: auto;
+  scroll-snap-type: x mandatory;
+  padding-block: spacer(2);
+  -webkit-overflow-scrolling: touch;
+}
+
+.rkn-reels__item {
+  position: relative;
+  flex: 0 0 clamp(12rem, 28vw, 16rem);
+  scroll-snap-align: start;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  aspect-ratio: 9 / 16;
+  background-color: $ink-900;
+}
+
+.rkn-reels__video {
+  width: 100%;
+  height: 100%;
+  object-fit: cover;
+}
+
+.rkn-reels__sound {
+  position: absolute;
+  inset-block-start: spacer(2);
+  inset-inline-end: spacer(2);
+  display: grid;
+  place-items: center;
+  width: 2rem;
+  height: 2rem;
+  border: 0;
+  border-radius: 50%;
+  background-color: rgba(0, 0, 0, 0.55);
+  color: #fff;
+  cursor: pointer;
+}
+
+.rkn-reels__sound-icon--on {
+  display: none;
+}
+
+.rkn-reels__sound[aria-pressed='true'] {
+  .rkn-reels__sound-icon--off {
+    display: none;
+  }
+
+  .rkn-reels__sound-icon--on {
+    display: block;
+  }
+}
+
+.rkn-reels__overlay {
+  position: absolute;
+  inset-inline: 0;
+  inset-block-end: 0;
+  padding: spacer(3);
+  background: linear-gradient(180deg, transparent, rgba(5, 7, 10, 0.85));
+  color: #fff;
+}
+
+.rkn-reels__caption {
+  margin: 0 0 spacer(2);
+  font-size: $font-size-sm;
+  line-height: $line-height-snug;
+}
+
+.rkn-reels__product {
+  display: flex;
+  align-items: center;
+  gap: spacer(2);
+}
+
+.rkn-reels__product-link {
+  display: flex;
+  flex: 1;
+  align-items: center;
+  gap: spacer(2);
+  min-width: 0;
+  color: inherit;
+  text-decoration: none;
+
+  img {
+    flex-shrink: 0;
+    border-radius: $radius-md;
+  }
+}
+
+.rkn-reels__product-name {
+  display: block;
+  overflow: hidden;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  text-overflow: ellipsis;
+  white-space: nowrap;
+}
+
+.rkn-reels__product-price {
+  font-size: $font-size-xs;
+  opacity: 0.9;
+}

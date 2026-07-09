@@ -1,0 +1,43 @@
+{#
+    Reusable product shelf — manual grid or Salla auto-fetch
+    ========================================================
+    Include with:
+        {% include 'partials.home.product-shelf' with {
+            title: '...',
+            subtitle: '...'|default(null),
+            eyebrow: '...'|default(null),
+            link_url: '...'|default(null),
+            link_label: '...'|default(null),
+            products: [...]|default([]),
+            source: 'sales'|default(null),
+            limit: 8
+        } %}
+
+    When `products` is non-empty, renders the RKN premium card grid.
+    Otherwise falls back to `<salla-products-list>` with the given `source`.
+#}
+<section class="rkn-block rkn-products" aria-label="{{ title }}">
+    <div class="container">
+        {% include 'partials.home.section-head' with {
+            title: title,
+            subtitle: subtitle|default(null),
+            eyebrow: eyebrow|default(null),
+            link_url: link_url|default(null),
+            link_label: link_label|default(null)
+        } %}
+
+        {% if products is not empty %}
+            <div class="rkn-products__grid">
+                {% for product in products %}
+                    {% include 'partials.product.card' with { product: product, reveal: true, variant: 'premium' } %}
+                {% endfor %}
+            </div>
+        {% elseif source %}
+            <salla-products-list
+                source="{{ source }}"
+                limit="{{ limit|default(8) }}"
+                class="rkn-products__salla-list"
+            ></salla-products-list>
+        {% endif %}
+    </div>
+</section>

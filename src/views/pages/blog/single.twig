@@ -104,7 +104,7 @@
                                 {% if related.has_image %}
                                     <img src="{{ related.image.url }}" alt="{{ related.image.alt|default(related.title) }}" loading="lazy" width="420" height="260">
                                 {% else %}
-                                    <img src="{{ asset('images/placeholder.svg') }}" alt="" loading="lazy" width="420" height="260">
+                                    <span class="blog-card__media-fallback" aria-hidden="true"></span>
                                 {% endif %}
                             </a>
                             <div class="blog-card__body">

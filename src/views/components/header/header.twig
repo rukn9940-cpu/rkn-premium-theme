@@ -1,22 +1,8 @@
 {#
-    Premium Header
-    ==============
-    Sticky, dark, mega-menu-aware storefront header.
-
-    | Variable          | Type   | Description                              |
-    |-------------------|--------|-------------------------------------------|
-    | menus             | array  | Main navigation tree (Twilight-injected)  |
-    | cart              | object | cart.items_count (int), cart.total (str)  |
-    | store.scope       | object | Active branch, when store has branches    |
-
-    Mega Menu Builder: the multi-column/icons/featured-products panel itself
-    is rendered by `partials.navigation.menu-tree` straight off of real
-    `menus` data (see that file's doc comment) — this file only resolves the
-    one themeable piece, the optional promotional banner (Theme Settings →
-    "بانر القائمة الضخمة"), and forwards it into the shared macro so both the
-    desktop nav and mobile drawer render it identically.
-
-    Reference: docs.salla.dev — Header Components, Twilight JS Web Components.
+    RKN Storefront Header
+    =====================
+    Electronics-store layout: utility strip, logo + prominent search bar +
+    account actions, then a dedicated mega-menu navigation row.
 #}
 {% import 'partials.navigation.menu-tree' as nav %}
 
@@ -28,10 +14,9 @@
 {% set mega_banner_url = theme.settings.get('mega_menu_banner_url') %}
 {% set mega_banner_title = theme.settings.get('mega_menu_banner_title') %}
 {% set live_search_enabled = theme.settings.get('live_search_enabled', true) %}
-{% set header_layout = theme.settings.get('header_layout', 'classic') %}
 
 {% if announcement_enabled and announcement_text %}
-    <div class="announcement-bar" data-announcement-bar>
+    <div class="announcement-bar announcement-bar--storefront" data-announcement-bar>
         <div class="container announcement-bar__inner">
             {% set announcement_link = theme.settings.get('announcement_link') %}
             {% if announcement_link %}
@@ -48,7 +33,7 @@
     </div>
 {% endif %}
 
-<header class="header{{ is_sticky ? ' header--sticky' : '' }}" data-header{{ is_sticky ? ' data-header-sticky' : '' }} data-header-layout="{{ header_layout }}">
+<header class="header header--storefront{{ is_sticky ? ' header--sticky' : '' }}" data-header{{ is_sticky ? ' data-header-sticky' : '' }}>
     {% if store.settings.is_multilingual or store.settings.currencies_enabled or store.scope %}
         <div class="header__utility">
             <div class="container header__utility-inner">
@@ -69,8 +54,8 @@
         </div>
     {% endif %}
 
-    <div class="header__bar">
-        <div class="container header__bar-inner">
+    <div class="header__main">
+        <div class="container header__main-inner">
             <button type="button" class="header__icon-btn header__menu-toggle" data-mobile-menu-open aria-label="{{ trans('nav.open_menu') }}" aria-expanded="false" aria-controls="mobile-menu">
                 <svg width="22" height="16" viewBox="0 0 22 16" fill="none" aria-hidden="true">
                     <path d="M0 1H22M0 8H22M0 15H22" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
@@ -85,13 +70,9 @@
                 {% endif %}
             </a>
 
-            <nav class="main-menu" aria-label="{{ trans('nav.main_navigation') }}">
-                <ul class="main-menu__list">
-                    {% for menu in menus %}
-                        {{ nav.item(menu, mega_banner_image, mega_banner_url, mega_banner_title) }}
-                    {% endfor %}
-                </ul>
-            </nav>
+            <div class="header__search-slot">
+                {% include 'partials.home.search-bar' %}
+            </div>
 
             <div class="header__actions">
                 {% if dark_mode_enabled %}
@@ -107,26 +88,15 @@
                 {% endif %}
 
                 {% if live_search_enabled %}
-                    <button type="button" class="header__icon-btn header__icon-btn--search" data-live-search-open aria-label="{{ trans('nav.search') }}" aria-haspopup="dialog" aria-controls="live-search">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
-                            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                        </svg>
-                    </button>
+                    <button type="button" class="header__icon-btn header__icon-btn--search-mobile" data-live-search-open aria-label="{{ trans('nav.search') }}" aria-haspopup="dialog" aria-controls="live-search">
                 {% else %}
-                    {#
-                        Theme Settings → "تفعيل البحث الفوري" is off — fall back
-                        to Salla's own native search modal/component instead of
-                        our custom overlay.
-                    #}
-                    <button type="button" class="header__icon-btn header__icon-btn--search" onclick="document.querySelector('salla-search')?.open()" aria-label="{{ trans('nav.search') }}">
-                        <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
-                            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
-                            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
-                        </svg>
-                    </button>
-                    <salla-search></salla-search>
+                    <button type="button" class="header__icon-btn header__icon-btn--search-mobile" onclick="document.querySelector('salla-search')?.open()" aria-label="{{ trans('nav.search') }}">
                 {% endif %}
+                    <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                        <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+                        <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+                    </svg>
+                </button>
 
                 <a href="{{ page('wishlist') }}" class="header__icon-btn header__icon-btn--wishlist" aria-label="{{ trans('nav.wishlist') }}">
                     <svg width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
@@ -135,17 +105,24 @@
                 </a>
 
                 <salla-user-menu class="header__icon-btn header__icon-btn--user"></salla-user-menu>
-
                 <salla-cart-summary class="header__icon-btn header__icon-btn--cart"></salla-cart-summary>
             </div>
         </div>
     </div>
+
+    <div class="header__nav">
+        <div class="container">
+            <nav class="main-menu main-menu--storefront" aria-label="{{ trans('nav.main_navigation') }}">
+                <ul class="main-menu__list main-menu__list--storefront">
+                    {% for menu in menus %}
+                        {{ nav.item(menu, mega_banner_image, mega_banner_url, mega_banner_title) }}
+                    {% endfor %}
+                </ul>
+            </nav>
+        </div>
+    </div>
 </header>
 
-{#
-    Mobile off-canvas drawer — shares the same menu macro as the desktop nav
-    so navigation structure/labels never drift between breakpoints.
-#}
 <div class="mobile-menu" id="mobile-menu" data-mobile-menu hidden>
     <div class="mobile-menu__backdrop" data-mobile-menu-close></div>
     <div class="mobile-menu__panel" role="dialog" aria-modal="true" aria-label="{{ trans('nav.mobile_navigation') }}">
@@ -162,6 +139,10 @@
                     <path d="M1 1L17 17M17 1L1 17" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
                 </svg>
             </button>
+        </div>
+
+        <div class="mobile-menu__search">
+            {% include 'partials.home.search-bar' %}
         </div>
 
         <nav class="mobile-menu__nav" aria-label="{{ trans('nav.mobile_navigation') }}">

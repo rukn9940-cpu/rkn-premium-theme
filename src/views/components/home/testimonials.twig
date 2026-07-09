@@ -1,47 +1,38 @@
 {#
-    Testimonials (Theme Feature: component-testimonials)
-    ======================================================
-    Pre-defined Twilight feature — Salla injects real, newest-first customer
-    feedback as the `items` collection. Nothing here is authored/fake.
-
-    | items[].avatar | string |                              |
-    | items[].name   | string |                              |
-    | items[].text   | string |                              |
-    | items[].stars  | number | 0–5                          |
-
-    Reference: docs.salla.dev — Testimonials component.
+    RKN Testimonials — customer review cards (Salla Theme Feature data)
 #}
 {% if items is not empty %}
-    <section class="section testimonials" aria-label="{{ trans('home.testimonials.default_title') }}">
+    <section class="rkn-block rkn-reviews" aria-label="{{ trans('home.testimonials.default_title') }}">
         <div class="container">
-            <div class="section__head" data-reveal>
-                <div class="section__heading">
-                    <h2 class="section__title">{{ trans('home.testimonials.default_title') }}</h2>
-                </div>
-            </div>
+            {% include 'partials.home.section-head' with {
+                title: trans('home.testimonials.default_title'),
+                subtitle: trans('home.testimonials.subtitle')|default(null),
+                eyebrow: trans('home.testimonials.eyebrow')
+            } %}
 
-            <div class="carousel testimonials__carousel" data-carousel data-autoplay="7000">
+            <div class="carousel rkn-reviews__carousel" data-carousel data-autoplay="8000">
                 <div class="carousel__viewport">
-                    <ul class="carousel__track testimonials__track">
+                    <ul class="carousel__track rkn-reviews__track">
                         {% for item in items %}
-                            <li class="carousel__slide testimonials__slide">
-                                <figure class="testimonial-card" data-reveal>
-                                    <salla-rating-stars class="testimonial-card__rating" value="{{ item.stars }}"></salla-rating-stars>
-                                    <blockquote class="testimonial-card__text">{{ item.text }}</blockquote>
-                                    <figcaption class="testimonial-card__author">
+                            <li class="carousel__slide rkn-reviews__slide">
+                                <figure class="rkn-review-card" data-reveal>
+                                    <salla-rating-stars class="rkn-review-card__rating" value="{{ item.stars }}"></salla-rating-stars>
+                                    <blockquote class="rkn-review-card__text">"{{ item.text }}"</blockquote>
+                                    <figcaption class="rkn-review-card__author">
                                         {% if item.avatar %}
-                                            <img src="{{ item.avatar }}" alt="" loading="lazy" width="48" height="48">
+                                            <img class="rkn-review-card__avatar" src="{{ item.avatar }}" alt="" loading="lazy" width="44" height="44">
+                                        {% else %}
+                                            <span class="rkn-review-card__avatar rkn-review-card__avatar--initial" aria-hidden="true">{{ item.name|slice(0, 1) }}</span>
                                         {% endif %}
-                                        <span>{{ item.name }}</span>
+                                        <span class="rkn-review-card__name">{{ item.name }}</span>
                                     </figcaption>
                                 </figure>
                             </li>
                         {% endfor %}
                     </ul>
                 </div>
-
                 {% if items|length > 1 %}
-                    <div class="carousel__dots" data-carousel-dots></div>
+                    <div class="rkn-reviews__dots carousel__dots" data-carousel-dots></div>
                 {% endif %}
             </div>
         </div>

@@ -1,35 +1,18 @@
 {#
     Product Reels (Theme Component: home.product-reels)
-    =====================================================
-    Vertical, swipeable short-video feed — each reel is a merchant-provided
-    video link (their own hosted MP4/WebM for the best autoplay experience,
-    or a YouTube URL) optionally paired with a real Salla product so
-    visitors can see the price and add to cart without leaving the feed.
-
-    Every video is lazy-loaded — the `<video>`/iframe `src` is only ever set
-    once a slide nears the viewport — and autoplays (always muted, per the
-    inline-autoplay platform convention) only while substantially visible,
-    pausing immediately once scrolled past. See `js/modules/product-reels.js`.
-
-    | component.title             | string|null                              |
-    | component.reels[].video_url | string                                   |
-    | component.reels[].poster    | string|null                              |
-    | component.reels[].product   | Product|Product[]|null (single-select)   |
-    | component.reels[].caption   | string|null                              |
+    Vertical short-video feed — RKN storefront styling.
 #}
 {% if component.reels is not empty %}
-    <section class="section product-reels" aria-label="{{ component.title|default(trans('home.product_reels.default_title')) }}">
+    <section class="rkn-block rkn-reels" aria-label="{{ component.title|default(trans('home.product_reels.default_title')) }}">
         <div class="container">
             {% if component.title %}
-                <div class="section__head">
-                    <div class="section__heading">
-                        <h2 class="section__title">{{ component.title }}</h2>
-                    </div>
-                </div>
+                {% include 'partials.home.section-head' with {
+                    title: component.title
+                } %}
             {% endif %}
 
             <div
-                class="product-reels__track"
+                class="rkn-reels__track"
                 data-product-reels
                 tabindex="0"
                 role="group"
@@ -38,9 +21,9 @@
                 {% for reel in component.reels %}
                     {% if reel.video_url %}
                         {% set reel_product = reel.product is iterable ? reel.product|first : reel.product %}
-                        <div class="product-reels__item" data-product-reel data-video-src="{{ reel.video_url }}">
+                        <div class="rkn-reels__item" data-product-reel data-video-src="{{ reel.video_url }}">
                             <video
-                                class="product-reels__video"
+                                class="rkn-reels__video"
                                 data-product-reel-video
                                 {% if reel.poster %}poster="{{ reel.poster }}"{% endif %}
                                 muted
@@ -52,36 +35,36 @@
 
                             <button
                                 type="button"
-                                class="product-reels__sound"
+                                class="rkn-reels__sound"
                                 data-product-reel-sound
                                 aria-pressed="false"
                                 aria-label="{{ trans('home.product_reels.toggle_sound') }}"
                             >
-                                <svg class="product-reels__sound-icon product-reels__sound-icon--off" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <svg class="rkn-reels__sound-icon rkn-reels__sound-icon--off" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                                     <path d="M3 8v4h3.5L11 15.5v-11L6.5 8H3Z" fill="currentColor" />
                                     <path d="M14.5 7.5a3.5 3.5 0 0 1 0 5M16.5 5.5a6.5 6.5 0 0 1 0 9" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
                                 </svg>
-                                <svg class="product-reels__sound-icon product-reels__sound-icon--on" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+                                <svg class="rkn-reels__sound-icon rkn-reels__sound-icon--on" width="16" height="16" viewBox="0 0 20 20" fill="none" aria-hidden="true">
                                     <path d="M3 8v4h3.5L11 15.5v-11L6.5 8H3Z" fill="currentColor" />
                                     <path d="M14 6L18 14M18 6L14 14" stroke="currentColor" stroke-width="1.4" stroke-linecap="round" />
                                 </svg>
                             </button>
 
                             {% if reel.caption or reel_product %}
-                                <div class="product-reels__overlay">
+                                <div class="rkn-reels__overlay">
                                     {% if reel.caption %}
-                                        <p class="product-reels__caption">{{ reel.caption }}</p>
+                                        <p class="rkn-reels__caption">{{ reel.caption }}</p>
                                     {% endif %}
                                     {% if reel_product %}
                                         {% set on_sale = reel_product.is_on_sale ?? reel_product.on_sale ?? false %}
-                                        <div class="product-reels__product">
-                                            <a href="{{ reel_product.url }}" class="product-reels__product-link">
+                                        <div class="rkn-reels__product">
+                                            <a href="{{ reel_product.url }}" class="rkn-reels__product-link">
                                                 {% if reel_product.image.url %}
                                                     <img src="{{ reel_product.image.url }}" alt="" width="40" height="40" loading="lazy">
                                                 {% endif %}
-                                                <span class="product-reels__product-info">
-                                                    <span class="product-reels__product-name">{{ reel_product.name }}</span>
-                                                    <span class="product-reels__product-price">
+                                                <span class="rkn-reels__product-info">
+                                                    <span class="rkn-reels__product-name">{{ reel_product.name }}</span>
+                                                    <span class="rkn-reels__product-price">
                                                         {% if on_sale %}
                                                             {{ reel_product.sale_price|money }}
                                                         {% else %}
@@ -91,7 +74,7 @@
                                                 </span>
                                             </a>
                                             <salla-add-product-button
-                                                class="product-reels__add"
+                                                class="rkn-reels__add"
                                                 product-id="{{ reel_product.id }}"
                                                 product-status="{{ reel_product.status }}"
                                                 product-type="{{ reel_product.type }}"

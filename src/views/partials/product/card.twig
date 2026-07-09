@@ -28,7 +28,7 @@
 {% set on_sale = product.is_on_sale ?? product.on_sale ?? false %}
 {% set in_wishlist = product.is_in_wishlist ?? false %}
 
-<article class="product-card"{{ reveal ? ' data-reveal' : '' }}>
+<article class="product-card{{ variant == 'premium' ? ' product-card--premium' : (variant == 'storefront' ? ' product-card--storefront' : '') }}"{{ reveal ? ' data-reveal' : '' }}>
     <div class="product-card__media">
         <a href="{{ product.url }}" class="product-card__media-link" aria-label="{{ product.name }}">
             <img

@@ -1,0 +1,26 @@
+@use '../abstracts' as *;
+
+.rkn-home {
+  background-color: var(--rkn-bg, #f7f8fa);
+}
+
+.rkn-home__tail {
+  padding-block: spacer(2) spacer(7);
+}
+
+.rkn-block {
+  padding-block: spacer(6);
+
+  @include breakpoint-up(lg) {
+    padding-block: spacer(8);
+  }
+}
+
+.rkn-block + .rkn-block {
+  padding-block-start: 0;
+}
+
+.rkn-trust + .rkn-block,
+.rkn-block + .rkn-trust {
+  padding-block-start: spacer(6);
+}

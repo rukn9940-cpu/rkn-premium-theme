@@ -488,7 +488,7 @@ note at the end of this section).
 
 **Why there's no dedicated Search/Offers/404 page:** Salla's Twilight
 router is a closed, fixed set of page files (confirmed against the
-official directory-structure docs and the `theme-raed` reference theme).
+official Salla Twilight directory-structure documentation).
 Search results and offer listings are backend-selected *data* fed into the
 same `product/index.twig` template as category listings (differentiated at
 render time via the `search_query`/`category` variables); "page not found"

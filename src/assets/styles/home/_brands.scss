@@ -1,0 +1,93 @@
+@use '../abstracts' as *;
+
+.rkn-brands {
+  background-color: $surface-0;
+  border-block: 1px solid $border-subtle;
+}
+
+.rkn-brands__carousel {
+  position: relative;
+}
+
+.rkn-brands__track {
+  align-items: stretch;
+}
+
+.rkn-brands__slide {
+  flex: 0 0 auto;
+  width: 9rem;
+
+  @include breakpoint-up(md) {
+    width: 10.5rem;
+  }
+}
+
+.rkn-brand-card {
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  height: 5rem;
+  padding: spacer(3) spacer(4);
+  border: 1px solid $border-subtle;
+  border-radius: $radius-md;
+  background-color: $surface-0;
+  transition:
+    border-color $duration-base $easing-standard,
+    box-shadow $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  img {
+    max-width: 100%;
+    max-height: 3rem;
+    object-fit: contain;
+    filter: grayscale(1);
+    opacity: 0.75;
+    transition:
+      filter $duration-base $easing-standard,
+      opacity $duration-base $easing-standard;
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: color();
+      box-shadow: $shadow-sm;
+
+      img {
+        filter: none;
+        opacity: 1;
+      }
+    }
+  }
+}
+
+.rkn-brands__nav {
+  position: absolute;
+  top: 50%;
+  z-index: 2;
+  display: none;
+  align-items: center;
+  justify-content: center;
+  width: 2.25rem;
+  height: 2.25rem;
+  border-radius: 50%;
+  background-color: $surface-0;
+  border: 1px solid $border-subtle;
+  color: $text-heading;
+  transform: translateY(-50%);
+  box-shadow: $shadow-sm;
+
+  @include focus-ring;
+
+  @include breakpoint-up(md) {
+    display: inline-flex;
+  }
+}
+
+.rkn-brands__nav--prev {
+  inset-inline-start: calc(-1 * spacer(2));
+}
+
+.rkn-brands__nav--next {
+  inset-inline-end: calc(-1 * spacer(2));
+}

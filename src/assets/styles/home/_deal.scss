@@ -1,0 +1,103 @@
+@use '../abstracts' as *;
+
+.rkn-deal__layout {
+  display: grid;
+  gap: spacer(4);
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: minmax(16rem, 22rem) 1fr;
+    align-items: start;
+  }
+}
+
+.rkn-deal__banner {
+  position: relative;
+  overflow: hidden;
+  border-radius: $radius-xl;
+  min-height: 20rem;
+  background-color: $ink-900;
+}
+
+.rkn-deal__media {
+  position: absolute;
+  inset: 0;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+  }
+}
+
+.rkn-deal__overlay {
+  position: absolute;
+  inset: 0;
+  background: linear-gradient(180deg, rgba(5, 7, 10, 0.15) 0%, rgba(5, 7, 10, 0.88) 100%);
+}
+
+.rkn-deal__content {
+  position: relative;
+  z-index: 1;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: spacer(3);
+  min-height: 20rem;
+  padding: spacer(5);
+  color: #fff;
+}
+
+.rkn-deal__badge {
+  align-self: flex-start;
+  padding: spacer(1) spacer(3);
+  border-radius: $radius-pill;
+  background-color: var(--rkn-accent, #ff9f1a);
+  color: #fff;
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rkn-deal__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 1rem + 1vw, 2rem);
+  font-weight: $font-weight-extrabold;
+  line-height: $line-height-tight;
+}
+
+.rkn-deal__subtitle {
+  margin: 0;
+  color: rgba(255, 255, 255, 0.8);
+  line-height: $line-height-relaxed;
+}
+
+.rkn-deal__countdown-label {
+  display: block;
+  margin-bottom: spacer(2);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+  opacity: 0.75;
+}
+
+.rkn-deal__cta {
+  align-self: flex-start;
+  padding: spacer(3) spacer(5);
+  border-radius: $radius-pill;
+  background-color: #fff;
+  color: $ink-900;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  text-decoration: none;
+  transition: transform $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-2px);
+    }
+  }
+}

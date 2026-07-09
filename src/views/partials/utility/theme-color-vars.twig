@@ -20,7 +20,12 @@
 #}
 {% set color_preset = theme.settings.get('color_preset', 'custom') %}
 
-{% if color_preset == 'professional_blue' %}
+{% if color_preset == 'rkn_premium' %}
+    {% set preset_primary = '#004956' %}
+    {% set preset_dark = '#003640' %}
+    {% set preset_light = '#d9f0f2' %}
+    {% set preset_text = '#FFFFFF' %}
+{% elseif color_preset == 'professional_blue' %}
     {% set preset_primary = '#2563EB' %}
     {% set preset_dark = '#1D4ED8' %}
     {% set preset_light = '#DBEAFE' %}

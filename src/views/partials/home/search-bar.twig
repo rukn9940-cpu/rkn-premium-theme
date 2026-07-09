@@ -1,0 +1,39 @@
+{#
+    Prominent storefront search bar (Noon / Golden Technology style)
+    Opens the live-search overlay when `live_search_enabled` is on;
+    falls back to Salla's native search modal otherwise.
+#}
+{% set live_search_enabled = theme.settings.get('live_search_enabled', true) %}
+
+{% if live_search_enabled %}
+    <button
+        type="button"
+        class="rkn-search-bar"
+        data-live-search-open
+        aria-label="{{ trans('nav.search') }}"
+        aria-haspopup="dialog"
+        aria-controls="live-search"
+    >
+        <svg class="rkn-search-bar__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <span class="rkn-search-bar__placeholder">{{ trans('search.placeholder') }}</span>
+        <span class="rkn-search-bar__submit">{{ trans('nav.search') }}</span>
+    </button>
+{% else %}
+    <button
+        type="button"
+        class="rkn-search-bar"
+        onclick="document.querySelector('salla-search')?.open()"
+        aria-label="{{ trans('nav.search') }}"
+    >
+        <svg class="rkn-search-bar__icon" width="20" height="20" viewBox="0 0 20 20" fill="none" aria-hidden="true">
+            <circle cx="9" cy="9" r="6.5" stroke="currentColor" stroke-width="1.6" />
+            <path d="M18 18L14 14" stroke="currentColor" stroke-width="1.6" stroke-linecap="round" />
+        </svg>
+        <span class="rkn-search-bar__placeholder">{{ trans('search.placeholder') }}</span>
+        <span class="rkn-search-bar__submit">{{ trans('nav.search') }}</span>
+    </button>
+    <salla-search class="visually-hidden"></salla-search>
+{% endif %}

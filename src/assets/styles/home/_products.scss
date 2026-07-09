@@ -1,0 +1,168 @@
+@use '../abstracts' as *;
+
+.rkn-products__grid {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacer(3);
+
+  @include breakpoint-up(md) {
+    grid-template-columns: repeat(3, minmax(0, 1fr));
+    gap: spacer(4);
+  }
+
+  @include breakpoint-up(xl) {
+    grid-template-columns: repeat(4, minmax(0, 1fr));
+  }
+}
+
+// Salla auto-fetched product lists on the homepage
+.rkn-products__salla-list {
+  --products-list-gap: #{spacer(3)};
+}
+
+.rkn-deal__products {
+  display: grid;
+  grid-template-columns: repeat(2, minmax(0, 1fr));
+  gap: spacer(3);
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: repeat(2, minmax(0, 1fr));
+  }
+}
+
+// ---------------------------------------------------------------------------
+// RKN Premium product card — visually distinct from default Twilight/Raed
+// Teal accent bar, contained product photo, accent sale badge, soft shadow.
+// ---------------------------------------------------------------------------
+.product-card--premium {
+  position: relative;
+  border-radius: $radius-xl;
+  border: 1px solid $border-subtle;
+  background-color: $surface-0;
+  box-shadow: $shadow-sm;
+  overflow: hidden;
+
+  &::before {
+    content: '';
+    position: absolute;
+    inset-block-start: 0;
+    inset-inline: 0;
+    z-index: 1;
+    height: 3px;
+    background: linear-gradient(
+      90deg,
+      var(--rkn-primary, #004956) 0%,
+      var(--rkn-secondary, #06c2b7) 100%
+    );
+  }
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: color-mix(in srgb, var(--rkn-secondary, #06c2b7) 40%, $border-subtle);
+      box-shadow: $shadow-md;
+      transform: translateY(-4px);
+    }
+  }
+
+  .product-card__media {
+    margin: spacer(3) spacer(3) 0;
+    border-radius: $radius-lg;
+    background: linear-gradient(180deg, var(--rkn-bg, #f7f8fa) 0%, $surface-0 100%);
+  }
+
+  .product-card__media-link {
+    aspect-ratio: 1;
+  }
+
+  .product-card__image {
+    object-fit: contain;
+    padding: spacer(3);
+    transition: transform $duration-slow $easing-emphasized;
+  }
+
+  .product-card__image--alt {
+    object-fit: contain;
+    padding: spacer(3);
+  }
+
+  @media (hover: hover) {
+    &:hover .product-card__image:not(.product-card__image--alt) {
+      opacity: 1;
+      transform: scale(1.04);
+    }
+
+    &:hover .product-card__image--alt {
+      opacity: 1;
+    }
+  }
+
+  .product-card__badge {
+    inset-block-start: spacer(4);
+    inset-inline-start: spacer(4);
+    background-color: var(--rkn-accent, #ff9f1a);
+    color: #fff;
+    font-size: 0.6875rem;
+    font-weight: $font-weight-extrabold;
+    letter-spacing: 0.02em;
+    text-transform: uppercase;
+  }
+
+  .product-card__badge--sale {
+    background-color: var(--rkn-accent, #ff9f1a);
+  }
+
+  .product-card__wishlist,
+  .product-card__compare,
+  .product-card__quick-view {
+    background-color: $surface-0;
+    border: 1px solid $border-subtle;
+    color: var(--rkn-primary, #004956);
+  }
+
+  .product-card__body {
+    gap: spacer(2);
+    padding: spacer(3) spacer(4) spacer(4);
+  }
+
+  .product-card__name {
+    font-size: $font-size-sm;
+    font-weight: $font-weight-semibold;
+    line-height: $line-height-snug;
+  }
+
+  .product-card__name a {
+    color: $text-heading;
+  }
+
+  @media (hover: hover) {
+    &:hover .product-card__name a {
+      color: var(--rkn-primary, #004956);
+    }
+  }
+
+  .product-card__price-current {
+    font-size: $font-size-lg;
+    font-weight: $font-weight-extrabold;
+    color: var(--rkn-primary, #004956);
+  }
+
+  .product-card__price-current--sale {
+    color: var(--rkn-accent-dark, #e08600);
+  }
+
+  .product-card__add {
+    margin-top: spacer(1);
+
+    --s-button-radius: #{$radius-pill};
+  }
+}
+
+@include reduced-motion {
+  .product-card--premium {
+    @media (hover: hover) {
+      &:hover {
+        transform: none;
+      }
+    }
+  }
+}

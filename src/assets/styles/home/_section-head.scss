@@ -1,0 +1,69 @@
+@use '../abstracts' as *;
+
+.rkn-section-head {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: flex-end;
+  justify-content: space-between;
+  gap: spacer(3);
+  margin-bottom: spacer(5);
+}
+
+.rkn-section-head__eyebrow {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(2);
+  margin-bottom: spacer(2);
+  padding: spacer(1) spacer(3);
+  border-radius: $radius-pill;
+  background-color: color-mix(in srgb, var(--rkn-secondary, #06c2b7) 14%, $surface-0);
+  color: var(--rkn-primary, #004956);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.06em;
+  text-transform: uppercase;
+}
+
+.rkn-section-head__title {
+  margin: 0;
+  font-size: clamp(1.35rem, 1.1rem + 0.8vw, 1.875rem);
+  font-weight: $font-weight-extrabold;
+  letter-spacing: $letter-spacing-tight;
+  color: var(--rkn-primary, #004956);
+}
+
+.rkn-section-head__subtitle {
+  margin-top: spacer(2);
+  max-width: 36rem;
+  color: $text-muted;
+  font-size: $font-size-md;
+  line-height: $line-height-relaxed;
+}
+
+.rkn-section-head__link {
+  display: inline-flex;
+  align-items: center;
+  gap: spacer(2);
+  padding: spacer(2) spacer(4);
+  border-radius: $radius-pill;
+  background-color: $surface-0;
+  border: 2px solid color-mix(in srgb, var(--rkn-primary, #004956) 18%, $border-subtle);
+  color: var(--rkn-primary, #004956);
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  transition:
+    border-color $duration-base $easing-standard,
+    background-color $duration-base $easing-standard,
+    color $duration-base $easing-standard,
+    box-shadow $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      border-color: var(--rkn-secondary, #06c2b7);
+      background-color: color-mix(in srgb, var(--rkn-secondary, #06c2b7) 10%, $surface-0);
+      box-shadow: $shadow-sm;
+    }
+  }
+}

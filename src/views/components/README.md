@@ -17,9 +17,11 @@ declared under the `components` array in `twilight.json`, where each entry's
   pages (`{% component 'comments' with { type: 'page', id: page.id } %}`)
   and blog articles (`type: 'article'`).
 - `home/` — homepage sections. Split into two kinds:
-  - **Theme Features** (Salla-managed data, just styled here):
-    `hero-banner`, `categories`, `featured-products`, `offers`, `brands`,
-    `testimonials`, `store-features`.
+  - **Theme Features** (real Salla data — testimonials from customer
+    feedback, store features from Partners Portal settings; no bundled demo
+    content): `testimonials`, `store-features`.
+  - **Salla catalog pickers** (merchant selects real categories/products/brands):
+    `hero-banner`, `categories`, `featured-products`, `offers`, `brands`.
   - **Custom components** (merchant-authored content via `twilight.json`
     field schemas): `rich-text`, `gallery`, `video`, `product-reels`,
     `banner-grid` (the Banner Builder — unlimited full/half/third-width

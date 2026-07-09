@@ -1,33 +1,24 @@
 {#
-    Features Section (Theme Feature: component-store-features)
-    =============================================================
-    Pre-defined Twilight feature — Salla injects the merchant-configured
-    store highlights (shipping, payment, support, ...) as `items`.
-
-    | items[].icon  | string | Salla icon font class, e.g. "sicon-delivery-fast" |
-    | items[].title | string |                                                    |
-    | items[].text  | string |                                                    |
-
-    Reference: docs.salla.dev — Store features component.
+    RKN Trust strip — store feature icons (Salla Theme Feature data)
 #}
 {% if items is not empty %}
-    <section class="section store-features">
+    <section class="rkn-trust" aria-label="{{ trans('home.store_features.aria_label') }}">
         <div class="container">
-            <div class="store-features__grid">
+            <ul class="rkn-trust__grid">
                 {% for item in items %}
-                    <div class="store-feature" data-reveal>
-                        <span class="store-feature__icon" aria-hidden="true">
+                    <li class="rkn-trust__item" data-reveal>
+                        <span class="rkn-trust__icon" aria-hidden="true">
                             <i class="{{ item.icon }}"></i>
                         </span>
-                        <div class="store-feature__body">
-                            <h3 class="store-feature__title">{{ item.title }}</h3>
+                        <div class="rkn-trust__body">
+                            <h3 class="rkn-trust__title">{{ item.title }}</h3>
                             {% if item.text %}
-                                <p class="store-feature__text">{{ item.text }}</p>
+                                <p class="rkn-trust__text">{{ item.text }}</p>
                             {% endif %}
                         </div>
-                    </div>
+                    </li>
                 {% endfor %}
-            </div>
+            </ul>
         </div>
     </section>
 {% endif %}

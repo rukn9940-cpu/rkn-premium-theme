@@ -1,0 +1,106 @@
+// -----------------------------------------------------------------------------
+// Storefront footer — RKN Premium electronics layout
+// Primary brand column + link grids + payments strip.
+// Markup: views/components/footer/footer.twig (.footer--storefront)
+// -----------------------------------------------------------------------------
+
+@use '../abstracts' as *;
+
+.footer--storefront {
+  background: linear-gradient(180deg, var(--rkn-primary, #004956) 0%, var(--rkn-primary-dark, #003640) 100%);
+  color: rgba(255, 255, 255, 0.88);
+}
+
+.footer--storefront .footer__top-inner {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(7);
+  padding-block: spacer(8);
+
+  @include breakpoint-up(sm) {
+    grid-template-columns: repeat(2, 1fr);
+  }
+
+  @include breakpoint-up(lg) {
+    grid-template-columns: 1.4fr repeat(3, 1fr);
+    gap: spacer(6);
+  }
+}
+
+.footer--storefront .footer__col-title {
+  color: #fff;
+  font-size: $font-size-sm;
+  font-weight: $font-weight-bold;
+  letter-spacing: 0.04em;
+  text-transform: uppercase;
+}
+
+.footer--storefront .footer__description {
+  color: rgba(255, 255, 255, 0.72);
+  line-height: $line-height-relaxed;
+}
+
+.footer--storefront .footer__logo-text {
+  color: #fff;
+  font-size: $font-size-xl;
+  font-weight: $font-weight-extrabold;
+}
+
+.footer--storefront .footer__social-block {
+  display: flex;
+  flex-direction: column;
+  gap: spacer(3);
+  margin-top: spacer(2);
+}
+
+.footer--storefront .footer__bottom {
+  border-block-start: 1px solid rgba(255, 255, 255, 0.12);
+}
+
+.footer--storefront .footer__bottom-inner {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  gap: spacer(4);
+  padding-block: spacer(5);
+  text-align: center;
+
+  @include breakpoint-up(md) {
+    flex-direction: row;
+    justify-content: space-between;
+    text-align: start;
+  }
+}
+
+.footer--storefront .footer__copyright {
+  color: rgba(255, 255, 255, 0.65);
+  font-size: $font-size-sm;
+}
+
+.footer--storefront .footer__payments-label {
+  color: rgba(255, 255, 255, 0.72);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-semibold;
+}
+
+.footer--storefront .footer__payments-block {
+  display: flex;
+  flex-wrap: wrap;
+  align-items: center;
+  justify-content: center;
+  gap: spacer(3);
+
+  @include breakpoint-up(md) {
+    justify-content: flex-end;
+  }
+}
+
+.footer--storefront .footer__col--apps {
+  @include breakpoint-up(sm) {
+    grid-column: span 2;
+  }
+
+  @include breakpoint-up(lg) {
+    grid-column: auto;
+  }
+}

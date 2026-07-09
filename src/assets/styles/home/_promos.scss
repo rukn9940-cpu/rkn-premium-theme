@@ -1,0 +1,116 @@
+@use '../abstracts' as *;
+
+.rkn-promos__grid {
+  display: grid;
+  grid-template-columns: 1fr;
+  gap: spacer(3);
+
+  @include breakpoint-up(md) {
+    grid-template-columns: repeat(6, 1fr);
+    gap: spacer(4);
+  }
+}
+
+.rkn-promo {
+  position: relative;
+  display: block;
+  overflow: hidden;
+  border-radius: $radius-lg;
+  background-color: $surface-0;
+  color: inherit;
+  text-decoration: none;
+  box-shadow: $shadow-sm;
+  transition:
+    transform $duration-base $easing-emphasized,
+    box-shadow $duration-base $easing-standard;
+
+  @include focus-ring;
+
+  @media (hover: hover) {
+    &:hover {
+      transform: translateY(-4px);
+      box-shadow: $shadow-lg;
+
+      .rkn-promo__media img {
+        transform: scale(1.04);
+      }
+    }
+  }
+}
+
+.rkn-promo--full {
+  @include breakpoint-up(md) {
+    grid-column: span 6;
+  }
+}
+
+.rkn-promo--half {
+  @include breakpoint-up(md) {
+    grid-column: span 3;
+  }
+}
+
+.rkn-promo--third {
+  @include breakpoint-up(md) {
+    grid-column: span 2;
+  }
+}
+
+.rkn-promo__media {
+  display: block;
+  aspect-ratio: 16 / 7;
+
+  img {
+    width: 100%;
+    height: 100%;
+    object-fit: cover;
+    transition: transform $duration-slow $easing-emphasized;
+  }
+}
+
+.rkn-promo__content {
+  position: absolute;
+  inset: 0;
+  display: flex;
+  flex-direction: column;
+  justify-content: flex-end;
+  gap: spacer(2);
+  padding: spacer(4);
+  background: linear-gradient(180deg, transparent 40%, rgba(5, 7, 10, 0.75) 100%);
+  color: #fff;
+}
+
+.rkn-promo__title {
+  margin: 0;
+  font-size: $font-size-lg;
+  font-weight: $font-weight-bold;
+}
+
+.rkn-promo__subtitle {
+  margin: 0;
+  font-size: $font-size-sm;
+  opacity: 0.85;
+}
+
+.rkn-promo__cta {
+  align-self: flex-start;
+  padding: spacer(1) spacer(3);
+  border-radius: $radius-pill;
+  background-color: color();
+  color: color(text);
+  font-size: $font-size-xs;
+  font-weight: $font-weight-bold;
+  text-transform: uppercase;
+}
+
+@include reduced-motion {
+  .rkn-promo {
+    transition: box-shadow $duration-base $easing-standard;
+  }
+
+  @media (hover: hover) {
+    .rkn-promo:hover {
+      transform: none;
+    }
+  }
+}

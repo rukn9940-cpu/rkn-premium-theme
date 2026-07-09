@@ -21,7 +21,7 @@ function mount(container) {
   const videoId = url && extractVideoId(url);
   if (!videoId) return;
 
-  const poster = container.querySelector('.video-block__poster');
+  const poster = container.querySelector('.rkn-video__poster, .video-block__poster');
   if (!poster) {
     const img = document.createElement('img');
     img.src = `https://i.ytimg.com/vi/${videoId}/hqdefault.jpg`;
@@ -29,7 +29,7 @@ function mount(container) {
     img.loading = 'lazy';
     img.width = 1280;
     img.height = 720;
-    img.className = 'video-block__poster';
+    img.className = 'rkn-video__poster video-block__poster';
     container.prepend(img);
   }
 
@@ -44,7 +44,7 @@ function mount(container) {
         'accelerometer; autoplay; clipboard-write; encrypted-media; gyroscope; picture-in-picture'
       );
       iframe.setAttribute('allowfullscreen', '');
-      iframe.className = 'video-block__iframe';
+      iframe.className = 'rkn-video__iframe video-block__iframe';
       container.replaceChildren(iframe);
     },
     { once: true }

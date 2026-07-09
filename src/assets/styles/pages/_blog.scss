@@ -123,12 +123,20 @@
   overflow: hidden;
 }
 
-.blog-card__media img {
+.blog-card__media img,
+.blog-card__media-fallback {
   width: 100%;
   aspect-ratio: 16 / 10;
-  object-fit: cover;
   background-color: $surface-100;
+}
+
+.blog-card__media img {
+  object-fit: cover;
   transition: transform $duration-slow $easing-emphasized;
+}
+
+.blog-card__media-fallback {
+  display: block;
 }
 
 .blog-card:hover .blog-card__media img {

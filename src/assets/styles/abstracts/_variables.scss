@@ -15,10 +15,10 @@
 // are only the *fallback* used when neither is available (e.g. theme
 // preview edge cases) — reach for `color(primary)` (see
 // abstracts/_functions.scss) rather than these SCSS variables directly.
-$color-primary-fallback: #c9974c; // warm gold — premium accent fallback
-$color-primary-dark-fallback: #a97b34;
-$color-primary-light-fallback: #e0b876;
-$color-primary-text-fallback: #1a1206;
+$color-primary-fallback: #004956; // RKN Premium — deep teal
+$color-primary-dark-fallback: #003640;
+$color-primary-light-fallback: #d9f0f2;
+$color-primary-text-fallback: #fff;
 
 // Neutral, direction-agnostic ink scale used for dark surfaces (header,
 // footer, overlays) — independent of the merchant's brand color so the
