@@ -1,15 +1,18 @@
 {#
-| Variable      | Type   | Description                                                      |
-|---------------|--------|------------------------------------------------------------------|
-| items[]       | array  | List of 3 features                                               |
-| items[].icon  | string | SallaIcons css class `sicon-*`                                   |
-| items[].title | string | Title of the feature                                             |
-| items[].text  | string | Subtitle for the feature                                         |
-| position      | Int    | Sorting number start from zero                                   |
+| Variable                | Type    | Description                                                                    |
+|-------------------------|---------|---------------------------------------------------------------------------------|
+| component.items[]       | array   | List of features, from the registered home.store-features twilight.json block   |
+| component.items[].icon  | string  | SallaIcons css class `sicon-*`                                                  |
+| component.items[].title | string  | Title of the feature                                                            |
+| component.items[].text  | string  | Subtitle for the feature                                                        |
+| items[]                 | ?array  | Legacy bare fallback, used by the fixed `{% component 'home.store-features' %}` |
+|                         |         | call in pages/landing-page.twig (component-store-features feature flag path)    |
+| position                | Int     | Sorting number start from zero                                                  |
 #}
+{% set feature_items = component.items|default(items) %}
 <section class="s-block s-block--features container rkn-scope">
     <div class="grid grid-cols-[repeat(2,minmax(0,1fr))] md:grid-cols-[repeat(4,minmax(0,1fr))] gap-4 sm:gap-4">
-      {% for item in items %}
+      {% for item in feature_items %}
           <div class="s-block--features__item">
             <div class="feature-icon">
               <i class="{{ item.icon }}"></i>
