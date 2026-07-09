@@ -5,6 +5,7 @@
 | component.brands               | Brand[] | list of selected brands @see views/pages/brands/single.twig                  |
 | position                       | int     | Sorting number start from zero                                               |
 #}
+{% if component.brands|length %}
 {% set display_all_url = theme.settings.get('is_more_button_enabled') %}
 <section class="s-block rkn-brands-block">
     <div class="container">
@@ -34,3 +35,4 @@
         </salla-slider>
     </div>
 </section>
+{% endif %}
