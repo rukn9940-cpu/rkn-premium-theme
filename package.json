@@ -1,11 +1,11 @@
 {
-  "name": "theme-raed",
-  "version": "1.0.3",
-  "description": "Salla Theme",
+  "name": "rkn-premium-theme",
+  "version": "1.0.0",
+  "description": "RKN Premium Theme - Salla Twilight theme for Rukn Al-Ahtraf",
   "license": "MIT",
   "repository": {
     "type": "git",
-    "url": "git+https://github.com/SallaApp/theme-raed.git"
+    "url": "git+https://github.com/rukn9940-cpu/rkn-premium-theme.git"
   },
   "scripts": {
     "preinstall": "npx only-allow pnpm",
@@ -17,7 +17,7 @@
     "watch": "webpack --mode development --watch",
     "lint": "eslint ."
   },
-  "author": "Salla",
+  "author": "Rukn Al-Ahtraf",
   "dependencies": {
     "@babel/runtime": "^7.28.6",
     "animejs": "^3.2.1",
