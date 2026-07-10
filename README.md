@@ -4,14 +4,14 @@
   <a href="https://salla.dev"> 
     <img src="https://salla.dev/wp-content/uploads/2023/03/1-Light.png" alt="Logo"> 
   </a>
-  <h1 align="center">Theme Raed</h1>
+  <h1 align="center">RKN Premium Theme</h1>
   <p align="center">
-    Theme Raed is the starting point for developing Themes for Salla Stores. 
+    RKN Premium Theme is a custom Salla Twilight theme for Rukn Al-Ahtraf (ركن الاحتراف), built on the Salla theme framework.
     <br />
     <a href="https://salla.dev/"><strong>Explore our blogs »</strong></a>
     <br />
-    <a href="https://github.com/SallaApp/theme-raed/issues/new">Report Bug</a> · 
-    <a href="https://github.com/SallaApp/theme-raed/discussions/new">Request Feature</a> . <a href="https://t.me/salladev">&lt;/Salla Developers&gt;</a> . <a href="https://docs.salla.dev/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM">Official Documentation</a> 
+    <a href="https://github.com/rukn9940-cpu/rkn-premium-theme/issues/new">Report Bug</a> · 
+    <a href="https://github.com/rukn9940-cpu/rkn-premium-theme/discussions/new">Request Feature</a> . <a href="https://t.me/salladev">&lt;/Salla Developers&gt;</a> . <a href="https://docs.salla.dev/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM">Official Documentation</a> 
   </p>
 </div>
 
@@ -51,10 +51,10 @@
 <br>
 
 ## Overview
-Theme Raed is the starting point for developers to design themes for merchant stores that reflect the uniqueness of each store on the [Salla Platform](https://s.salla.sa). Custom themes will make it much easier for developers to tailor the merchant's store to its changing demands over time. It shipped as the default theme along with the [Twilight Themes](https://docs.salla.dev/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM), which is the Salla themes engine for developers to create customizable themes to be used on the [Salla Platform](https://salla.sa/site/).
+RKN Premium Theme is the starting point for developers to design themes for merchant stores that reflect the uniqueness of each store on the [Salla Platform](https://s.salla.sa). Custom themes will make it much easier for developers to tailor the merchant's store to its changing demands over time. It shipped as the default theme along with the [Twilight Themes](https://docs.salla.dev/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM), which is the Salla themes engine for developers to create customizable themes to be used on the [Salla Platform](https://salla.sa/site/).
   
 ## Getting Started 
-Developers can use Salla Theme Raed to not only design Salla themes with custom HTML/CSS/JS files and reusable custom UI components, but also to build custom actions that trigger JS events and hooks.
+Developers can use Salla RKN Premium Theme to not only design Salla themes with custom HTML/CSS/JS files and reusable custom UI components, but also to build custom actions that trigger JS events and hooks.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
@@ -65,21 +65,21 @@ Developers can use Salla Theme Raed to not only design Salla themes with custom 
 - Installing [Salla CLI](https://www.npmjs.com/package/@salla.sa/cli)
 
 ### Install  
-Theme Raed gets installed by default upon installing the Twilight Themes. Twilight can be installed in two ways:
+RKN Premium Theme gets installed by default upon installing the Twilight Themes. Twilight can be installed in two ways:
 
 - Through the [Salla Partners Portal](https://docs.salla.dev/doc-421877/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM#creating-theme-via-salla-partners-portal)
 
 - Through the [Salla CLI](https://docs.salla.dev/doc-422775/?nav=01HNA8QHCPJTCY5VSEZ616JCAK).
 
-Either way, it will trigger the installation of the Twilight Engine and the Theme Raed.  This a complete article for how to [install and create](https://docs.salla.dev/doc-421877/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM) the Twilight Themes.
+Either way, it will trigger the installation of the Twilight Engine and the RKN Premium Theme.  This a complete article for how to [install and create](https://docs.salla.dev/doc-421877/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM) the Twilight Themes.
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Usage 
-Theme Raed will be installed as the default theme when you install Twilight. We'll look at how this theme's directories are set up and how to use the preview mode in the next section.
+RKN Premium Theme will be installed as the default theme when you install Twilight. We'll look at how this theme's directories are set up and how to use the preview mode in the next section.
 
 ### Directory structure  
-**Theme Raed** is a collection of files and folders that define the Salla Store presentation layer. Following is the directory structure for this starter theme.
+**RKN Premium Theme** is a collection of files and folders that define the Salla Store presentation layer. Following is the directory structure for this starter theme.
 ```shell
 +---scr
     +---assets
@@ -150,11 +150,11 @@ On the other hand, the [Partners Portal]() lists the demo stores of the develope
 <p align="right">(<a href="#top">back to top</a>)</p>
 
 ## Main Features 
-By default, Theme Raed home page displays a collection of Pre-Defined and Custom Components. These components are located in the [`src/views/components/home/`](https://github.com/SallaApp/theme-raed/tree/master/src/views/components/home) folder.
+By default, RKN Premium Theme home page displays a collection of Pre-Defined and Custom Components. These components are located in the [`src/views/components/home/`](https://github.com/rukn9940-cpu/rkn-premium-theme/tree/main/src/views/components/home) folder.
 
 
 ### Theme Features  
- Pre-Defined  Components, which are know as Theme Features, listed in the [twilight.json](https://github.com/SallaApp/theme-raed/blob/master/twilight.json) under the `features` section. Below is a list of these components.
+ Pre-Defined  Components, which are know as Theme Features, listed in the [twilight.json](https://github.com/rukn9940-cpu/rkn-premium-theme/blob/main/twilight.json) under the `features` section. Below is a list of these components.
  
  | <div style="width:220px">Component</div>                                                       | Discription                                                                                                                                                                 |
  | ---------------------------------------------------------------------------------------------- | --------------------------------------------------------------------------------------------------------------------------------------------------------------------------- |
@@ -174,7 +174,7 @@ By default, Theme Raed home page displays a collection of Pre-Defined and Custom
  | [Vertical menu with slider](https://docs.salla.dev/doc-422600/?nav=01HNFTD5Y5ESFQS3P9MJ0721VM) | Used to display a menu for a group of the sub-pages' links in a vertical menu.                                                                                              |
 
 ### Theme Components
-The Custom Components can be easily modified by the developer. They are known as Theme Components. Below is the list of the Custom Components that are shipped by default along with Theme Raed.
+The Custom Components can be easily modified by the developer. They are known as Theme Components. Below is the list of the Custom Components that are shipped by default along with RKN Premium Theme.
 
 | Components                                                                                       | Description                                                                                      |
 | ------------------------------------------------------------------------------------------------ | ------------------------------------------------------------------------------------------------ |
@@ -187,7 +187,7 @@ The Custom Components can be easily modified by the developer. They are known as
 
 ## Support
 
-The team is always here to help you. Happen to face an issue? Want to report a bug? You can submit one here on Github using the [Issue Tracker](https://github.com/SallaApp/theme-raed/issues/new). If you still have any questions, please contact us via the [Telegram Bot](https://t.me/SallaSupportBot) or join in the Global Developer Community on [Telegram](https://t.me/salladev).
+The team is always here to help you. Happen to face an issue? Want to report a bug? You can submit one here on Github using the [Issue Tracker](https://github.com/rukn9940-cpu/rkn-premium-theme/issues/new). If you still have any questions, please contact us via the [Telegram Bot](https://t.me/SallaSupportBot) or join in the Global Developer Community on [Telegram](https://t.me/salladev).
 
 <p align="right">(<a href="#top">back to top</a>)</p>
 
