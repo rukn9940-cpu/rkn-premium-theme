@@ -1,14 +1,15 @@
 # Changelog
 
-On this page, you will find all about Salla's Theme Raed updates, including frequent updates, bug fixes, new features, and deprecated elements. We will be displaying only released updates on [Theme Read's ChangeLog](https://github.com/SallaApp/theme-raed/blob/master/CHANGELOG.md) here on GitHub
+This page tracks RKN Premium Theme updates, including frequent updates, bug fixes, new features, and deprecated elements. RKN Premium Theme is built on top of Salla's Twilight theme framework (originally based on Theme Raed); the entries below preserve that upstream history plus this theme's own changes.
 
 > 📝 Note
 > 
-> Make sure to visit this page regularly for updates before working on your Theme based on Theme Raed, as we will be documenting any notable changes here.
+> Make sure to visit this page regularly for updates, as we will be documenting any notable changes here.
 
 > ℹ️ Info
 >The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/).
 >
+
 
 
 
@@ -53,7 +54,7 @@ On this page, you will find all about Salla's Theme Raed updates, including freq
 # 🔨 [1.305.0]( https://github.com/SallaApp/theme-raed/compare/1.304.0...1.305.0) (11-02-2026)
 ### Enhancements
 - Use native loading="lazy" instead of custom lazyload.
-# 🪑 [1.304.0]( https://github.com/SallaApp/theme-raed/compare/1.302.0...1.304.0) (10-02-2026)
+# 🦑 [1.304.0]( https://github.com/SallaApp/theme-raed/compare/1.302.0...1.304.0) (10-02-2026)
 ### Enhancements
 - Support responsive mobile/desktop images for fixed banner.
 # 🧸 [1.302.0]( https://github.com/SallaApp/theme-raed/compare/1.301.0...1.302.0) (28-01-2026)
@@ -88,7 +89,7 @@ On this page, you will find all about Salla's Theme Raed updates, including freq
 ### Enhancements
 - Additional options now support digital files.
 
-# 📭  [1.279.0]( https://github.com/SallaApp/theme-raed/compare/1.278.0...1.279.0) (07-12-2025)
+# 📭d  [1.279.0]( https://github.com/SallaApp/theme-raed/compare/1.278.0...1.279.0) (07-12-2025)
 ### Enhancements
 -  Scopes moved out from header.
 
@@ -130,7 +131,7 @@ On this page, you will find all about Salla's Theme Raed updates, including freq
 ### Bug Fixes
 - Update WhatsApp link to use wa.me format
 
-# 🪁 [1.257.0]( https://github.com/SallaApp/theme-raed/compare/1.256.0...1.257.0) (06-10-2025)
+# 🪡 [1.257.0]( https://github.com/SallaApp/theme-raed/compare/1.256.0...1.257.0) (06-10-2025)
 ## Fixes
 - Fix sticky label for mobile by add flag for preorder.
 
@@ -162,7 +163,7 @@ Handle PreOrder Label As Promotion label
 
 - Added Tiered offer component. This commit as a reference.
 
-#  🪁 [1.229.0](https://github.com/SallaApp/theme-raed/compare/1.228.0...1.229.0) (03-08-2025)
+#  🪡 [1.229.0](https://github.com/SallaApp/theme-raed/compare/1.228.0...1.229.0) (03-08-2025)
 
 ### Bug Fixes
 
@@ -234,7 +235,7 @@ Handle PreOrder Label As Promotion label
 ### Enhancements
 - Upgrade outdated packages
 
-# 🪁 [1.223.0](https://github.com/SallaApp/theme-raed/compare/1.222.0...1.223.0)(25-05-2025)
+# 🪡 [1.223.0](https://github.com/SallaApp/theme-raed/compare/1.222.0...1.223.0)(25-05-2025)
 ### Bug Fixes
 - Add image alternative information for thumbnails in the product details' slider.
 
@@ -354,7 +355,7 @@ Handle PreOrder Label As Promotion label
 - Upgrade twilight-components package.
 
 
-# 🖲️ [1.169.0](https://github.com/SallaApp/theme-raed/compare/1.168.0...1.169.0)(23-07-2024)
+# 🖩️ [1.169.0](https://github.com/SallaApp/theme-raed/compare/1.168.0...1.169.0)(23-07-2024)
 ### Enhancements 
 - Upgrade Twilight & Twilight components.
 
@@ -374,7 +375,7 @@ Handle PreOrder Label As Promotion label
 ### Bug Fixes
 - Update price based on product's options.
   
-# 🛎️ [1.163.0](https://github.com/SallaApp/theme-raed/compare/1.162.0...1.163.0)(27-06-2024)
+# 🛛️ [1.163.0](https://github.com/SallaApp/theme-raed/compare/1.162.0...1.163.0)(27-06-2024)
 ### Bug Fixes
 - Fix the product options validation.
 
