@@ -838,32 +838,32 @@
                         {
                             "banners.image": "https://cdn.salla.sa/mQgZlG/pzOCEw10wCfXeVSpKnL0Ifd1O9ZkTfnZ17RkE14R.jpg",
                             "banners.url": null,
-                            "banners.title": "تصفَّح حسب التصنيف",
-                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
+                            "banners.title": "تصفَّح حسب التصنيف",
+                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
                         },
                         {
                             "banners.image": "https://cdn.salla.sa/mQgZlG/lkyDjYwvWJNmAQoGnLALLcUkm66rCCDbTyVlSGdH.jpg",
                             "banners.url": null,
-                            "banners.title": "تصفَّح حسب التصنيف",
-                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
+                            "banners.title": "تصفَّح حسب التصنيف",
+                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
                         },
                         {
                             "banners.image": "https://cdn.salla.sa/mQgZlG/lkyDjYwvWJNmAQoGnLALLcUkm66rCCDbTyVlSGdH.jpg",
                             "banners.url": null,
-                            "banners.title": "تصفَّح حسب التصنيف",
-                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
+                            "banners.title": "تصفَّح حسب التصنيف",
+                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
                         },
                         {
                             "banners.image": "https://cdn.salla.sa/mQgZlG/lkyDjYwvWJNmAQoGnLALLcUkm66rCCDbTyVlSGdH.jpg",
                             "banners.url": null,
-                            "banners.title": "تصفَّح حسب التصنيف",
-                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
+                            "banners.title": "تصفَّح حسب التصنيف",
+                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
                         },
                         {
                             "banners.image": "https://cdn.salla.sa/mQgZlG/lkyDjYwvWJNmAQoGnLALLcUkm66rCCDbTyVlSGdH.jpg",
                             "banners.url": null,
-                            "banners.title": "تصفَّح حسب التصنيف",
-                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
+                            "banners.title": "تصفَّح حسب التصنيف",
+                            "banners.description": "سهِّل تجربة التسوُّق والوصول لمنتجاتك"
                         }
                     ],
                     "fields": [
@@ -1424,9 +1424,9 @@
             ]
         }
     ],
-    "support_url": null,
+    "support_url": "https://github.com/rukn9940-cpu/rkn-premium-theme/issues/new",
     "description": {
-        "ar": "",
-        "en": ""
+        "ar": "قالب متكامل ومخصص لمتجر ركن الاحتراف على منصة سلة، يضم هيدر مميز وقائمة تصنيفات ضخمة وسلايدر رئيسي وشرائط فيديو ومنتجات وعروض بتصميم عصري متوافق مع الجوال.",
+        "en": "A fully custom Salla Twilight theme for Rukn Al-Ahtraf, featuring a premium header, mega menu, hero slider, video reels, featured product blocks, and a modern RTL-first responsive design."
     }
 }
