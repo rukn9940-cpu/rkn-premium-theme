@@ -31,7 +31,7 @@ class App extends AppHelpers {
   }
 
   log(message) {
-    salla.log(`ThemeApp(Raed)::${message}`);
+    salla.log(`ThemeApp(RKN)::${message}`);
     return this;
   }
 
