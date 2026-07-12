@@ -992,8 +992,6 @@
             },
             "icon": "sicon-video-file",
             "path": "home.reels",
-            "image": "https://cdn.salla.network/images/themes/raed/preview-images/custom-testimonials.png?v=1.1",
-            "is_default": true,
             "fields": [
                 {
                     "type": "static",
