@@ -477,3 +477,53 @@ salla-quantity-input[max='1']{
     @apply cursor-not-allowed
   }
 }
+
+// Discount percentage chip — shown next to the sale price wherever it appears
+.rkn-discount-badge {
+  @apply inline-flex items-center whitespace-nowrap rounded-full px-2.5 py-0.5 text-xs font-bold text-white;
+  background: var(--rkn-red);
+}
+
+// Stock status indicator
+.rkn-stock-status {
+  @apply inline-flex items-center gap-2 text-sm font-semibold;
+
+  &__dot {
+    @apply inline-block w-2 h-2 rounded-full;
+  }
+
+  &--in {
+    color: var(--rkn-green);
+
+    .rkn-stock-status__dot {
+      background: var(--rkn-green);
+    }
+  }
+
+  &--out {
+    color: var(--rkn-red);
+
+    .rkn-stock-status__dot {
+      background: var(--rkn-red);
+    }
+  }
+}
+
+// Temporary diagnostic marker — confirms the RKN single-product template is rendering
+.rkn-diagnostic-badge {
+  @apply inline-flex items-center;
+  position: fixed;
+  z-index: 999;
+  top: 8px;
+  inset-inline-end: 8px;
+  background: var(--rkn-teal);
+  color: #fff;
+  font-family: var(--rkn-font);
+  font-size: 11px;
+  font-weight: 700;
+  letter-spacing: 0.02em;
+  padding: 4px 10px;
+  border-radius: 999px;
+  box-shadow: 0 4px 12px rgba(14, 77, 90, 0.35);
+  pointer-events: none;
+}

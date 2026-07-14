@@ -92,6 +92,9 @@
       </div>
     {% endif %}
 
+    {# Diagnostic marker: confirms the RKN single-product template is the one rendering in Salla Preview #}
+    <div class="rkn-diagnostic-badge" data-rkn-diagnostic>RKN PRODUCT PAGE ACTIVE</div>
+
     {#
         Hook: product.single.before_product_info
         Fires before the main product information section (images, title, price, etc.).
@@ -256,9 +259,12 @@
                 {% endif %}
                 {# Price #}
                 <div class="flex whitespace-nowrap gap-4 items-center">
-                  <div class="{{ product.is_on_sale ? '' : 'hidden' }} space-x-2 rtl:space-x-reverse whitespace-nowrap">
+                  <div class="{{ product.is_on_sale ? '' : 'hidden' }} flex items-center gap-2 rtl:space-x-reverse whitespace-nowrap">
                       <p class="text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</p>
                       <span class="text-gray-500 line-through">{{product.regular_price|money}}</span>
+                      {% if product.discount_percentage %}
+                          <span class="rkn-discount-badge">-{{ product.discount_percentage }}</span>
+                      {% endif %}
                   </div>
                   <div class="gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
                       {% if product.starting_price %} 
@@ -329,6 +335,11 @@
                         {% endif %}
                     </div>
                 {% endif %}
+                <div class="rkn-stock-status {{ product.is_out_of_stock ? 'rkn-stock-status--out' : 'rkn-stock-status--in' }} mb-4">
+                    <span class="rkn-stock-status__dot"></span>
+                    {{ product.is_out_of_stock ? trans('pages.products.out_of_stock') : trans('blocks.product.in_stock') }}
+                </div>
+
                 {% if product.sku %}
                     <div class="mb-4 flex justify-between sm:grid sm:grid-cols-3 bg-white rounded-md px-4 py-2">
                         <div class="flex items-center">
@@ -394,9 +405,12 @@
                             </label>
 
                             <div class="flex whitespace-nowrap price-wrapper gap-4 items-center">
-                              <div class="{{ product.is_on_sale ? '' : 'hidden' }} price_is_on_sale space-x-2 rtl:space-x-reverse whitespace-nowrap">
+                              <div class="{{ product.is_on_sale ? '' : 'hidden' }} price_is_on_sale flex items-center gap-2 rtl:space-x-reverse whitespace-nowrap">
                                 <h2 class="total-price text-red-800 font-bold text-xl inline-block">{{product.sale_price|money}}</h2>
                                 <span class="before-price text-gray-500 line-through">{{product.regular_price|money}}</span>
+                                {% if product.discount_percentage %}
+                                    <span class="rkn-discount-badge">-{{ product.discount_percentage }}</span>
+                                {% endif %}
                               </div>
                               <div class="starting-or-normal-price gap-4 {{ product.is_on_sale ? 'hidden' : 'flex' }}">
                                 {% if product.starting_price %} 

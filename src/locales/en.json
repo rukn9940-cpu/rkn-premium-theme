@@ -20,7 +20,8 @@
       "video_gallery": "Video Gallery",
       "view_360": "360° View",
       "drag_to_rotate": "Drag to rotate",
-      "exit_360": "Exit 360° view"
+      "exit_360": "Exit 360° view",
+      "in_stock": "In Stock"
     },
     "footer": {
       "contact_us": "Contact Us"
