@@ -11,17 +11,28 @@ class App extends AppHelpers {
   }
 
   loadTheApp() {
-    this.commonThings();
-    this.initiateNotifier();
-    this.initiateMobileMenu();
-    this.initAddToCart();
-    this.initiateDropdowns();
-    this.initiateModals();
-    this.initiateCollapse();
-    this.initiateScrollReveal();
-
-    initTootTip();
-    this.loadModalImgOnclick();
+    // Each init step runs in isolation: a failure in one (e.g. a missing
+    // mobile-menu element) must never stop the rest from running, since
+    // that would leave later steps like initiateScrollReveal() -- which
+    // is what makes homepage sections visible -- unexecuted.
+    [
+      () => this.commonThings(),
+      () => this.initiateNotifier(),
+      () => this.initiateMobileMenu(),
+      () => this.initAddToCart(),
+      () => this.initiateDropdowns(),
+      () => this.initiateModals(),
+      () => this.initiateCollapse(),
+      () => this.initiateScrollReveal(),
+      () => initTootTip(),
+      () => this.loadModalImgOnclick(),
+    ].forEach((step) => {
+      try {
+        step();
+      } catch (error) {
+        this.log(`init step failed: ${error?.message || error}`);
+      }
+    });
 
     salla.comment.event.onAdded(() => window.location.reload());
 
